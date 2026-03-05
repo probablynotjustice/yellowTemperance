@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ProductController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -11,10 +12,22 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 
-Route::prefix('admin')->group(funtion (){
+Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-})    
+
+    Route::get('/products', function () {
+        return view('admin.products.index');
+    })->name('admin.products');
+
+    Route::get('/products/create', function () {
+        return view('admin.products.create');
+    })->name('admin.products.create');
+
+});   
+    
+    
+Route::get('/products', [ProductController::class, 'index']);
 require __DIR__.'/settings.php';
