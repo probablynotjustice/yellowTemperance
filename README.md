@@ -63,3 +63,5 @@ Run two terminals for maximum efficiency:
 ```
 
 # Backend + frontend running together like twin engines.
+
+the plan is to Run PHP-Laravel along with Filament for the back end (i think)
