@@ -5,27 +5,35 @@ Rehash of the Priors
 If you come across this and see a mistake or misconception, correct me. 
 
 # Build & Run
-```npm run build
+```bash
+npm run build
 composer run dev
 php artisan serve
 php artisan migrate
 ```
-```docker --version```
+```bash
+docker --version
+```
 # Expected: Docker version 24.x.x
 
 **CHecking Docker Status**
-```sudo dnf install docker```
+```bash
+sudo dnf install docker
+```
 
 **Start and Enable Docker**
-```sudo systemctl start docker```
-
-```sudo systemctl enable docker```
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
 
 **Restart Docker**
-```sudo systemctl restart docker```
+```bash
+sudo systemctl restart docker
+```
 
 # Laravel Sail
-```
+```bash
 ./vendor/bin/sail up
 
 ./vendor/bin/sail artisan migrate
@@ -34,7 +42,9 @@ php artisan migrate
 ```
 
 # Laravel Container
-```docker exec -it **ContainerName** bash```
+```bash
+docker exec -it **ContainerName** bash
+```
 
 # *Developer Workflow (Recommended)
 
@@ -42,10 +52,14 @@ Run two terminals for maximum efficiency:
 
 *Terminal A — Backend*
 
-```./vendor/bin/sail up```
+```bash
+./vendor/bin/sail up
+```
 
 *Terminal B — Frontend*
 
-```./vendor/bin/sail npm run dev```
+```bash
+./vendor/bin/sail npm run dev
+```
 
 # Backend + frontend running together like twin engines.
