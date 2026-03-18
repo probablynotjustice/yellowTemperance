@@ -28,13 +28,13 @@ git branch -M main
 git push -u origin main
 
 Docker
-1️⃣ docker --version :: to check if docker is installed
+1️docker --version :: to check if docker is installed
 ~~You should see something like:Docker version 24.x.x
 
 install it, if it isint:
 
 sudo dnf install docker
-2️⃣ Is Docker running?
+2️Is Docker running?
 ~   sudo systemctl status docker
 
 If it says inactive, start it:
