@@ -18,6 +18,7 @@ sudo dnf install docker
 
 **Start and Enable Docker**
 sudo systemctl start docker
+
 sudo systemctl enable docker
 
 **Restart Docker**
@@ -25,7 +26,9 @@ sudo systemctl restart docker
 
 # Laravel Sail
 ./vendor/bin/sail up
+
 ./vendor/bin/sail artisan migrate
+
 ./vendor/bin/sail artisan migrate:fresh --seed
 
 # Laravel Container
@@ -35,9 +38,12 @@ docker exec -it **ContainerName** bash
 
 Run two terminals for maximum efficiency:
 
-Terminal A — Backend
+*Terminal A — Backend*
+
 ./vendor/bin/sail up
-Terminal B — Frontend
+
+*Terminal B — Frontend*
+
 ./vendor/bin/sail npm run dev
 
 # Backend + frontend running together like twin engines.
