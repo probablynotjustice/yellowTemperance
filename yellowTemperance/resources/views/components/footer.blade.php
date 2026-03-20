@@ -3,7 +3,7 @@
 
 <footer class="py-12 border-t border-white/10 bg-black">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-500">Blank Footer.</p>
+            <p class="text-gray-500">Evil is a Footer.</p>
             <p>&copy; {{ date('Y') }} My App. All rights reserved.</p>
         </div>
     </footer>

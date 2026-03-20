@@ -9,7 +9,7 @@
             @csrf
 
             <!-- Email Address -->
-            <flux:input
+            <flux:input class="text-black"
                 name="email"
                 :label="__('Email address')"
                 :value="old('email')"
@@ -22,7 +22,7 @@
 
             <!-- Password -->
             <div class="relative">
-                <flux:input
+                <flux:input class="text-black"
                     name="password"
                     :label="__('Password')"
                     type="password"
