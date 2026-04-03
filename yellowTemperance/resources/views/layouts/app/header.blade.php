@@ -15,6 +15,12 @@
                 </flux:navbar.item>
             </flux:navbar>
 
+            <flux:navbar class="-mb-px max-lg:hidden">
+                <flux:navbar.item icon="layout-grid" :href="route('base.dashboard')" :current="request()->routeIs('base.dashboard')" wire:navigate>
+                    {{ __('Fashboard') }}
+                </flux:navbar.item>
+            </flux:navbar>
+
             <flux:spacer />
 
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">

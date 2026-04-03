@@ -26,8 +26,14 @@ Route::prefix('admin')->group(function () {
         return view('admin.products.create');
     })->name('admin.products.create');
 
-});   
-    
-    
+});
+
+Route::prefix('base')->group(function () {
+    route::get('/dashboard', function () {
+        return view('base.dashboard');
+    })->name('base.dashboard');
+});
+
+
 Route::get('/products', [ProductController::class, 'index']);
 require __DIR__.'/settings.php';
