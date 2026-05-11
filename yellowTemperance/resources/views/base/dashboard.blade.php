@@ -10,3 +10,25 @@
 <p>3. Current On Going Sails</p>
 <p>4. Recently Viewed Section </p>
 </div>
+
+<div>
+
+
+    <p>Hello {{ $user->role }}:{{ $user->name }}</p>
+
+
+
+</div>
+
+<div>
+    <p>Hello {{ $user->name }}</p>
+
+    <p>Your Email: {{ $user->email }}</p>
+
+    <p>Your Roles:</p>
+@foreach (auth()->user()->roles as $role)
+    <span>{{ $role->name }}</span>
+@endforeach
+
+        <span>Role::{{ auth()->user()->roles }}</span>
+  </div>

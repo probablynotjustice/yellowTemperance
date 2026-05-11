@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Role;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -62,4 +64,24 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function role()
+    {
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
+    public function vendorComments()
+    {
+        return $this->hasMany(Comment::class, 'vendor_id');
+    }
+
+    public function writtenComments()
+    {
+        return $this->hasMany(Comment::class, "customer_id");
+    }
+
+    public function getRoleAttribute()
+{
+    return $this->roles->first()?->name ?? 'guest';
+}
 }

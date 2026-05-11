@@ -1,7 +1,10 @@
 <?php
+use App\Models\User;
+use App\Models\Role;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
+
 
 Route::get('/', function () {
     return view('Landing');
@@ -30,7 +33,12 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('base')->group(function () {
     route::get('/dashboard', function () {
-        return view('base.dashboard');
+        //dd(auth()->user());
+        $user = User::with('role')->find(auth()->id());
+        $roles = Role::all();
+
+
+        return view('base.dashboard', compact('user'));
     })->name('base.dashboard');
 });
 
