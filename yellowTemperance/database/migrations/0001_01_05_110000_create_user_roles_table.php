@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //Pivot Table linking the Users to their roles
         Schema::create('user_roles', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();

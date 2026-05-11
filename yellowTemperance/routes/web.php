@@ -34,7 +34,7 @@ Route::prefix('admin')->group(function () {
 Route::prefix('base')->group(function () {
     route::get('/dashboard', function () {
         //dd(auth()->user());
-        $user = User::with('role')->find(auth()->id());
+        $user = User::with('roles')->find(auth()->id());
         $roles = Role::all();
 
 

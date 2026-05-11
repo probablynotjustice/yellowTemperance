@@ -65,9 +65,9 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function role()
+    public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_role');
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
 
     public function vendorComments()
