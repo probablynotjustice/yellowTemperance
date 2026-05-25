@@ -5,10 +5,11 @@
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6 ">
             @csrf
             <!-- Name -->
             <flux:input
+                class="text-black"
                 name="name"
                 :label="__('Name')"
                 :value="old('name')"
@@ -21,6 +22,7 @@
 
             <!-- Email Address -->
             <flux:input
+                class="text-black"
                 name="email"
                 :label="__('Email address')"
                 :value="old('email')"
@@ -32,6 +34,7 @@
 
             <!-- Password -->
             <flux:input
+                class="text-black"
                 name="password"
                 :label="__('Password')"
                 type="password"
@@ -43,6 +46,7 @@
 
             <!-- Confirm Password -->
             <flux:input
+                class="text-black"
                 name="password_confirmation"
                 :label="__('Confirm password')"
                 type="password"
@@ -51,7 +55,24 @@
                 :placeholder="__('Confirm password')"
                 viewable
             />
+                    <div>
+                        <p class="flex justify-center">Select Each that Apply</p>
+                                <div class="flex items-center justify-center gap-4">
+                    <div>
+                        <label>
+                            <input type="checkbox" name="roles[]" value="customer">
+                            Customer
+                        </label>
+                    </div>
 
+                    <div>
+                        <label>
+                            <input type="checkbox" name="roles[]" value="vendor">
+                            Vendor
+                        </label>
+                    </div>
+                                </div>
+                    </div>
             <div class="flex items-center justify-end">
                 <flux:button type="submit" variant="primary" class="w-full" data-test="register-user-button">
                     {{ __('Create account') }}

@@ -10,11 +10,14 @@
 <p>3. Current On Going Sails</p>
 <p>4. Recently Viewed Section </p>
 </div>
-
+<p>
+    below is the test calls
+</p>
 <div>
 
 
-    <p>Hello {{ $user->role }}:{{ $user->name }}</p>
+        <p>Hello {{ $user->role }}:{{ $user->name }}</p>
+
 
 
 
@@ -26,9 +29,17 @@
     <p>Your Email: {{ $user->email }}</p>
 
     <p>Your Roles:</p>
-@foreach (auth()->user()->roles as $role)
+@foreach ($user->roles as $role)
     <span>{{ $role->name }}</span>
 @endforeach
 
         <span>Role::{{ auth()->user()->roles }}</span>
+        @foreach ($user->roles as $role)
+    <span>{{ $role->name }}</span><br>
+@endforeach
   </div>
+
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit">Log Out</button>
+</form>

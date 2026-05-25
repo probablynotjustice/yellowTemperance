@@ -32,11 +32,11 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('base')->group(function () {
-    route::get('/dashboard', function () {
-        //dd(auth()->user());
-        $user = User::with('roles')->find(auth()->id());
-        $roles = Role::all();
+    Route::get('/dashboard', function () {
 
+        $user = \App\Models\User::with('roles')->find(auth()->id());
+
+        dd($user);
 
         return view('base.dashboard', compact('user'));
     })->name('base.dashboard');
@@ -45,3 +45,24 @@ Route::prefix('base')->group(function () {
 
 Route::get('/products', [ProductController::class, 'index']);
 require __DIR__.'/settings.php';
+
+
+//test Route
+
+Route::get('/testrole', function () {
+
+    $user = auth()->user();
+
+    $user->roles()->attach(1); // assuming role ID 1 exists
+
+    return 'role attached';
+});
+
+Route::get('/giverole', function () {
+
+    $user = auth()->user();
+
+    $user->roles()->attach(1); // assuming role id 1 exists
+
+    return 'role assigned';
+});
