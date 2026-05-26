@@ -36,5 +36,9 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
       Product::factory()->count(10)->create();
+
+      $this->call([
+        RoleSeeder::class,
+    ]);
     }
 }
