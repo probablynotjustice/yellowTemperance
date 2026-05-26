@@ -29,12 +29,17 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'is_admin' => false,
         ]);
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
             'is_admin' => true,
+
+
         ]);
+        $adminRole = Role::where('name', 'admin')->firstOrFail();
+
+$admin->roles()->syncWithoutDetaching([$adminRole->id]);
       Product::factory()->count(10)->create();
 
       $this->call([

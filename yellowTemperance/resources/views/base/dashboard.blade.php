@@ -38,8 +38,7 @@
     <span>{{ $role->name }}</span><br>
 @endforeach
   </div>
-
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <button type="submit">Log Out</button>
+    <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
 </form>

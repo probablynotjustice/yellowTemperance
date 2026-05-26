@@ -1,9 +1,11 @@
 <?php
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Comment;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Base\CommentController;
 
 
 Route::get('/', function () {
@@ -36,7 +38,7 @@ Route::prefix('base')->group(function () {
 
         $user = \App\Models\User::with('roles')->find(auth()->id());
 
-        dd($user);
+
 
         return view('base.dashboard', compact('user'));
     })->name('base.dashboard');
@@ -45,6 +47,18 @@ Route::prefix('base')->group(function () {
 
 Route::get('/products', [ProductController::class, 'index']);
 require __DIR__.'/settings.php';
+
+Route::prefix('base')->group(function (){
+
+    Route::Get('/makecomment', [CommentController::class, 'store'])
+    ->name('comments.store');
+
+    Route::post('base.makeComment', function() {
+        return view('base.makeComment');
+    })->name('PostmakeComment');
+
+});
+
 
 
 //test Route
