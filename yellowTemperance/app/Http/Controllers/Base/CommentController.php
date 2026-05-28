@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class CommentController extends Controller {
 public function store(Request $request)
 {
+    //temporarily moved to the route
     $validated = $request->validate([
         'comment' => ['required', 'string', 'max:1000'],
     ]);

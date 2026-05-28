@@ -21,7 +21,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
+    })->name('admin.Dashboard');
 
     Route::get('/products', function () {
         return view('admin.products.index');
@@ -36,12 +36,12 @@ Route::prefix('admin')->group(function () {
 Route::prefix('base')->group(function () {
     Route::get('/dashboard', function () {
 
-        $user = \App\Models\User::with('roles')->find(auth()->id());
+        $user = User::with('roles')->find(auth()->id());
 
 
 
         return view('base.dashboard', compact('user'));
-    })->name('base.dashboard');
+    })->name('Base Dashboard');
 });
 
 
@@ -50,12 +50,23 @@ require __DIR__.'/settings.php';
 
 Route::prefix('base')->group(function (){
 
-    Route::Get('/makecomment', [CommentController::class, 'store'])
-    ->name('comments.store');
+    Route::Get('/comment', function () {
+        return view('/base/comment');
+    })->name('comments.index');
 
-    Route::post('base.makeComment', function() {
-        return view('base.makeComment');
-    })->name('PostmakeComment');
+    Route::post('/base/comment', function (Request $request)  {
+
+            $validated = $request->validate([
+        'comment' => ['required', 'string', 'max:1000'],
+    ]);
+
+    Comment::create([
+        'comment' => $validated['comment'],
+        'customer_id' => auth()->id(),
+    ]);
+
+    return redirect()->back();
+    })->name('Comment');
 
 });
 

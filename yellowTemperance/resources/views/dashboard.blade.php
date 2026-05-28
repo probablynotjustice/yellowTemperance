@@ -16,4 +16,5 @@
         </div>
     </div>
     etst
+    AdminDashboard
 </x-layouts::app>

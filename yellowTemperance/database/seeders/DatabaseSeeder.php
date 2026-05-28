@@ -15,7 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+
+      $this->call([
+        RoleSeeder::class,
+    ]);
+    // User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
@@ -39,11 +43,8 @@ class DatabaseSeeder extends Seeder
         ]);
         $adminRole = Role::where('name', 'admin')->firstOrFail();
 
-$admin->roles()->syncWithoutDetaching([$adminRole->id]);
+        $admin->roles()->syncWithoutDetaching([$adminRole->id]);
       Product::factory()->count(10)->create();
 
-      $this->call([
-        RoleSeeder::class,
-    ]);
     }
 }
