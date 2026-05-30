@@ -21,7 +21,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/', function () {
         return view('admin.dashboard');
-    })->name('admin.Dashboard');
+    })->name('admin.dashboard');
 
     Route::get('/products', function () {
         return view('admin.products.index');
@@ -41,7 +41,7 @@ Route::prefix('base')->group(function () {
 
 
         return view('base.dashboard', compact('user'));
-    })->name('Base Dashboard');
+    })->name('base.dashboard');
 });
 
 
@@ -52,7 +52,7 @@ Route::prefix('base')->group(function (){
 
     Route::Get('/comment', function () {
         return view('/base/comment');
-    })->name('comments.index');
+    })->name('base.comment');
 
     Route::post('/base/comment', function (Request $request)  {
 

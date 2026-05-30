@@ -15,13 +15,13 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('base.dashboard')" :current="request()->routeIs('base.dashboard')" wire:navigate>
-                        {{ __('base,Dashboard') }} <!--inteded to navigate to Admin View-->
+                    <flux:sidebar.item icon="home" :href="route('base.dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Base Dashboard') }} <!--inteded to navigate to Admin View-->
 
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="home" :href="route('base.dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dash Dashboard') }}
+                    <flux:sidebar.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('/')" wire:navigate>
+                        {{ __('Admin Dashboard') }}
                     </flux:sidebar.item>
 
                     <flux:sidebar.item icon="home" :href="route('base.comment')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->

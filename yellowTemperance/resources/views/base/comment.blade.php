@@ -3,21 +3,22 @@
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
 </form>
 <div>
-    <form method="POST" action="{{ route('comments.store') }}">
+    <form method="POST" action="{{ route('base.comment') }}">
         <h1>Enter Comment</h1>
-    @csrf
+        @csrf
 
-    <label for="comment">Comment</label>
-        <textbox lable="summery">
+        <label for="comment">Comment</label>
+            <textbox lable="summery">
 
-        </textbox>
-    <textarea
-        name="comment"
-        id="comment"
-    ></textarea>
+            </textbox>
+            <textarea
+                name="comment"
+                id="comment"
+            >
+            </textarea>
 
-    <button type="submit">
-        Submit
-    </button>
+        <button type="submit">
+            Submit
+        </button>
     </form>
 </div>

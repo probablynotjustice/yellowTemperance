@@ -23,6 +23,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
+            $table->text('Summery');
             $table->text('body');
         });
     }
