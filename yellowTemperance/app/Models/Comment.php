@@ -10,6 +10,7 @@ class Comment extends Model
     use HasFactory;
         protected $fillable = [
         'name',
+        'description'
     ];
 
     public function customer()
@@ -21,6 +22,19 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'vendor_id');
     }
+
+    public function store(Request $request)
+        {
+            $validated = $request->validate([
+                'comment' => ['required', 'string', 'max:1000'],
+            ]);
+
+            Comment::create([
+                'comment' => $validated['comment'],
+                'customer_id' => auth()->id(),
+            ]);
+
+            return redirect()->back();
+
+    }
 }
-
-

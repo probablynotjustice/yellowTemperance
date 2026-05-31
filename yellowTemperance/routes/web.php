@@ -51,11 +51,11 @@ require __DIR__.'/settings.php';
 Route::prefix('base')->group(function (){
 
     Route::Get('/comment', function () {
-        return view('/base/comment');
+        return view('base.comment');
     })->name('base.comment');
 
-    Route::post('/base/comment', function (Request $request)  {
-
+    Route::post('/comment', function (Request $request)  {
+        //Saves Comments
             $validated = $request->validate([
         'comment' => ['required', 'string', 'max:1000'],
     ]);
@@ -63,6 +63,7 @@ Route::prefix('base')->group(function (){
     Comment::create([
         'comment' => $validated['comment'],
         'customer_id' => auth()->id(),
+        //Need to constrain to Vendors that the User has commonality with
     ]);
 
     return redirect()->back();
