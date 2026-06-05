@@ -1,3 +1,7 @@
+# Build is **(NOT)** Replicable across different systems without extensive revisions and troubleshooting
+
+Make sure to document build instructions clearly in a README and validate that each step functions as written.
+
 # yellowTemperance
 Rehash of the Priors 
 
