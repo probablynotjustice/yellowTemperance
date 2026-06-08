@@ -11,12 +11,12 @@ class CommentController extends Controller {
         {
             //temporarily moved to the route
             $validated = $request->validate([
-                'summery' => ['required', 'string', 'max:255'],
+                'summary' => ['required', 'string', 'max:255'],
                 'detail' => ['required', 'string'],
             ]);
 
             Comment::create([
-                'summery' => $validated['summery'],
+                'summary' => $validated['summary'],
                 'detail' => $validated['body'],
                 'customer_id' => auth()->id(),
                 'vendor_id' => $vendor->id,

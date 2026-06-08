@@ -7,12 +7,12 @@
         <h1>Enter Comment</h1>
         @csrf
             <div>
-                    <label for="summery">Summery</label>
+                    <label for="summary">summary</label>
 
                     <input
                     type="text"
-                    name="summery"
-                    id="summery">
+                    name="summary"
+                    id="summary">
             </div>
             <div>
                 <label for='discription'>Comment</label>

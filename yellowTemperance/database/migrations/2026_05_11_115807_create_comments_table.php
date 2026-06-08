@@ -24,7 +24,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             // Needs Product
-            $table->text('summery');
+            $table->text('summary');
             $table->text('detail');
         });
     }

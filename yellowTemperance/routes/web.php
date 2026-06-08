@@ -59,7 +59,7 @@ Route::prefix('base')->group(function (){
     Route::post('/comment', function (Request $request)  {
         //Saves Comments
         $validated = $request->validate([
-            'summery' => ['required', 'string', 'max:255'],
+            'summary' => ['required', 'string', 'max:255'],
             'detail' => ['required', 'string']
     ]);
         Comment::create([
