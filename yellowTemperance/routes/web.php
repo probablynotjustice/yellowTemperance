@@ -4,6 +4,8 @@ use App\Models\Role;
 use App\Models\Comment;
 
 use Illuminate\Support\Facades\Route;
+// use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Base\CommentController;
 
@@ -56,18 +58,21 @@ Route::prefix('base')->group(function (){
 
     Route::post('/comment', function (Request $request)  {
         //Saves Comments
-            $validated = $request->validate([
-        'comment' => ['required', 'string', 'max:1000'],
+        $validated = $request->validate([
+            'summery' => ['required', 'string', 'max:255'],
+            'detail' => ['required', 'string']
     ]);
-
-    Comment::create([
-        'comment' => $validated['comment'],
-        'customer_id' => auth()->id(),
-        //Need to constrain to Vendors that the User has commonality with
-    ]);
+        Comment::create([
+            'comment' => $validated['comment'],
+            'customer_id' => auth()->id(),
+            //Need to constrain to Vendors that the User has commonality with
+            //temporary
+            'vendor_id' =>1,
+            //Will also need a Purchase_id to link to a receipt and product
+        ]);
 
     return redirect()->back();
-    })->name('Comment');
+    })->name('comment.store');
 
 });
 

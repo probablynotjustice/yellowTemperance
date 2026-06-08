@@ -6,11 +6,21 @@
     <form method="POST" action="{{ route('comment.store') }}">
         <h1>Enter Comment</h1>
         @csrf
+            <div>
+                    <label for="summery">Summery</label>
 
-        <label for="comment">Comment</label>
-        <input type="text" name="summery">
-        <textarea name="detail" id="comment"> </textarea>
-
+                    <input
+                    type="text"
+                    name="summery"
+                    id="summery">
+            </div>
+            <div>
+                <label for='discription'>Comment</label>
+                <textarea
+                    name="description"
+                    id="description">
+                </textarea>
+            </div>
         <button type="submit">Submit</button>
     </form>
 </div>
