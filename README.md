@@ -2,6 +2,16 @@
 
 Make sure to document build instructions clearly in a README and validate that each step functions as written.
 
+#Build Instructions (for now)
+--How to run the Build
+1. Clone the Repo
+2. The Project is inside a folder, so the CD needs to be done twice, i guess
+2. Run composer install
+3 Generate the Key: php artisan key:generate
+4. Set Env Variables
+5. run Migrations/ --seed
+6. It should run normally now. Im not sure what i did wrong here bul ill find a fix at a later time.
+
 # yellowTemperance
 Rehash of the Priors 
 
