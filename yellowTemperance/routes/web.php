@@ -53,17 +53,20 @@ require __DIR__.'/settings.php';
 Route::prefix('base')->group(function (){
 
     Route::Get('/comment', function () {
-        return view('base.comment');
+
+        $comment = Comment::all();
+        return view('base.comment', compact('comment'));
     })->name('base.comment');
 
     Route::post('/comment', function (Request $request)  {
         //Saves Comments
         $validated = $request->validate([
             'summary' => ['required', 'string', 'max:255'],
-            'detail' => ['required', 'string']
+            'detail' => ['required', 'string'],
     ]);
         Comment::create([
-            'comment' => $validated['comment'],
+            'summary' => $validated['summary'],
+            'detail' => $validated['detail'],
             'customer_id' => auth()->id(),
             //Need to constrain to Vendors that the User has commonality with
             //temporary

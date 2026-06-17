@@ -15,12 +15,26 @@
                     id="summary">
             </div>
             <div>
-                <label for='discription'>Comment</label>
+                <label for='detail'>Comment</label>
                 <textarea
-                    name="description"
-                    id="description">
+                    name="detail"
+                    id="detail">
                 </textarea>
             </div>
         <button type="submit">Submit</button>
     </form>
 </div>
+
+<h2>All Comments</h2>
+
+@foreach ($comment as $comment)
+
+    <div class="border p-4 rounded mb-4">
+
+        <h3>{{ $comment->summary }}</h3>
+
+        <p>{{ $comment->detail }}</p>
+
+    </div>
+
+@endforeach
