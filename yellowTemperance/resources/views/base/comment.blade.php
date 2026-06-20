@@ -30,10 +30,12 @@
 @foreach ($comment as $comment)
 
     <div class="border p-4 rounded mb-4">
-
-        <h3>{{ $comment->summary }}</h3>
+<!--this doesnt allow line breaks within the text area for the User to start the net paragragh ((NEED))-->
+    <div>
+        <h3>{{ $loop->iteration }}. {{ $comment->summary }}</h3>
 
         <p>{{ $comment->detail }}</p>
+    </div>
 
     </div>
 
