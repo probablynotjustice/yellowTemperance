@@ -81,7 +81,13 @@ class User extends Authenticatable
     }
 
     public function getRoleAttribute()
-{
-    return $this->roles->first()?->name ?? 'guest';
-}
+    {
+        return $this->roles->first()?->name ?? 'guest';
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
 }
