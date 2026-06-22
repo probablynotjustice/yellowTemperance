@@ -18,7 +18,11 @@
 
         <p>Hello {{ $user->role }}:{{ $user->name }}</p>
 
+        <p>Wallet Balance:</p>
+            <span>
 
+                ${{ $user->wallet?->balance ?? '0.00' }}
+            </span>
 
 
 </div>
@@ -38,6 +42,18 @@
     <span>{{ $role->name }}</span><br>
 @endforeach
   </div>
+
+
+                 <button href="/ticketAll">
+                    <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+                    <!--Admin wallet balance Shouldnt exist,
+                        Ill make sure of that later-->
+                    <p>Wallet Balance:</p>
+                        <span>
+
+                            ${{ $user->wallet?->balance ?? '0.00' }}
+                        </span>
+                </button>
 <form method="POST" action="{{ route('logout') }}">
     @csrf
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>

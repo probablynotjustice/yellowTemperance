@@ -40,9 +40,9 @@ Route::prefix('base')->group(function () {
 
         $user = User::with('roles')->find(auth()->id());
 
+        $wallet = User::with('wallet')->find(auth()->id());
 
-
-        return view('base.dashboard', compact('user'));
+        return view('base.dashboard', compact('user', 'wallet'));
     })->name('base.dashboard');
 });
 
@@ -76,6 +76,12 @@ Route::prefix('base')->group(function (){
 
     return redirect()->back();
     })->name('comment.store');
+
+    Route::get('/ticketAll', function () {
+
+    $user = User::with('roles', 'wallet')->find(auth()->id());
+
+    return view('base.ticketAll', compact('user'));})->name('ticketAll');
 
 });
 
