@@ -102,7 +102,7 @@ Route::post('/wallet/add/custom', function (Request $request) {
     $wallet->increment('balance', $amount);
     $wallet->transactions()->create([
         'amount' => $amount,
-        'type' => 'deposit',
+        'type' => 'funding',
         'description' => "Custom deposit of: $amount",
     ]);
     return redirect()->back();
@@ -114,13 +114,17 @@ Route::post('wallet/add/{amount}', function ($amount) {
     $wallet->increment('balance', $amount);
     $wallet->transactions()->create([
         'amount' => $amount,
-        'type' => 'deposit',
+        'type' => 'funding',
         'description' => 'added {$amount} credit',
     ]);
     return redirect()->back();
 })->name('wallet.add');
 
-
+Route::prefix('vendor')->group( function () {
+    Route::get('/vashboard', function () {
+        return view('vendor.vashboard');
+    })->name('vashboard');
+});
 //test Route
 
 Route::get('/testrole', function () {
