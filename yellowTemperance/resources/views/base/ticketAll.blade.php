@@ -31,25 +31,16 @@
             <button type="submit">Add:<br />+100</button>
         </form>
         <form method="POST" action="{{ route('wallet.add.custom') }}">
-    @csrf
-
-    <input
-        type="number"
-        name="amount"
-        step="0.01"
-        min="0.01"
-        placeholder="Enter amount"
-        required
-    >
-
-    <button type="submit">
-        Add to Wallet
-    </button>
-</form>
+            @csrf
+            <input type="bumber" name="amount" step="1.00" min="1.00"
+                placeholder="Enter amount"
+                required>
+            <button type="submit">Add to Wallet</button>
+        </form>
     </div>
 </div>
 
-
+<p>{{ route('wallet.add.custom') }}</p>
     <div>
      <h1>this is a list of Transactions</h1>
         @foreach ($user->wallet->transactions as $transaction)

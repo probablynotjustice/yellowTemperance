@@ -92,19 +92,6 @@ Route::prefix('base')->group(function (){
 
 });
 
-Route::post('wallet/add/{amount}', function ($amount) {
-     abort_unless(in_array((int)$amount, [1, 10, 100]), 404);
-    $wallet = auth()->user()->wallet;
-    $wallet->increment('balance', $amount);
-    $wallet->transactions()->create([
-        'amount' => $amount,
-        'type' => 'deposit',
-        'description' => 'added {$amount} credit',
-    ]);
-    return redirect()->back();
-})->name('wallet.add');
-
-
 Route::post('/wallet/add/custom', function (Request $request) {
 
     $validated = $request->validate([
@@ -120,6 +107,19 @@ Route::post('/wallet/add/custom', function (Request $request) {
     ]);
     return redirect()->back();
 })->name('wallet.add.custom');
+
+Route::post('wallet/add/{amount}', function ($amount) {
+     abort_unless(in_array((int)$amount, [1, 10, 100]), 404);
+    $wallet = auth()->user()->wallet;
+    $wallet->increment('balance', $amount);
+    $wallet->transactions()->create([
+        'amount' => $amount,
+        'type' => 'deposit',
+        'description' => 'added {$amount} credit',
+    ]);
+    return redirect()->back();
+})->name('wallet.add');
+
 
 //test Route
 
