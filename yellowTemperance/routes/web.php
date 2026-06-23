@@ -80,24 +80,46 @@ Route::prefix('base')->group(function (){
 
     Route::get('/ticketAll', function () {
 
-    $user = User::with('roles', 'wallet', 'wallet.transactions')->find(auth()->id());
+    $user = User::with([
+        'roles',
+        'wallet',
+        'wallet.transactions' => function ($query) {
+            $query->latest();
+        }
+        ])->find(auth()->id());
 
     return view('base.ticketAll', compact('user'));})->name('ticketAll');
 
 });
 
-Route::post('wallet/add/1', function () {
-    auth()->user()->wallet()->increment('balance', 1);
+Route::post('wallet/add/{amount}', function ($amount) {
+     abort_unless(in_array((int)$amount, [1, 10, 100]), 404);
+    $wallet = auth()->user()->wallet;
+    $wallet->increment('balance', $amount);
+    $wallet->transactions()->create([
+        'amount' => $amount,
+        'type' => 'deposit',
+        'description' => 'added {$amount} credit',
+    ]);
     return redirect()->back();
-})->name('wallet.add.1');
-Route::post('wallet/add/10', function () {
-    auth()->user()->wallet()->increment('balance', 10);
+})->name('wallet.add');
+
+
+Route::post('/wallet/add/custom', function (Request $request) {
+
+    $validated = $request->validate([
+        'amount' => ['required', 'numeric', 'min:1', 'max:1000'],
+    ]);
+    $wallet = auth()->user()->wallet;
+    $amount = $validated['amount'];
+    $wallet->increment('balance', $amount);
+    $wallet->transactions()->create([
+        'amount' => $amount,
+        'type' => 'deposit',
+        'description' => "Custom deposit of: $amount",
+    ]);
     return redirect()->back();
-})->name('wallet.add.10');
-Route::post('wallet/add/100', function () {
-    auth()->user()->wallet()->increment('balance', 100);
-    return redirect()->back();
-})->name('wallet.add.100');
+})->name('wallet.add.custom');
 
 //test Route
 

@@ -18,33 +18,51 @@
 <div>
     <h1>Wallet Update</h1>
     <div>
-        <form method="POST" action="{{ route('wallet.add.1', 1) }}">
+        <form method="POST" action="{{ route('wallet.add', 1) }}">
         @csrf
             <button type="submit"><span>Add: <br /></span>+1</button>
         </form>
-        <form method="POST" action="{{ route('wallet.add.10', 10) }}">
+        <form method="POST" action="{{ route('wallet.add', 10) }}">
             @csrf
             <button type="submit">Add:<br />+10</button>
         </form>
-        <form method="POST" action="{{ route('wallet.add.100', 100) }}">
+        <form method="POST" action="{{ route('wallet.add', 100) }}">
             @csrf
             <button type="submit">Add:<br />+100</button>
         </form>
+        <form method="POST" action="{{ route('wallet.add.custom') }}">
+    @csrf
+
+    <input
+        type="number"
+        name="amount"
+        step="0.01"
+        min="0.01"
+        placeholder="Enter amount"
+        required
+    >
+
+    <button type="submit">
+        Add to Wallet
+    </button>
+</form>
     </div>
 </div>
 
 
     <div>
      <h1>this is a list of Transactions</h1>
-            <div>
-            @foreach ($user->wallet->transactions as $transaction)
+        @foreach ($user->wallet->transactions as $transaction)
 
-                <p>
-                    {{ $transaction->type }}
-                    :
-                    ${{ $transaction->amount }}
-                </p>
-            </div>
+    <li>
+        <div>
+        <p>Timestamp:{{ $transaction->created_at }} </p>
+        <p>Type: {{ $transaction->type }}</p>
+        <p>Total: ${{ $transaction->amount }}</p>
+        <p>Notes: {{ $transaction->description }}</p>
+        </div>
+    </li>
+
         @endforeach
     </div>
 
