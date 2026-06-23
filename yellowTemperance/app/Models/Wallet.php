@@ -20,7 +20,7 @@ class Wallet extends Model
     }
     public function transactions()
     {
-        return $this->hasMany(WalletTransactions::class);
+        return $this->hasMany(WalletTransaction::class);
     }
 }
 

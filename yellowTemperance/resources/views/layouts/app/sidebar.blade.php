@@ -27,6 +27,9 @@
                     <flux:sidebar.item icon="home" :href="route('base.comment')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Comment') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="home" :href="route('ticketAll')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
+                        {{ __('Tickets') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

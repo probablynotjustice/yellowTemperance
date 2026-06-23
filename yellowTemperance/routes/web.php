@@ -2,6 +2,7 @@
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
+use App\Models\Wallet;
 
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Request;
@@ -79,13 +80,24 @@ Route::prefix('base')->group(function (){
 
     Route::get('/ticketAll', function () {
 
-    $user = User::with('roles', 'wallet')->find(auth()->id());
+    $user = User::with('roles', 'wallet', 'wallet.transactions')->find(auth()->id());
 
     return view('base.ticketAll', compact('user'));})->name('ticketAll');
 
 });
 
-
+Route::post('wallet/add/1', function () {
+    auth()->user()->wallet()->increment('balance', 1);
+    return redirect()->back();
+})->name('wallet.add.1');
+Route::post('wallet/add/10', function () {
+    auth()->user()->wallet()->increment('balance', 10);
+    return redirect()->back();
+})->name('wallet.add.10');
+Route::post('wallet/add/100', function () {
+    auth()->user()->wallet()->increment('balance', 100);
+    return redirect()->back();
+})->name('wallet.add.100');
 
 //test Route
 
@@ -105,4 +117,31 @@ Route::get('/giverole', function () {
     $user->roles()->attach(1); // assuming role id 1 exists
 
     return 'role assigned';
+});
+
+Route::get('/test-transaction', function () {
+
+    $wallet = auth()->user()->wallet;
+
+    $wallet->transactions()->create([
+        'amount' => 100.00,
+        'type' => 'deposit',
+        'description' => 'Test deposit',
+    ]);
+
+    return 'Transaction created';
+});
+
+Route::get('/fix-wallets', function () {
+
+    User::doesntHave('wallet')->get()->each(function ($user) {
+
+        Wallet::create([
+            'user_id' => $user->id,
+            'balance' => 0,
+        ]);
+
+    });
+
+    return 'Done';
 });

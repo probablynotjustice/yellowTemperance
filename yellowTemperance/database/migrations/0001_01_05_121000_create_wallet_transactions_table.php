@@ -13,6 +13,7 @@ return new class extends Migration
     {
         //Pivot Table linking the Users to their roles
         Schema::create('wallet_transactions', function (Blueprint $table) {
+            $table->id();
 
             $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 10, 2);

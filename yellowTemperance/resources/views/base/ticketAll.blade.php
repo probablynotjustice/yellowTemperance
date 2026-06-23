@@ -1,28 +1,41 @@
 <div>
     <div>
         <h1>This is where money and tickets will be updated</h1>
-            <div>
-                <p>Wallet ID: {{ $user->wallet?->id }}</p>
+            @if($user->wallet)
 
-                <p>Balance: ${{ $user->wallet?->balance }}</p>
+                <p>Wallet ID: {{ $user->wallet->id }}</p>
+                <p>Balance: ${{ $user->wallet->balance }}</p>
+                <p>Created: {{ $user->wallet->created_at }}</p>
 
-                <p>Created: {{ $user->wallet?->created_at }}</p>
-            </div>
+            @else
+
+                <p>No wallet found.</p>
+
+            @endif
     </div>
 
 <!--This area will update the wallet-->
 <div>
     <h1>Wallet Update</h1>
     <div>
-        <button>add 1</button>
-        <button>add 10</button>
-        <button>add 100</button>
+        <form method="POST" action="{{ route('wallet.add.1', 1) }}">
+        @csrf
+            <button type="submit"><span>Add: <br /></span>+1</button>
+        </form>
+        <form method="POST" action="{{ route('wallet.add.10', 10) }}">
+            @csrf
+            <button type="submit">Add:<br />+10</button>
+        </form>
+        <form method="POST" action="{{ route('wallet.add.100', 100) }}">
+            @csrf
+            <button type="submit">Add:<br />+100</button>
+        </form>
     </div>
 </div>
 
 
     <div>
-    <h1>this is a list of Transactions</h1>
+     <h1>this is a list of Transactions</h1>
             <div>
             @foreach ($user->wallet->transactions as $transaction)
 
@@ -34,4 +47,5 @@
             </div>
         @endforeach
     </div>
+
 </div>
