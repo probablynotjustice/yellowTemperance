@@ -125,6 +125,10 @@ Route::prefix('vendor')->group( function () {
         $user = User::with('roles')->find(auth()->id());
         return view('vendor.vashboard', compact('user'));
     })->name('vashboard');
+    Route::get('productManagment', function () {
+        $user = User::with('roles')->find(auth()->id());
+        $product = Product::class;
+    });
 });
 //test Route
 
