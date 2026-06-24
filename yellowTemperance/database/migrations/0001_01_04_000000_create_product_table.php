@@ -15,6 +15,9 @@ return new class extends Migration
             //Test.
             $table->string('name');
             $table->bigInteger('price');
+            $table->foreignId('vendor_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
         });
     }
 

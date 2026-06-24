@@ -20,10 +20,22 @@
 
                     </flux:sidebar.item>
 
-                    <flux:sidebar.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('/')" wire:navigate>
-                        {{ __('Admin Dashboard') }}
+                 @if(auth()->user()->roles->contains('name', 'admin'))
+                    <flux:sidebar.item
+                        icon="shield-check"
+                        :href="route('admin.dashboard')"
+                    >
+                        Admin Panel
                     </flux:sidebar.item>
-
+                @endif
+@if(auth()->user()->roles->contains('name', 'vendor'))
+    <flux:sidebar.item
+        icon="shield-check"
+        :href="route('admin.products.create')"
+    >
+        Sales Management
+    </flux:sidebar.item>
+@endif
                     <flux:sidebar.item icon="home" :href="route('base.comment')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Comment') }}
                     </flux:sidebar.item>
