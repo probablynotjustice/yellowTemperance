@@ -122,7 +122,8 @@ Route::post('wallet/add/{amount}', function ($amount) {
 
 Route::prefix('vendor')->group( function () {
     Route::get('/vashboard', function () {
-        return view('vendor.vashboard');
+        $user = User::with('roles')->find(auth()->id());
+        return view('vendor.vashboard', compact('user'));
     })->name('vashboard');
 });
 //test Route

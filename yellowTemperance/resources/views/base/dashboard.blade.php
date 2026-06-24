@@ -16,7 +16,11 @@
 <div>
 
 
-        <p>Hello {{ $user->role }}:{{ $user->name }}</p>
+<p>Hello {{ $user->name }}</p>
+
+@foreach($user->roles as $role)
+    <p>{{ $role->name }}</p>
+@endforeach
 
         <p>Wallet Balance:</p>
             <span>
