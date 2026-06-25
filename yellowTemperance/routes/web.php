@@ -3,6 +3,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
 use App\Models\Wallet;
+use App\Models\Product;
 
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Request;
@@ -125,10 +126,37 @@ Route::prefix('vendor')->group( function () {
         $user = User::with('roles')->find(auth()->id());
         return view('vendor.vashboard', compact('user'));
     })->name('vashboard');
-    Route::get('productManagment', function () {
+    Route::get('/productManagment', function () {
         $user = User::with('roles')->find(auth()->id());
-        $product = Product::class;
+
+        //Stopped here to build the product Model and Migration
+        //Need to Complete
+        $product = Product::first();
+
+    return view('vendor.productManagement', compact('user', 'product'))
     });
+    Route::post('/productManagment', function  (Request $request) {
+        $user = User::with('roles')->find(auth()->id());
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'retail_price' => ['required', int],
+            'price' => [int],
+            'quantity' => [int]
+            //Stopped Here Need to continue
+        ]);
+        Product::create([
+            'name',
+            'description',
+            'retail_price',
+            'price',
+            'vendor_id' => auth()->id(),
+            //'ticket_cost' tbd
+            'quantity'
+        ]);
+        return redirect()->back();
+    })->name('product.store');
 });
 //test Route
 

@@ -14,10 +14,13 @@ return new class extends Migration
             $table->timestamps();
             //Test.
             $table->string('name');
+            $table->string('description');
+            $table->bigIncrements('retail_price');
             $table->bigInteger('price');
             $table->foreignId('vendor_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
+            $table->bigInteger('quantity');
         });
     }
 
