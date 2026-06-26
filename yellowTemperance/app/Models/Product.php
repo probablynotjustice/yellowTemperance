@@ -12,9 +12,8 @@ class Product extends Model
         'name',
         'description',
         'retail_price',
-        'price',
+        //'price',
         'vendor_id',
-        //'ticket_cost' TBD
         'quantity'
     ];
 

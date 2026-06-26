@@ -1,13 +1,36 @@
-<h1>this is the Product Management page</h1>
+<h1>this is the Vendor's Product Management page</h1>
 
 <h1>Create Product</h1>
 
-<form method="POST" action="/admin/products">
+<form method="POST" action="{{ route('vendor.products.store') }}">
     @csrf
 
-    <input type="text" name="name" placeholder="Product Name">
+    <div>
+        <label for="name">Product Name</label>
+        <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+    </div>
+    <div>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="5">{{ old('description') }}</textarea>
+    </div>
+    <div>
+        <label for="retail_price">Price</label>
+        <input type="number" id="retail_price" name="retail_price" step="0.01" min="0" value="{{ old('retail_price') }}" required>
+    </div>
+        <div>
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" step="0.01" min="0" value="{{ old('retail_price') }}" required>
+    </div>
+    <div>
+        <label for="inventory">Inventory</label>
+        <input type="number" id="inventory" name="inventory" min="0" value="{{ old('inventory', 0) }}">
+    </div>
+    <div>
+        <label for="ticket_cost">Ticket Cost</label>
+        <input type="number" id="ticket_cost" name="ticket_cost" min="1" value="{{ old('ticket_cost', 1) }}">
+    </div>
 
-    <button type="submit">Save</button>
+    <button type="submit">Create Product</button>
 </form>
 
 <div>

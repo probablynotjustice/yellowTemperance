@@ -133,7 +133,7 @@ Route::prefix('vendor')->group( function () {
         //Need to Complete
         $product = Product::first();
 
-    return view('vendor.productManagement', compact('user', 'product'))
+    return view('vendor.productManagement', compact('user', 'product'));
     });
     Route::post('/productManagment', function  (Request $request) {
         $user = User::with('roles')->find(auth()->id());
@@ -141,19 +141,19 @@ Route::prefix('vendor')->group( function () {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'retail_price' => ['required', int],
-            'price' => [int],
-            'quantity' => [int]
+            'retail_price' => ['required', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric','min:0'],
+            'inventory' => ['required', 'integer', 'min:0']
             //Stopped Here Need to continue
         ]);
         Product::create([
-            'name',
-            'description',
-            'retail_price',
-            'price',
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'retail_price'=> $validated['retail_price'],
+            'price' => $validated['price'],
             'vendor_id' => auth()->id(),
             //'ticket_cost' tbd
-            'quantity'
+            'inventory'
         ]);
         return redirect()->back();
     })->name('product.store');
