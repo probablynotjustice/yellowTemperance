@@ -14,12 +14,12 @@
         <textarea id="description" name="description" rows="5">{{ old('description') }}</textarea>
     </div>
     <div>
-        <label for="retail_price">Price</label>
+        <label for="retail_price">Retail Price</label>
         <input type="number" id="retail_price" name="retail_price" step="0.01" min="0" value="{{ old('retail_price') }}" required>
     </div>
         <div>
         <label for="price">Price</label>
-        <input type="number" id="price" name="price" step="0.01" min="0" value="{{ old('retail_price') }}" required>
+        <input type="number" id="price" name="price" step="0.01" min="0" value="{{ old('price') }}" required>
     </div>
     <div>
         <label for="inventory">Inventory</label>
@@ -37,5 +37,20 @@
     <h1>View all products</h1>
     <li>
         <p>list all products  </p>
+        <div>
+            <ol>
+                @foreach ($products as $product)
+                    <div class="border p-4 rounded mb-4">
+                        <h3>{{ $product->name }}</h3>
+                        <p>{{ $product->description }}</p>
+                        <p>Retail: ${{ $product->retail_price }}</p>
+                        <p>Sale Price: ${{ $product->price }}</p>
+                        <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
+                        <p>Inventory: {{ $product->inventory }}</p>
+                        <p>Vendor: {{ $product->vendor->name }}</p>
+                    </div>
+                @endforeach
+            </ol>
+        </div>
     </li>
 </div>

@@ -12,9 +12,12 @@ class Product extends Model
         'name',
         'description',
         'retail_price',
-        //'price',
+        'price',
+        'inventory',
+        'quantity',
+        'ticket_cost',
         'vendor_id',
-        'quantity'
+
     ];
 
     public function vendor()

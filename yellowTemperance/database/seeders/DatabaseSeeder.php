@@ -44,7 +44,23 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::where('name', 'admin')->firstOrFail();
 
         $admin->roles()->syncWithoutDetaching([$adminRole->id]);
-      Product::factory()->count(10)->create();
+     // Product::factory()->count(10)->create();
 
+     /*public function definition(): array
+            {
+                return [
+                    'name' => fake()->words(3, true),
+                    'description' => fake()->paragraph(),
+
+                    'retail_price' => fake()->numberBetween(100, 1000),
+                    'price' => fake()->numberBetween(50, 900),
+
+                    'ticket_cost' => fake()->numberBetween(1, 20),
+                    'inventory' => fake()->numberBetween(1, 100),
+
+                    'vendor_id' => 4, // To use with the created Vendor.
+                ];
+            }
+    */
     }
 }

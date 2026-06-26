@@ -131,10 +131,11 @@ Route::prefix('vendor')->group( function () {
 
         //Stopped here to build the product Model and Migration
         //Need to Complete
-        $product = Product::first();
+        $products = Product::with('vendor')->get();
 
-    return view('vendor.productManagement', compact('user', 'product'));
-    });
+    return view('vendor.productManagement', compact('user', 'products'));
+    })->name('vendor.Products');
+
     Route::post('/productManagment', function  (Request $request) {
         $user = User::with('roles')->find(auth()->id());
 
@@ -143,20 +144,21 @@ Route::prefix('vendor')->group( function () {
             'description' => ['required', 'string'],
             'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric','min:0'],
-            'inventory' => ['required', 'integer', 'min:0']
+            'inventory' => ['required', 'integer', 'min:0'],
+            'ticket_cost' =>['required', 'integer', 'min:1']
             //Stopped Here Need to continue
         ]);
         Product::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'retail_price'=> $validated['retail_price'],
-            'price' => $validated['price'],
-            'vendor_id' => auth()->id(),
-            //'ticket_cost' tbd
-            'inventory'
+            'name'          => $validated['name'],
+            'description'   => $validated['description'],
+            'retail_price'  => $validated['retail_price'],
+            'price'         => $validated['price'],
+            'inventory'     => $validated['inventory'],
+            'ticket_cost'   => $validated['ticket_cost'],
+            'vendor_id'     => auth()->id(),
         ]);
         return redirect()->back();
-    })->name('product.store');
+    })->name('vendor.products.store');
 });
 //test Route
 
