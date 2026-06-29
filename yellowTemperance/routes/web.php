@@ -131,7 +131,8 @@ Route::prefix('vendor')->group( function () {
 
         //Stopped here to build the product Model and Migration
         //Need to Complete
-        $products = Product::with('vendor')->get();
+        $products = Product::where('vendor_id', auth()->id())
+            ->with('vendor')->get();
 
     return view('vendor.productManagement', compact('user', 'products'));
     })->name('vendor.Products');
