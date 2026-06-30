@@ -8,9 +8,9 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\ProductController;
+// use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Base\CommentController;
-
+use App\Http\Controllers\Vendor\ProductController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -121,48 +121,25 @@ Route::post('wallet/add/{amount}', function ($amount) {
     return redirect()->back();
 })->name('wallet.add');
 
+
+// Below This line is All Vendor Focus
 Route::prefix('vendor')->group( function () {
     Route::get('/vashboard', function () {
         $user = User::with('roles')->find(auth()->id());
         return view('vendor.vashboard', compact('user'));
     })->name('vashboard');
-    Route::get('/productManagment', function () {
-        $user = User::with('roles')->find(auth()->id());
 
-        //Stopped here to build the product Model and Migration
-        //Need to Complete
-        $products = Product::where('vendor_id', auth()->id())
-            ->with('vendor')->get();
+    Route::get('/product', [ProductController::class, 'index'])
+        ->name('vendor.products');
 
-    return view('vendor.productManagement', compact('user', 'products'));
-    })->name('vendor.Products');
-
-    Route::post('/productManagment', function  (Request $request) {
-        $user = User::with('roles')->find(auth()->id());
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'retail_price' => ['required', 'numeric', 'min:0'],
-            'price' => ['required', 'numeric','min:0'],
-            'inventory' => ['required', 'integer', 'min:0'],
-            'ticket_cost' =>['required', 'integer', 'min:1']
-            //Stopped Here Need to continue
-        ]);
-        Product::create([
-            'name'          => $validated['name'],
-            'description'   => $validated['description'],
-            'retail_price'  => $validated['retail_price'],
-            'price'         => $validated['price'],
-            'inventory'     => $validated['inventory'],
-            'ticket_cost'   => $validated['ticket_cost'],
-            'vendor_id'     => auth()->id(),
-        ]);
-        return redirect()->back();
-    })->name('vendor.products.store');
+    Route::post('/product', [ProductController::class, 'store'])
+        ->name('vendor.products.store');
+    Route::get('/products/{product}', [ProductController::class, 'show'])
+        ->name('vendor.products.show');
 });
-//test Route
 
+
+//test Route
 Route::get('/testrole', function () {
 
     $user = auth()->user();

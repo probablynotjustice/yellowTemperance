@@ -1,4 +1,9 @@
-<h1>this is the Vendor's Product Management page</h1>
+
+<h1>
+    This will be the simple Product View,
+    it will Exclude much Product Functionality
+</h1>
+
 
 <h1>Create Product</h1>
 
@@ -41,7 +46,7 @@
             <ol>
                 @foreach ($products as $product)
                     <div class="border p-4 rounded mb-4">
-                        <a href="{{ route('vendor.products.show', $product) }}">
+                        <a href="{{ route('vendor.products.show', $product->id) }}">
                             {{ $product->name }}
                         </a>
                         <h3>{{ $product->name }}</h3>
