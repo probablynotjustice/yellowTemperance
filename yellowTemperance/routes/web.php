@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 // use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Vendor\ProductController;
+use App\Http\Controllers\Base\WalletController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -54,72 +55,22 @@ require __DIR__.'/settings.php';
 
 Route::prefix('base')->group(function (){
 
-    Route::Get('/comment', function () {
+    Route::Get('/comment', [CommentController::class, 'index'])
+        ->name('base.comment');
 
-        $comment = Comment::all();
-        return view('base.comment', compact('comment'));
-    })->name('base.comment');
+    Route::post('/comment', [CommentController::class, 'store'])
+        ->name('comment.store');
 
-    Route::post('/comment', function (Request $request)  {
-        //Saves Comments
-        $validated = $request->validate([
-            'summary' => ['required', 'string', 'max:255'],
-            'detail' => ['required', 'string'],
-    ]);
-        Comment::create([
-            'summary' => $validated['summary'],
-            'detail' => $validated['detail'],
-            'customer_id' => auth()->id(),
-            //Need to constrain to Vendors that the User has commonality with
-            //temporary
-            'vendor_id' =>1,
-            //Will also need a Purchase_id to link to a receipt and product
-        ]);
-
-    return redirect()->back();
-    })->name('comment.store');
-
-    Route::get('/ticketAll', function () {
-
-    $user = User::with([
-        'roles',
-        'wallet',
-        'wallet.transactions' => function ($query) {
-            $query->latest();
-        }
-        ])->find(auth()->id());
-
-    return view('base.ticketAll', compact('user'));})->name('ticketAll');
+    Route::get('/ticketAll', [WalletController::class, 'index'])
+        ->name('ticketAll');
 
 });
 
-Route::post('/wallet/add/custom', function (Request $request) {
+Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
+    ->name('wallet.add.custom');
 
-    $validated = $request->validate([
-        'amount' => ['required', 'numeric', 'min:1', 'max:1000'],
-    ]);
-    $wallet = auth()->user()->wallet;
-    $amount = $validated['amount'];
-    $wallet->increment('balance', $amount);
-    $wallet->transactions()->create([
-        'amount' => $amount,
-        'type' => 'funding',
-        'description' => "Custom deposit of: $amount",
-    ]);
-    return redirect()->back();
-})->name('wallet.add.custom');
-
-Route::post('wallet/add/{amount}', function ($amount) {
-     abort_unless(in_array((int)$amount, [1, 10, 100]), 404);
-    $wallet = auth()->user()->wallet;
-    $wallet->increment('balance', $amount);
-    $wallet->transactions()->create([
-        'amount' => $amount,
-        'type' => 'funding',
-        'description' => 'added {$amount} credit',
-    ]);
-    return redirect()->back();
-})->name('wallet.add');
+Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
+    ->name('wallet.add');
 
 
 // Below This line is All Vendor Focus
@@ -134,6 +85,7 @@ Route::prefix('vendor')->group( function () {
 
     Route::post('/product', [ProductController::class, 'store'])
         ->name('vendor.products.store');
+
     Route::get('/products/{product}', [ProductController::class, 'show'])
         ->name('vendor.products.show');
 });
