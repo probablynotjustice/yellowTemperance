@@ -60,7 +60,7 @@ class WalletController extends Controller
      */
     public function create()
     {
-        //
+        // The Create function of the wallet is tied into the User Creation.
     }
 
     /**
