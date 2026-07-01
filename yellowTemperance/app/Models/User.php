@@ -90,4 +90,8 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
+    public function bids()
+{
+    return $this->hasMany(Bid::class);
+}
 }

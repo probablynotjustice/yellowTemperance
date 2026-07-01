@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\User;
+USE Appl\Models\Auction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,4 +25,8 @@ class Product extends Model
     {
         return $this->belongsto(User::class, 'vendor_id');
     }
+    public function auctions()
+{
+    return $this->hasMany(Auction::class);
+}
 }
