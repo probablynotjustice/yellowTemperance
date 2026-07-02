@@ -9,21 +9,29 @@ class Auction extends Model
 {
     use HasFactory;
 
-        protected $fillable = [
-        'user_id',
-        'balance',
+    protected $fillable = [
+        'product_id',
+        'starting_bid',
+        'current_bid',
+        'reserve_price',
+        'starts_at',
+        'ends_at',
+        'status',
+        'winner_id',
     ];
 
-    public function user()
+    public function product()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Product::class);
     }
-  public function product()
-{
-    return $this->belongsTo(Product::class);
-}
-public function bids()
-{
-    return $this->hasMany(Bid::class);
-}
+
+    public function bids()
+    {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function winner()
+    {
+        return $this->belongsTo(User::class, 'winner_id');
+    }
 }

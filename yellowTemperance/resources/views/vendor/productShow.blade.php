@@ -7,5 +7,8 @@
     <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
     <p>Inventory: {{ $product->inventory }}</p>
     <p>Vendor: {{ $product->vendor->name }}</p>
+    <a href="{{ route('vendor.auctions.create', $product) }}">
+    Create Auction
+</a>
 </div>
 

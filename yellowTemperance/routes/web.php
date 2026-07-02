@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Base\WalletController;
+use App\Http\Controllers\Vendor\AuctionController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -88,6 +89,17 @@ Route::prefix('vendor')->group( function () {
 
     Route::get('/products/{product}', [ProductController::class, 'show'])
         ->name('vendor.products.show');
+
+    //Below this line is the Auction work
+    Route::get(
+        '/products/{product}/auction/create',
+        [AuctionController::class, 'create']
+    )->name('vendor.auctions.create');
+
+    Route::post(
+        '/products/{product}/auction',
+        [AuctionController::class, 'store']
+    )->name('vendor.auctions.store');
 });
 
 

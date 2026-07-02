@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\User;
-USE Appl\Models\Auction;
+USE App\Models\Auction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
