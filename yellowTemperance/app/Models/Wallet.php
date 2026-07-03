@@ -12,6 +12,7 @@ class Wallet extends Model
         protected $fillable = [
         'user_id',
         'balance',
+        'held_balance',
     ];
 
     public function user()
@@ -22,6 +23,10 @@ class Wallet extends Model
     {
         return $this->hasMany(WalletTransaction::class);
     }
+    public function getAvailableBalance()
+{
+    return $this->balance - $this->held_balance;
+}
 }
 
 
