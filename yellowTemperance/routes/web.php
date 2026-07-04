@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Base\WalletController;
-use App\Http\Controllers\Vendor\AuctionController;
+use App\Http\Controllers\Vendor\AuctionController as VendorAuctionController;
+use App\Http\Controllers\Base\AuctionController as BaseAuctionController;
+use App\Http\Controllers\Base\BidController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -48,6 +50,21 @@ Route::prefix('base')->group(function () {
 
         return view('base.dashboard', compact('user', 'wallet'));
     })->name('base.dashboard');
+
+    //Auction and bid Functionality
+
+        Route::prefix('auctions')->group(function () {
+
+        Route::get('/', [BaseAuctionController::class, 'index'])
+            ->name('base.auctions.index');
+
+        Route::get('/{auction}', [BaseAuctionController::class, 'show'])
+            ->name('base.auctions.show');
+
+     //   Route::post('/{auction}/bid', [BidController::class, 'store'])
+      //      ->name('base.auctions.bid');
+
+    });
 });
 
 
@@ -56,7 +73,7 @@ require __DIR__.'/settings.php';
 
 Route::prefix('base')->group(function (){
 
-    Route::Get('/comment', [CommentController::class, 'index'])
+    Route::get('/comment', [CommentController::class, 'index'])
         ->name('base.comment');
 
     Route::post('/comment', [CommentController::class, 'store'])
@@ -93,12 +110,12 @@ Route::prefix('vendor')->group( function () {
     //Below this line is the Auction work
     Route::get(
         '/products/{product}/auction/create',
-        [AuctionController::class, 'create']
+        [VendorAuctionController::class, 'create']
     )->name('vendor.auctions.create');
 
     Route::post(
         '/products/{product}/auction',
-        [AuctionController::class, 'store']
+        [VendorAuctionController::class, 'store']
     )->name('vendor.auctions.store');
 });
 

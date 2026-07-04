@@ -9,7 +9,15 @@ use App\Models\Product;
 
 class AuctionController extends Controller
 {
-        public function create(Product $product)
+
+    public function index()
+            {
+                $auctions = Auction::with('product')
+                    ->where('status', 'active')
+                    ->get();
+                return view('base.auctions.index');
+            }
+    public function create(Product $product)
         {
             return view('vendor.auction.create', compact('product'));
         }
