@@ -17,4 +17,14 @@ class AuctionController extends Controller
                 return view('base.auctions.index', compact('auctions'));
             }
 
+    public function show(Auction $auction)
+            {
+                $auction->load([
+                    'product',
+                    'product.vendor',
+                    //'bids.user',
+                ]);
+
+                return view('base.auctions.show', compact('auction'));
+            }
 }
