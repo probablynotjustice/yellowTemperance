@@ -61,8 +61,8 @@ Route::prefix('base')->group(function () {
         Route::get('/{auction}', [BaseAuctionController::class, 'show'])
             ->name('base.auctions.show');
 
-     //   Route::post('/{auction}/bid', [BidController::class, 'store'])
-      //      ->name('base.auctions.bid');
+        Route::post('/{auction}/bid', [BidController::class, 'store'])
+           ->name('base.auctions.bid');
 
     });
 });

@@ -22,7 +22,7 @@ class AuctionController extends Controller
                 $auction->load([
                     'product',
                     'product.vendor',
-                    //'bids.user',
+                    'bids.user',
                 ]);
 
                 return view('base.auctions.show', compact('auction'));
