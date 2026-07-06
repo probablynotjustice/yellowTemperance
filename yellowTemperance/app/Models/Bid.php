@@ -13,6 +13,7 @@ class Bid extends Model
         'auction_id',
         'user_id',
         'promise',
+        'ticket_cost',
     ];
 
     public function auction()

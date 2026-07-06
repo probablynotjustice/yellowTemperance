@@ -35,7 +35,7 @@ class ProductController extends Controller
             'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric','min:0'],
             'inventory' => ['required', 'integer', 'min:0'],
-            'ticket_cost' =>['required', 'integer', 'min:1']
+            //'ticket_cost' =>['required', 'integer', 'min:1']
             //Stopped Here Need to continue
         ]);
         Product::create([
@@ -44,7 +44,7 @@ class ProductController extends Controller
             'retail_price'  => $validated['retail_price'],
             'price'         => $validated['price'],
             'inventory'     => $validated['inventory'],
-            'ticket_cost'   => $validated['ticket_cost'],
+            //'ticket_cost'   => $validated['ticket_cost'],
             'vendor_id'     => auth()->id(),
         ]);
         return redirect()->back();

@@ -30,11 +30,12 @@
         <label for="inventory">Inventory</label>
         <input type="number" id="inventory" name="inventory" min="0" value="{{ old('inventory', 0) }}">
     </div>
+    <!--
     <div>
         <label for="ticket_cost">Ticket Cost</label>
         <input type="number" id="ticket_cost" name="ticket_cost" min="1" value="{{ old('ticket_cost', 1) }}">
     </div>
-
+    -->
     <button type="submit">Create Product</button>
 </form>
 

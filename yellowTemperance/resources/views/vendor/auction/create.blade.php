@@ -24,6 +24,16 @@
     </div>
 
     <div>
+        <label for="ticket_cost">Ticket Cost</label>
+        <input
+            type="number"
+            id="ticket_cost"
+            name="ticket_cost"
+            min="1"
+            value="{{ old('ticket_cost', 1) }}">
+    </div>
+
+    <div>
         <label for="reserve_price">Reserve Price (Optional)</label>
 
         <input

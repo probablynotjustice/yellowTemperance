@@ -26,6 +26,7 @@ class AuctionController extends Controller
         {
             $validated = $request->validate([
                 'starting_bid' => ['required', 'numeric', 'min:0.01'],
+                'ticket_cost' => ['required', 'numeric', 'min:1'],
                 'reserve_price' => ['nullable', 'numeric'],
                 'starts_at' => ['nullable', 'date'],
                 'ends_at' => ['required', 'date', 'after:now'],
@@ -33,6 +34,7 @@ class AuctionController extends Controller
 
             $product->auctions()->create([
                 'starting_bid' => $validated['starting_bid'],
+                'ticket_cost' => $validated['ticket_cost'],
                 'current_bid' => $validated['starting_bid'],
                 'reserve_price' => $validated['reserve_price'],
                 'starts_at' => $validated['starts_at'] ?? now(),
@@ -41,5 +43,15 @@ class AuctionController extends Controller
             ]);
 
             return redirect()->route('vendor.products.show', $product);
+        }
+        public function show(Auction $auction)
+        {
+            $auction->load([
+                'product',
+                'product.vendor',
+                'bids.user',
+            ]);
+
+            return view('base.auctions.show', compact('auction'));
         }
 }

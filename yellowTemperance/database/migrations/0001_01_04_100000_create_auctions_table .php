@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('product_id')
                 ->constrained()
                 ->cascadeOnDelete();
-
+            $table->bigInteger('ticket_cost');
             $table->decimal('starting_bid', 10, 2);
 
             $table->decimal('current_bid', 10, 2)

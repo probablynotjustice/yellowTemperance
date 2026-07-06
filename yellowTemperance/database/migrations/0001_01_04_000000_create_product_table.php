@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('vendor_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->bigInteger('ticket_cost');
+          //  $table->bigInteger('ticket_cost');
             $table->bigInteger('inventory');
         });
     }

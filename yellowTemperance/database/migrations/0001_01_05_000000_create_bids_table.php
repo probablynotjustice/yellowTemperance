@@ -20,7 +20,9 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->decimal('amount', 10, 2);
+            $table->integer('ticket_cost');
+            $table->decimal('promise', 10, 2);
+
             $table->timestamps();
         });
     }
