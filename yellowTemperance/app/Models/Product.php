@@ -16,7 +16,7 @@ class Product extends Model
         'price',
         'inventory',
         'quantity',
-        'ticket_cost',
+        //'ticket_cost',
         'vendor_id',
 
     ];

@@ -12,11 +12,10 @@
     <h2>Place a Bid</h2>
 
 <form method="POST" action="{{ route('base.auctions.bid', $auction) }}">
-    @csrf
 
+    @csrf
     <div>
         <label for="amount">Your Bid</label>
-
         <input
             type="number"
             name="amount"

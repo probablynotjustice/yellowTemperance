@@ -108,15 +108,11 @@ Route::prefix('vendor')->group( function () {
         ->name('vendor.products.show');
 
     //Below this line is the Auction work
-    Route::get(
-        '/products/{product}/auction/create',
-        [VendorAuctionController::class, 'create']
-    )->name('vendor.auctions.create');
+    Route::get('/products/{product}/auction/create', [VendorAuctionController::class, 'create'])
+        ->name('vendor.auctions.create');
 
-    Route::post(
-        '/products/{product}/auction',
-        [VendorAuctionController::class, 'store']
-    )->name('vendor.auctions.store');
+    Route::post('/products/{product}/auction', [VendorAuctionController::class, 'store'])
+        ->name('vendor.auctions.store');
 });
 
 

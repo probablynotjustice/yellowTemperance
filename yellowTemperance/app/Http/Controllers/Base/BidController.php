@@ -19,6 +19,7 @@ class BidController extends Controller
             'auction_id' => $auction->id,
             'user_id' => auth()->id(),
             'promise' => $validated['promise'],
+            'ticket_cost' => $auction->ticket_cost,
         ]);
         return redirect()->back();
     }

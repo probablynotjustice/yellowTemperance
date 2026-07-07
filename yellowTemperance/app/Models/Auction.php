@@ -11,6 +11,7 @@ class Auction extends Model
 
     protected $fillable = [
         'product_id',
+        'ticket_cost',
         'starting_bid',
         'current_bid',
         'reserve_price',

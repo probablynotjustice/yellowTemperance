@@ -32,15 +32,16 @@ class AuctionController extends Controller
                 'ends_at' => ['required', 'date', 'after:now'],
             ]);
 
-            $product->auctions()->create([
-                'starting_bid' => $validated['starting_bid'],
-                'ticket_cost' => $validated['ticket_cost'],
-                'current_bid' => $validated['starting_bid'],
-                'reserve_price' => $validated['reserve_price'],
-                'starts_at' => $validated['starts_at'] ?? now(),
-                'ends_at' => $validated['ends_at'],
-                'status' => 'active',
-            ]);
+            Auction::create([
+    'product_id'    => $product->id,
+    'ticket_cost'   => $validated['ticket_cost'],
+    'starting_bid'  => $validated['starting_bid'],
+    'current_bid'   => $validated['starting_bid'],
+    'reserve_price' => $validated['reserve_price'],
+    'starts_at'     => $validated['starts_at'] ?? now(),
+    'ends_at'       => $validated['ends_at'],
+    'status'        => 'active',
+]);
 
             return redirect()->route('vendor.products.show', $product);
         }
