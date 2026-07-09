@@ -15,6 +15,7 @@ return new class extends Migration
             //Test.
             $table->string('name');
             $table->string('description');
+            $table->string('category');
             $table->bigInteger('retail_price');
             $table->bigInteger('price');
             $table->foreignId('vendor_id')

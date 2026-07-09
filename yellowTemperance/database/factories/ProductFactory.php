@@ -4,30 +4,82 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
+/** Ill Learn how to build a factory another time.
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
  */
 class ProductFactory extends Factory
 {
-    public function definition(): array
+ public function definition(): array
     {
-        $retail = fake()->numberBetween(150, 1000);
-        $sale = fake()->numberBetween(50, $retail);
+        $categories = [
+
+            'Trading Cards' => [
+                'Pokémon Card',
+                'Magic Card',
+                'Yu-Gi-Oh Card',
+                'Baseball Card',
+            ],
+
+            'Electronics' => [
+                'Gaming PC',
+                'Laptop',
+                'Drone',
+                'Camera',
+            ],
+
+            'Luxury' => [
+                'Rolex Watch',
+                'Diamond Ring',
+                'Gold Necklace',
+            ],
+
+            'Collectibles' => [
+                'Comic Book',
+                'Action Figure',
+                'LEGO Set',
+                'Vinyl Record',
+            ],
+
+        ];
+
+        $adjectives = [
+            'Vintage',
+            'Rare',
+            'Limited Edition',
+            'Collector\'s',
+            'Signed',
+            'Antique',
+            'Classic',
+            'Mint',
+            'Premium',
+            'Original',
+        ];
+
+$category = fake()->randomElement(array_keys($categories));
+
+$item = fake()->randomElement($categories[$category]);
+
+        $retail = fake()->numberBetween(100, 5000);
+        $price = fake()->numberBetween(50, $retail);
 
         return [
-            'name' => fake()->words(3, true),
 
-            'description' => fake()->paragraph(3),
+            'name' => fake()->randomElement($adjectives) . ' ' . $item,
+
+            'description' =>
+                "A {$item} in excellent condition. "
+                . fake()->sentence()
+                . " Perfect for collectors and enthusiasts.",
 
             'retail_price' => $retail,
 
-            'price' => $sale,
+            'price' => $price,
 
-            'inventory' => fake()->numberBetween(1, 25),
+            'inventory' => fake()->numberBetween(1, 10),
 
-            // We'll assign the vendor in the seeder.
             'vendor_id' => null,
+
         ];
-    }
 }
 
+}

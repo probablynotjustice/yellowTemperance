@@ -14,6 +14,20 @@
         <textarea id="description" name="description" rows="5">{{ old('description') }}</textarea>
     </div>
     <div>
+    <label for="category">Category</label>
+
+    <select name="category" id="category" required>
+
+        <option value="">Choose a Category</option>
+
+        <option value="Trading Cards">Trading Cards</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Collectibles">Collectibles</option>
+        <!--More when Necessary-->
+    </select>
+</div>
+    <div>
         <label for="retail_price">Retail Price</label>
         <input type="number" id="retail_price" name="retail_price" step="0.01" min="0" value="{{ old('retail_price') }}" required>
     </div>

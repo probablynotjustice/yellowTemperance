@@ -18,6 +18,7 @@ class Product extends Model
         'quantity',
         //'ticket_cost',
         'vendor_id',
+        'category',
 
     ];
 

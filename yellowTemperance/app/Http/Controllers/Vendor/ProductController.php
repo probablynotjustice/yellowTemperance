@@ -36,10 +36,11 @@ class ProductController extends Controller
             'price' => ['required', 'numeric','min:0'],
             'inventory' => ['required', 'integer', 'min:0'],
             //'ticket_cost' =>['required', 'integer', 'min:1']
-            //Stopped Here Need to continue
+            'category' => ['required','string'],
         ]);
         Product::create([
             'name'          => $validated['name'],
+            'category'      => $validated['category'],
             'description'   => $validated['description'],
             'retail_price'  => $validated['retail_price'],
             'price'         => $validated['price'],
