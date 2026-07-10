@@ -56,4 +56,10 @@ class UserFactory extends Factory
             'two_factor_confirmed_at' => now(),
         ]);
     }
+
+    //this is a Secret MouseCatool for later.
+    public function configure(): static
+{
+    return $this;
+}
 }
