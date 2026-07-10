@@ -15,13 +15,15 @@ return new class extends Migration
             //Test.
             $table->string('name');
             $table->string('description');
-            $table->string('category');
+            $table->foreignId('category_id')
+                ->after('vendor_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->bigInteger('retail_price');
             $table->bigInteger('price');
             $table->foreignId('vendor_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
-          //  $table->bigInteger('ticket_cost');
             $table->bigInteger('inventory');
         });
     }

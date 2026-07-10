@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 Use App\Models\User;
+use App\Models\Category;
 
 
 class ProductController extends Controller
@@ -13,10 +14,11 @@ class ProductController extends Controller
     public function index()
     {
         $user = User::with('roles')->find(auth()->id());
-        $products = $products = Product::where('vendor_id', auth()->id())
-                ->with('vendor')->get();
+        $products = Product::where('vendor_id', auth()->id())
+                ->with('vendor', 'category')->get();
+        $categories = Category::orderBy('name')->get();
 
-        return view('vendor.product', compact('user', 'products'));
+        return view('vendor.product', compact('user', 'products', 'categories'));
     }
 
     public Function create()
@@ -27,7 +29,6 @@ class ProductController extends Controller
 
     Public function store(Request $request)
     {
-        $user = User::with('roles')->find(auth()->id());
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -35,17 +36,17 @@ class ProductController extends Controller
             'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric','min:0'],
             'inventory' => ['required', 'integer', 'min:0'],
-            //'ticket_cost' =>['required', 'integer', 'min:1']
-            'category' => ['required','string'],
+
+            'category_id' => ['required','exists:categories,id'],
         ]);
         Product::create([
             'name'          => $validated['name'],
-            'category'      => $validated['category'],
+            'category_id'      => $validated['category_id'],
             'description'   => $validated['description'],
             'retail_price'  => $validated['retail_price'],
             'price'         => $validated['price'],
             'inventory'     => $validated['inventory'],
-            //'ticket_cost'   => $validated['ticket_cost'],
+
             'vendor_id'     => auth()->id(),
         ]);
         return redirect()->back();

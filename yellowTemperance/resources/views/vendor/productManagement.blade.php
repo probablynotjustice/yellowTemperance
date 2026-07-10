@@ -15,16 +15,18 @@
     </div>
     <div>
     <label for="category">Category</label>
+    <select name="category_id" id="category_id" required>
 
-    <select name="category" id="category" required>
+        <option value="">Select a Category</option>
 
-        <option value="">Choose a Category</option>
+        @foreach ($categories as $category)
+            <option
+                value="{{ $category->id }}"
+                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
 
-        <option value="Trading Cards">Trading Cards</option>
-        <option value="Electronics">Electronics</option>
-        <option value="Luxury">Luxury</option>
-        <option value="Collectibles">Collectibles</option>
-        <!--More when Necessary-->
     </select>
 </div>
     <div>
@@ -60,6 +62,7 @@
                         </a>
                         <h3>{{ $product->name }}</h3>
                         <p>{{ $product->description }}</p>
+                        <p>{{ $product->category->name }}</p>
                         <p>Retail: ${{ $product->retail_price }}</p>
                         <p>Sale Price: ${{ $product->price }}</p>
                         <p>Ticket Cost: ${{ $product->ticket_cost }}</p>

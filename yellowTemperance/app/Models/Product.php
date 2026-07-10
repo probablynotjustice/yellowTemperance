@@ -16,9 +16,8 @@ class Product extends Model
         'price',
         'inventory',
         'quantity',
-        //'ticket_cost',
         'vendor_id',
-        'category',
+        'category_id',
 
     ];
 
@@ -27,7 +26,12 @@ class Product extends Model
         return $this->belongsto(User::class, 'vendor_id');
     }
     public function auctions()
-{
-    return $this->hasMany(Auction::class);
-}
+    {
+        return $this->hasMany(Auction::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

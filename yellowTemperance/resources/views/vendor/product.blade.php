@@ -30,12 +30,20 @@
         <label for="inventory">Inventory</label>
         <input type="number" id="inventory" name="inventory" min="0" value="{{ old('inventory', 0) }}">
     </div>
-    <!--
-    <div>
-        <label for="ticket_cost">Ticket Cost</label>
-        <input type="number" id="ticket_cost" name="ticket_cost" min="1" value="{{ old('ticket_cost', 1) }}">
-    </div>
-    -->
+    <label for="category">Category</label>
+    <select name="category_id" id="category_id" required>
+
+        <option value="">Select a Category</option>
+
+        @foreach ($categories as $category)
+            <option
+                value="{{ $category->id }}"
+                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+
+    </select>
     <button type="submit">Create Product</button>
 </form>
 
@@ -52,6 +60,7 @@
                         </a>
                         <h3>{{ $product->name }}</h3>
                         <p>{{ $product->description }}</p>
+                        <p>{{ $product->category->name }}</p>
                         <p>Retail: ${{ $product->retail_price }}</p>
                         <p>Sale Price: ${{ $product->price }}</p>
                         <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
