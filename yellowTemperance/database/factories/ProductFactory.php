@@ -55,9 +55,8 @@ class ProductFactory extends Factory
             'Original',
         ];
 
-$category = fake()->randomElement(array_keys($categories));
-
-$item = fake()->randomElement($categories[$category]);
+        $category = fake()->randomElement(array_keys($categories));
+        $item = fake()->randomElement($categories[$category]);
 
         $retail = fake()->numberBetween(100, 5000);
         $price = fake()->numberBetween(50, $retail);
@@ -65,19 +64,16 @@ $item = fake()->randomElement($categories[$category]);
         return [
 
             'name' => fake()->randomElement($adjectives) . ' ' . $item,
-
             'description' =>
                 "A {$item} in excellent condition. "
                 . fake()->sentence()
                 . " Perfect for collectors and enthusiasts.",
 
             'retail_price' => $retail,
-
             'price' => $price,
-
             'inventory' => fake()->numberBetween(1, 10),
-
             'vendor_id' => null,
+            'category_id' => null,
 
         ];
 }

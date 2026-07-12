@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Base\WalletController;
-use App\Http\Controllers\Vendor\AuctionController as VendorAuctionController;
-use App\Http\Controllers\Base\AuctionController as BaseAuctionController;
+use App\Http\Controllers\Vendor\AuctionController       as VendorAuctionController;
+use App\Http\Controllers\Base\AuctionController         as BaseAuctionController;
 use App\Http\Controllers\Base\BidController;
+
+use App\Http\Controllers\Admin\ProductController        as AdminProdcuctController;
 
 Route::get('/', function () {
     return view('Landing');
@@ -25,19 +27,21 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.')
+    ->group(function () {
 
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
 
-    Route::get('/products', function () {
-        return view('admin.products.index');
-    })->name('admin.products');
+        Route::get('/products', [ProductController::class, 'index'])
+            ->name('products.index');
 
-    Route::get('/products/create', function () {
-        return view('admin.products.create');
-    })->name('admin.products.create');
+        Route::get('/products/create', function () {
+            return view('admin.products.create');
+        })->name('products.create');
 
 });
 

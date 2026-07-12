@@ -79,6 +79,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, "customer_id");
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'vendor_id');
+    }
 
     public function getRoleAttribute()
     {

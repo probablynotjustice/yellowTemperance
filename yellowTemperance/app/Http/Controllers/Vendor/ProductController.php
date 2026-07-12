@@ -41,7 +41,7 @@ class ProductController extends Controller
         ]);
         Product::create([
             'name'          => $validated['name'],
-            'category_id'      => $validated['category_id'],
+            'category_id'   => $validated['category_id'],
             'description'   => $validated['description'],
             'retail_price'  => $validated['retail_price'],
             'price'         => $validated['price'],
