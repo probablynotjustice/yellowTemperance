@@ -5,7 +5,9 @@
 @foreach($products as $product)
     <div>
         <h2>{{ $product->name }}</h2>
+        <p>{{ $product->vendor->name  }}</p>
         <p>${{ $product->price }}</p>
         <p>{{ $product->description }}</p>
+
     </div>
 @endforeach

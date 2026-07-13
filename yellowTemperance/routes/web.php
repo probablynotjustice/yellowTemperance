@@ -36,7 +36,7 @@ Route::prefix('admin')
             return view('admin.dashboard');
         })->name('dashboard');
 
-        Route::get('/products', [ProductController::class, 'index'])
+        Route::get('/products', [AdminProdcuctController::class, 'index'])
             ->name('products.index');
 
         Route::get('/products/create', function () {
