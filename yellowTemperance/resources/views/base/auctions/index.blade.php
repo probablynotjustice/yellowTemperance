@@ -5,6 +5,7 @@
     <div class="border p-4 mb-4">
 
         <h2>{{ $auction->product->name }}</h2>
+        <p> Category:{{ $auction->product->category->name }}</p>
 
         <p>{{ $auction->product->description }}</p>
 
@@ -14,6 +15,9 @@
 
         <p>Ends:
             {{ $auction->ends_at }}
+        </p>
+        <p>
+            By: {{  $auction->product->vendor->name }}
         </p>
 
         <a href="{{ route('base.auctions.show', $auction) }}">
