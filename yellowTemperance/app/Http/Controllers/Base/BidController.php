@@ -12,13 +12,13 @@ class BidController extends Controller
     public function store(Request $request, Auction $auction)
     {
         $validated = $request->validate([
-            'promise' => ['required', 'numeric', 'min:1'],
+            'promise_amount' => ['required', 'numeric', 'min:1'],
         ]);
 
         Bid::create([
             'auction_id' => $auction->id,
             'user_id' => auth()->id(),
-            'promise' => $validated['promise'],
+            'promise_amount' => $validated['promise_amount'],
             'ticket_cost' => $auction->ticket_cost,
         ]);
         return redirect()->back();

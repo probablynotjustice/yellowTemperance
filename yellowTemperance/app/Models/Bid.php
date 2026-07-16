@@ -12,7 +12,7 @@ class Bid extends Model
         protected $fillable = [
         'auction_id',
         'user_id',
-        'promise',
+        'promise_amount',
         'ticket_cost',
     ];
 

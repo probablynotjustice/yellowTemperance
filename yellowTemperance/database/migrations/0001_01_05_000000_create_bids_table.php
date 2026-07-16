@@ -16,12 +16,12 @@ return new class extends Migration
 
             $table->foreignId('auction_id')
                 ->constrained()
-                ->cascadeOnDelet();
+                ->cascadeOnDelete();
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
             $table->integer('ticket_cost');
-            $table->decimal('promise', 10, 2);
+            $table->decimal('promise_amount', 10, 2);
 
             $table->timestamps();
         });
