@@ -17,7 +17,8 @@ class BidFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'ticket_cost' =>fake()->numberBetween(1,5),
+            'promise _amount' =>0
         ];
     }
 }

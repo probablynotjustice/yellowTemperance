@@ -103,4 +103,44 @@ class User extends Authenticatable
     {
         return $this->roles->contains('name', $role);
     }
+
+    //User Participation
+
+    public function canBid(): bool
+    {
+        return $this->hasRole('customer');
+    }
+
+
+    public function canSell(): bool
+    {
+        return $this->hasRole('vendor');
+    }
+
+
+   public function canBidOn(Auction $auction): bool
+   {
+    if (! $this->canBid()) {
+        return false;
+    }
+
+    if ($auction->product->vendor_id === $this->id) {
+        return false;
+    }
+
+    if ($auction->status !== 'active') {
+        return false;
+    }
+
+    if (! $this->wallet) {
+        return false;
+    }
+
+    if ($this->wallet->balance < $auction->ticket_cost) {
+        return false;
+    }
+
+    return true;
+}
+
 }
