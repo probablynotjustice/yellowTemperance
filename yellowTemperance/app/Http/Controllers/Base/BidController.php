@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Base;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
+use App\Models\WalletTransaction;
 use App\Models\Bid;
 use Illuminate\Http\Request;
 
@@ -28,25 +29,31 @@ class BidController extends Controller
         }
             DB::transaction(function () use ($user, $auction, $validated) {
 
-            $wallet = $user->wallet;
+                $wallet = $user->wallet;
 
-            if ($wallet->getAvailableBalance() < $auction->ticket_cost) {
-                throw new \Exception('Inssufecient Funds. Not Enough Tickets.');
-            }
+                if ($wallet->getAvailableBalance() < $auction->ticket_cost) {
+                    throw new \Exception('Inssufecient Funds. Not Enough Tickets.');
+                }
 
-            $wallet->decrement('balance', $auction->ticket_cost);
+                $wallet->decrement('balance', $auction->ticket_cost);
 
+                WalletTransaction::create([
+                    'wallet_id'   => $wallet->id,
+                    'type'        => 'bid_ticket',
+                    'amount'      => $auction->ticket_cost,
+                    'description' => "Bid ticket for Auction #{$auction->id}",
+                ]);
 
-        Bid::create([
-            'auction_id' => $auction->id,
-            'user_id' => auth()->id(),
-            'promise_amount' => $validated['promise_amount'],
-            'ticket_cost' => $auction->ticket_cost,
-        ]);
+                Bid::create([
+                    'auction_id' => $auction->id,
+                    'user_id' => auth()->id(),
+                    'promise_amount' => $validated['promise_amount'],
+                    'ticket_cost' => $auction->ticket_cost,
+                ]);
 
-        $auction->update([
-            'current_bid' => $validated['promise_amount'],
-        ]);
+                $auction->update([
+                    'current_bid' => $validated['promise_amount'],
+                ]);
             });
 
         return redirect()->back();
