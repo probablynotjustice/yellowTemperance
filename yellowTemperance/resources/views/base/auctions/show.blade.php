@@ -12,7 +12,7 @@
 <h3>Current Bid</h3>
 
 <p>${{ number_format($auction->current_bid, 2) }}</p>
-
+<p>Your bid must Exceed</p>
     <h2>Place a Bid</h2>
 @if ($errors->any())
     <div>
@@ -29,7 +29,7 @@
         <label for="promise_amount">Your Bid</label>
         <input
             type="number"
-            name="amount"
+            name="promise_amount"
             id="promise_amount"
             step="0.01"
             min="{{ $auction->current_bid +0.01 }}"

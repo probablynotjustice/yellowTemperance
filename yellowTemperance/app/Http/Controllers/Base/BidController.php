@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Base;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
@@ -12,7 +13,7 @@ class BidController extends Controller
     public function store(Request $request, Auction $auction)
     {
         $user = auth()->user();
-        if (! $user->canbidOn($auction)) {
+        if (! $user->canBidOn($auction)) {
                 abort(403, 'Shall not do Bidding, son');
         }
 
@@ -24,7 +25,17 @@ class BidController extends Controller
             return back()->withErrors([
                 'promise_amount' => 'Your bid must be higher than the current bid.',
             ]);
-}
+        }
+            DB::transaction(function () use ($user, $auction, $validated) {
+
+            $wallet = $user->wallet;
+
+            if ($wallet->getAvailableBalance() < $auction->ticket_cost) {
+                throw new \Exception('Inssufecient Funds. Not Enough Tickets.');
+            }
+
+            $wallet->decrement('balance', $auction->ticket_cost);
+
 
         Bid::create([
             'auction_id' => $auction->id,
@@ -36,6 +47,8 @@ class BidController extends Controller
         $auction->update([
             'current_bid' => $validated['promise_amount'],
         ]);
+            });
+
         return redirect()->back();
     }
 }
