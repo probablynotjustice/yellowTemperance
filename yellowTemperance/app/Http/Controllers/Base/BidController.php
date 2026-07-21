@@ -40,7 +40,7 @@ class BidController extends Controller
                 WalletTransaction::create([
                     'wallet_id'   => $wallet->id,
                     'type'        => 'bid_ticket',
-                    'amount'      => $auction->ticket_cost,
+                    'amount'      => -$auction->ticket_cost,
                     'description' => "Bid ticket for Auction #{$auction->id}",
                 ]);
 
