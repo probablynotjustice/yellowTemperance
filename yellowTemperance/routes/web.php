@@ -22,6 +22,75 @@ Route::get('/', function () {
     return view('Landing');
 })->name('home');
 
+Route::get('/dashboard', function () {
+
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->hasRole('vendor')) {
+        return redirect()->route('vendor.dashboard');
+    }
+
+    return redirect()->route('base.dashboard');
+
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+//holding here for now
+require __DIR__.'/auth.php';
+require __DIR__.'/base.php';
+require __DIR__.'/vendor.php';
+require __DIR__.'/admin.php';
+require __DIR__.'/settings.php';
+
+
+
+// All base Routing has been moved to base.php
+
+
+Route::get('/products', [ProductController::class, 'index']);
+require __DIR__.'/settings.php';
+
+// All Vendor routing has been moved to vendor.php
+
+//test Route
+Route::get('/testrole', function () {
+    $user = auth()->user();
+    $user->roles()->attach(1); // assuming role ID 1 exists
+    return 'role attached';
+});
+
+Route::get('/giverole', function () {
+    $user = auth()->user();
+    $user->roles()->attach(1); // assuming role id 1 exists
+    return 'role assigned';
+});
+
+Route::get('/test-transaction', function () {
+    $wallet = auth()->user()->wallet;
+    $wallet->transactions()->create([
+        'amount' => 100.00,
+        'type' => 'deposit',
+        'description' => 'Test deposit',
+    ]);
+    return 'Transaction created';
+});
+
+Route::get('/fix-wallets', function () {
+    User::doesntHave('wallet')->get()->each(function ($user) {
+        Wallet::create([
+            'user_id' => $user->id,
+            'balance' => 0,
+        ]);
+    });
+
+    return 'Done';
+});
+
+
+/*
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -45,71 +114,4 @@ Route::prefix('admin')
 
 });
 
-// All base Routing has been moved to base.php
-
-
-Route::get('/products', [ProductController::class, 'index']);
-require __DIR__.'/settings.php';
-
-
-
-Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
-    ->name('wallet.add.custom');
-
-Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
-    ->name('wallet.add');
-
-
-// All Vendor routing has been moved to vendor.php
-
-//test Route
-Route::get('/testrole', function () {
-
-    $user = auth()->user();
-
-    $user->roles()->attach(1); // assuming role ID 1 exists
-
-    return 'role attached';
-});
-
-Route::get('/giverole', function () {
-
-    $user = auth()->user();
-
-    $user->roles()->attach(1); // assuming role id 1 exists
-
-    return 'role assigned';
-});
-
-Route::get('/test-transaction', function () {
-
-    $wallet = auth()->user()->wallet;
-
-    $wallet->transactions()->create([
-        'amount' => 100.00,
-        'type' => 'deposit',
-        'description' => 'Test deposit',
-    ]);
-
-    return 'Transaction created';
-});
-
-Route::get('/fix-wallets', function () {
-
-    User::doesntHave('wallet')->get()->each(function ($user) {
-
-        Wallet::create([
-            'user_id' => $user->id,
-            'balance' => 0,
-        ]);
-
-    });
-
-    return 'Done';
-});
-//holding here for no
-require __DIR__.'/auth.php';
-require __DIR__.'/base.php';
-require __DIR__.'/vendor.php';
-require __DIR__.'/admin.php';
-require __DIR__.'/settings.php';
+*/

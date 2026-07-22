@@ -42,7 +42,7 @@
                     <flux:sidebar.item icon="home" :href="route('ticketAll')" :current="request()->routeIs('base.ticketAll')" wire:navigate>
                         {{ __('Tickets') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="home" :href="route('vashboard')" :current="request()->routeIs('vendor.vashboard')" wire:navigate>
+                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('vendor.dashboard')" wire:navigate>
                         {{ __('Vendor Dashboard') }}
                     </flux:sidebar.item>
                                         <flux:sidebar.item icon="home" :href="route('base.auctions.index')" :current="request()->routeIs('base.auctions.index')" wire:navigate> <!--Need: Check again later-->

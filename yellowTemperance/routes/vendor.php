@@ -9,11 +9,11 @@ use App\Http\Controllers\Vendor\AuctionController;
 
 
 
-Route::prefix('vendor')->group( function () {
-    Route::get('/vashboard', function () {
+Route::prefix('vendor')->name('vendor.')->group( function () {
+    Route::get('/dashboard', function () {
         $user = User::with('roles')->find(auth()->id());
-        return view('vendor.vashboard', compact('user'));
-    })->name('vashboard');
+        return view('vendor.dashboard', compact('user'));
+    })->name('dashboard');
 
     Route::get('/product', [ProductController::class, 'index'])
         ->name('vendor.products');

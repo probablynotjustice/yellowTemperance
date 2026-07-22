@@ -30,6 +30,11 @@ Route::prefix('base')->group(function () {
 
     Route::get('/ticketAll', [WalletController::class, 'index'])
         ->name('ticketAll');
+    //Wallet Functions
+        Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
+        ->name('wallet.add.custom');
+        Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
+        ->name('wallet.add');
 
 
 

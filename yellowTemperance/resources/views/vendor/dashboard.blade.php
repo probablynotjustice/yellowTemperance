@@ -1,4 +1,4 @@
-<h1>Show VashBoard</h1>
+<h1>Show dashboard</h1>
 <div>
     Show User:
 
