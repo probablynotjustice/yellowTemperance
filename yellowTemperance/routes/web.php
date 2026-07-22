@@ -45,48 +45,13 @@ Route::prefix('admin')
 
 });
 
-Route::prefix('base')->group(function () {
-    Route::get('/dashboard', function () {
-
-        $user = User::with('roles')->find(auth()->id());
-
-        $wallet = User::with('wallet')->find(auth()->id());
-
-        return view('base.dashboard', compact('user', 'wallet'));
-    })->name('base.dashboard');
-
-    //Auction and bid Functionality
-
-        Route::prefix('auctions')->group(function () {
-
-        Route::get('/', [BaseAuctionController::class, 'index'])
-            ->name('base.auctions.index');
-
-        Route::get('/{auction}', [BaseAuctionController::class, 'show'])
-            ->name('base.auctions.show');
-
-        Route::post('/{auction}/bid', [BidController::class, 'store'])
-           ->name('base.auctions.bid');
-
-    });
-});
+// All base Routing has been moved to base.php
 
 
 Route::get('/products', [ProductController::class, 'index']);
 require __DIR__.'/settings.php';
 
-Route::prefix('base')->group(function (){
 
-    Route::get('/comment', [CommentController::class, 'index'])
-        ->name('base.comment');
-
-    Route::post('/comment', [CommentController::class, 'store'])
-        ->name('comment.store');
-
-    Route::get('/ticketAll', [WalletController::class, 'index'])
-        ->name('ticketAll');
-
-});
 
 Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
     ->name('wallet.add.custom');
@@ -95,30 +60,7 @@ Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
     ->name('wallet.add');
 
 
-// Below This line is All Vendor Focus
-Route::prefix('vendor')->group( function () {
-    Route::get('/vashboard', function () {
-        $user = User::with('roles')->find(auth()->id());
-        return view('vendor.vashboard', compact('user'));
-    })->name('vashboard');
-
-    Route::get('/product', [ProductController::class, 'index'])
-        ->name('vendor.products');
-
-    Route::post('/product', [ProductController::class, 'store'])
-        ->name('vendor.products.store');
-
-    Route::get('/products/{product}', [ProductController::class, 'show'])
-        ->name('vendor.products.show');
-
-    //Below this line is the Auction work
-    Route::get('/products/{product}/auction/create', [VendorAuctionController::class, 'create'])
-        ->name('vendor.auctions.create');
-
-    Route::post('/products/{product}/auction', [VendorAuctionController::class, 'store'])
-        ->name('vendor.auctions.store');
-});
-
+// All Vendor routing has been moved to vendor.php
 
 //test Route
 Route::get('/testrole', function () {
@@ -165,4 +107,9 @@ Route::get('/fix-wallets', function () {
 
     return 'Done';
 });
-
+//holding here for no
+require __DIR__.'/auth.php';
+require __DIR__.'/base.php';
+require __DIR__.'/vendor.php';
+require __DIR__.'/admin.php';
+require __DIR__.'/settings.php';
