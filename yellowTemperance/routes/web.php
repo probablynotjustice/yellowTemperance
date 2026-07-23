@@ -50,9 +50,6 @@ require __DIR__.'/settings.php';
 // All base Routing has been moved to base.php
 
 
-Route::get('/products', [ProductController::class, 'index']);
-require __DIR__.'/settings.php';
-
 // All Vendor routing has been moved to vendor.php
 
 //test Route

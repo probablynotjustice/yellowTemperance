@@ -18,8 +18,8 @@ use App\Http\Controllers\Admin\ProductController        as AdminProdcuctControll
 
 
 
-Route::prefix('admin')
-    ->middleware(['auth', 'role:admin'])
+Route::middleware(['auth','verified', 'role:admin'])
+    ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 

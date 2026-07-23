@@ -9,25 +9,29 @@ use App\Http\Controllers\Vendor\AuctionController;
 
 
 
-Route::prefix('vendor')->name('vendor.')->group( function () {
-    Route::get('/dashboard', function () {
-        $user = User::with('roles')->find(auth()->id());
-        return view('vendor.dashboard', compact('user'));
-    })->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:vendor'])
+    ->prefix('vendor')
+    ->name('vendor.')
+    ->group( function () {
 
-    Route::get('/product', [ProductController::class, 'index'])
-        ->name('vendor.products');
+        Route::get('/dashboard', function () {
+            $user = User::with('roles')->find(auth()->id());
+            return view('vendor.dashboard', compact('user'));
+        })->name('dashboard');
 
-    Route::post('/product', [ProductController::class, 'store'])
-        ->name('vendor.products.store');
+        Route::get('/products', [ProductController::class, 'index'])
+            ->name('products');
 
-    Route::get('/products/{product}', [ProductController::class, 'show'])
-        ->name('vendor.products.show');
+        Route::post('/products', [ProductController::class, 'store'])
+            ->name('products.store');
 
-    //Below this line is the Auction work
-    Route::get('/products/{product}/auction/create', [AuctionController::class, 'create'])
-        ->name('vendor.auctions.create');
+        Route::get('/products/{product}', [ProductController::class, 'show'])
+            ->name('products.show');
 
-    Route::post('/products/{product}/auction', [AuctionController::class, 'store'])
-        ->name('vendor.auctions.store');
+        //Below this line is the Auction work
+        Route::get('/products/{product}/auction/create', [AuctionController::class, 'create'])
+            ->name('auctions.create');
+
+        Route::post('/products/{product}/auction', [AuctionController::class, 'store'])
+            ->name('auctions.store');
 });

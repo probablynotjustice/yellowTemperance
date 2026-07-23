@@ -11,46 +11,59 @@ use App\Http\Controllers\Base\WalletController;
 
 
 
-Route::prefix('base')->group(function () {
-    Route::get('/dashboard', function () {
+Route::middleware(['auth', 'verified'])
+    ->prefix('base')
+    ->name('base.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
 
-        $user = User::with('roles')->find(auth()->id());
+            $user = User::with(['roles', 'wallet'])->find(auth()->id());
 
-        $wallet = User::with('wallet')->find(auth()->id());
+           // $wallet = User::with('wallet')->find(auth()->id());
 
-        return view('base.dashboard', compact('user', 'wallet'));
-    })->name('base.dashboard');
+            return view('base.dashboard', compact('user'));
+        })->name('dashboard');
 
+        //Auction and bid Functionality
 
-    Route::get('/comment', [CommentController::class, 'index'])
-        ->name('base.comment');
+            Route::prefix('auctions')->group(function () {
 
-    Route::post('/comment', [CommentController::class, 'store'])
-        ->name('comment.store');
+            Route::get('/', [AuctionController::class, 'index'])
+                ->name('auctions.index');
 
-    Route::get('/ticketAll', [WalletController::class, 'index'])
-        ->name('ticketAll');
-    //Wallet Functions
-        Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
-        ->name('wallet.add.custom');
-        Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
-        ->name('wallet.add');
+            Route::get('/{auction}', [AuctionController::class, 'show'])
+                ->name('auctions.show');
 
+            Route::post('/{auction}/bid', [BidController::class, 'store'])
+                ->name('auctions.bid');
 
-
-
-    //Auction and bid Functionality
-
-        Route::prefix('auctions')->group(function () {
-
-        Route::get('/', [AuctionController::class, 'index'])
-            ->name('base.auctions.index');
-
-        Route::get('/{auction}', [AuctionController::class, 'show'])
-            ->name('base.auctions.show');
-
-        Route::post('/{auction}/bid', [BidController::class, 'store'])
-           ->name('base.auctions.bid');
-
-    });
+        });
 });
+        //Wallet Functions
+
+Route::prefix('wallet')
+    ->name('wallet.')
+    ->group(function() {
+        Route::get('/', [WalletController::class, 'index'])
+            ->name('index');
+        Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
+            ->name('add.custom');
+        Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
+            ->name('add');
+});
+
+
+Route::prefix('comments')
+    ->name('comments.')
+    ->group(function () {
+        Route::get('/comment', [CommentController::class, 'index'])
+            ->name('index');
+
+        Route::post('/comment', [CommentController::class, 'store'])
+            ->name('store');
+
+
+});
+        //Route::get('/ticketAll', [WalletController::class, 'index'])
+        //    ->name('ticketAll');
+
