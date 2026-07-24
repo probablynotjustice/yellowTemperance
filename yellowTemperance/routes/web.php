@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\DashboardRedirectController;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
@@ -8,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
+
 // use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Vendor\ProductController;
@@ -22,21 +24,9 @@ Route::get('/', function () {
     return view('Landing');
 })->name('home');
 
-Route::get('/dashboard', function () {
-
-    $user = auth()->user();
-
-    if ($user->hasRole('admin')) {
-        return redirect()->route('admin.dashboard');
-    }
-
-    if ($user->hasRole('vendor')) {
-        return redirect()->route('vendor.dashboard');
-    }
-
-    return redirect()->route('base.dashboard');
-
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardRedirectController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 //holding here for now
 require __DIR__.'/auth.php';
