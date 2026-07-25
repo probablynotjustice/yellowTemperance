@@ -36,11 +36,11 @@
         Sales Management
     </flux:sidebar.item>
 @endif
-                    <flux:sidebar.item icon="home" :href="route('base.comment')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
+                    <flux:sidebar.item icon="home" :href="route('comments.index')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Comment') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="home" :href="route('ticketAll')" :current="request()->routeIs('base.ticketAll')" wire:navigate>
-                        {{ __('Tickets') }}
+                        {{ __('Tickets') }} <!--Stopped here for now:: Redirecting links-->
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('vendor.dashboard')" wire:navigate>
                         {{ __('Vendor Dashboard') }}
