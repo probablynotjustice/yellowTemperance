@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Nothig here yet-->
+    </head>
+
+ <x-admin-sidebar />
 <x-layouts::app :title="__('Dashboard')" class="">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <p> This is the admin Dashboard  Without filament</p>
@@ -29,3 +36,6 @@
     </div>
     etst
 </x-layouts::app>
+
+
+</html>

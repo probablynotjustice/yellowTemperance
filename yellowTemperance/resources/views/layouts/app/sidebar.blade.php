@@ -28,7 +28,7 @@
                         Admin Panel
                     </flux:sidebar.item>
                 @endif
-@if(auth()->user()->roles->contains('name', 'vendor'))
+@if(auth()->user()->roles->contains('name', 'vendor', 'admin'))
     <flux:sidebar.item
         icon="shield-check"
         :href="route('vendor.products')"
@@ -39,8 +39,8 @@
                     <flux:sidebar.item icon="home" :href="route('comments.index')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Comment') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="home" :href="route('ticketAll')" :current="request()->routeIs('base.ticketAll')" wire:navigate>
-                        {{ __('Tickets') }} <!--Stopped here for now:: Redirecting links-->
+                    <flux:sidebar.item icon="home" :href="route('wallet.index')" :current="request()->routeIs('wallet.index')" wire:navigate>
+                        {{ __('Tickets') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('vendor.dashboard')" wire:navigate>
                         {{ __('Vendor Dashboard') }}
