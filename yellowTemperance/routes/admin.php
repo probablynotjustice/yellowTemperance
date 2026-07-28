@@ -1,5 +1,7 @@
 <?php
-use App\Http\Controllers\DashboardRedirectController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
@@ -18,10 +20,8 @@ Route::middleware(['auth','verified', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/', function () {
-            $user = User::with('roles')->find(auth()->id());
-            return view('admin.dashboard', compact('user'));
-        })->name('dashboard');
+        Route::get('/', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::prefix('users')
             ->name('users.')
@@ -49,10 +49,21 @@ Route::middleware(['auth','verified', 'role:admin'])
         Route::prefix('categories')
             ->name('categories.')
             ->group(function() {
-                Route::get('/', function() {
-                    return view('admin.categories.index');
-                })->name('index');
-            });
+                Route::get('/', [CategoryController::class, 'index'])
+                    ->name('index');
+                Route::get('/create', [CategoryController::class, 'create'])
+                    ->name('create');
+                Route::post('/', [CategoryController::class, 'store'])
+                    ->name('store');
+                Route::get('/{category}', [CategoryController::class, 'show'])
+                    ->name('show');
+                Route::get('/{category}/edit', [CategoryController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{category}', [CategoryController::class, 'update'])
+                    ->name('update');
+                Route::delete('/{category}', [CategoryController::class, 'destroy'])
+                    ->name('destroy');
+                    });
 });
 //Need a Wallet Controller
 //Need a

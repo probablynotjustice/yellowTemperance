@@ -34,7 +34,49 @@
             <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
         </div>
     </div>
-    etst
+
+    <div>
+        <h2>Total Users</h2>
+            <p>{{ $stats['users'] }}</p>
+
+            <h2>Products</h2>
+            <p>{{ $stats['products'] }}</p>
+
+            <h2>Auctions</h2>
+            <p>{{ $stats['auctions'] }}</p>
+
+            <h2>Customers</h2>
+            <p>{{ $stats['customers'] }}</p>
+
+            <h2>Vendors</h2>
+            <p>{{ $stats['vendors'] }}</p>
+    </div>
+
+    <div>
+        <h2>Recent Users</h2>
+            @foreach ($recentUsers as $user)
+                <div>
+                    {{ $user->name }}
+                    <br>
+                    {{ $user->email }}
+                </div>
+            @endforeach
+    </div>
+
+    <div>
+        <h2>Recent Products</h2>
+
+            @foreach ($recentProducts as $product)
+                <div>
+                    {{ $product->name }}
+
+                    @if($product->vendor)
+                        <br>
+                        Vendor: {{ $product->vendor->name }}
+                    @endif
+                </div>
+            @endforeach
+    </div>
 </x-layouts::app>
 
 
