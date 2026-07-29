@@ -42,7 +42,7 @@
             type="text"
             name="description"
             id="description"
-            value="{{ old('name') }}"
+            value="{{ old('description') }}"
             required
         >
     </div>
