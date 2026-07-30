@@ -63,7 +63,7 @@ Route::middleware(['auth','verified', 'role:admin'])
                     ->name('update');
                 Route::delete('/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
-                    });
+        });
 });
 //Need a Wallet Controller
 //Need a

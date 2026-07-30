@@ -84,7 +84,12 @@ class CategoryController extends Controller
             'max:255',
             'unique:categories,name,' . $category->id,
         ],
+        'description' => [
+            'nullable',
+            'string'],
     ]);
+
+    $validated['slug'] = Str::slug($validated['name']);
 
     $category->update($validated);
 
