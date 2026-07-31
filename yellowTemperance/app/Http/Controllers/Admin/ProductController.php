@@ -42,7 +42,9 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'inventory' => ['required', 'integer', 'min:0'],
             'vendor_id' => 'required|exists:users,id',
+            'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => 'required|numeric|min:0',
         ]);
         $validated['slug'] = Str::slug($validated['name']);

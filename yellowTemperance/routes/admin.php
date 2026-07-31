@@ -39,12 +39,25 @@ Route::middleware(['auth','verified', 'role:admin'])
                 })->name('index');
             });
 
-        Route::get('/products', [ProductController::class, 'index'])
-            ->name('products.index');
 
-        Route::get('/products/create', function () {
-            return view('admin.products.create');
-        })->name('products.create');
+        Route::prefix('products')
+            ->name('products.')
+            ->group(function () {
+                Route::get('/', [ProductController::class, 'index'])
+                    ->name('index');
+                Route::get('create', [ProductController::class, 'create'])
+                    ->name('create');
+                Route::post('/', [ProductController::class, 'store'])
+                    ->name('store');
+                Route::get('/{product}', [ProductController::class, 'show'])
+                    ->name('show');
+                Route::get('/{product}/edit', [ProductController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{product}', [ProductController::class, 'update'])
+                    ->name('update');
+                Route::delete('/{product}', [ProductController::class, 'destroy'])
+                    ->name('destroy');
+            });
 
         Route::prefix('categories')
             ->name('categories.')
