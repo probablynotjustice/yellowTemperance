@@ -1,5 +1,3 @@
-<admin-layout>
-<x-admin-sidebar />
 
 <div>
     <a href="{{ route('admin.products.index') }}">
@@ -39,4 +37,4 @@
     Create Auction
 </a>
 </div>
-</admin-layout>
+
