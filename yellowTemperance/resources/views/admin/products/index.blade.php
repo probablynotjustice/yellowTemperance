@@ -8,6 +8,7 @@
             <th>Name</th>
             <th>Vendor</th>
             <th>Category</th>
+            <th>Inventory</th>
             <th>Price</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -26,13 +27,16 @@
                 <td>{{ $product->vendor->name }}</td>
 
                 <td>{{ $product->category->name }}</td>
+                                <td>{{ $product->inventory }}</td>
 
                 <td>${{ number_format($product->price, 2) }}</td>
 
                 <td>
-                    <button type="button">
-                        Edit Product
-                    </button>
+                    <a href="{{ route('admin.products.edit', $product) }}">
+                        <button type="button">
+                            Edit Product
+                        </button>
+                    </a>
                 </td>
                 <td>
                     <form action="{{ route('admin.products.destroy', $product) }}"
@@ -55,13 +59,14 @@
     <div>
         <h2>{{ $product->name }}</h2>
         <p>{{ $product->vendor->name  }}</p>
+        <p>{{ $product->inventory }}</p>
         <p>${{ $product->price }}</p>
         <p>{{ $product->description }}</p>
-        <a href="{{ route('admin.products.edit', $product) }}">
+    <a href="{{ route('admin.products.edit', $product) }}">
     <button type="button">
         Edit Product
     </button>
-</a>
+    </a>
 
     </div>
 

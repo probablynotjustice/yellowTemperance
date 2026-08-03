@@ -76,17 +76,20 @@ class ProductController extends Controller
     }
     public function update(Request $request, Product $product)
     {
-        $validated = $request->validated([
-            'name' => 'required|max: 225',
+        $validated = $request->validate([
+            'name' => 'required|max:255',
             'description' => 'required',
-            'category_id' => 'required|exist:categories,id',
-            'vendor_id' => 'required|exist:user,id',
-            'price' => 'required|numberic|min:0,'
-
+            'category_id' => 'required|exists:categories,id',
+            'vendor_id' => 'required|exists:users,id',
+            'retail_price' => 'required|numeric|min:1',
+            'price' => 'required|numeric|min:0',
+            'inventory' => 'required|integer|min:0',
+            'ticket_cost' => 'nullable|numeric|min:0',
         ]);
         $validated['slug'] = Str::slug($validated['name']);
+        $product->update($validated);
         return redirect()
-            ->route('admin.prosucts.index')
+            ->route('admin.products.index')
             ->with('success', 'Product updated successfully.');
 
     }

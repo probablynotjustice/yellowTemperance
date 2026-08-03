@@ -1,4 +1,4 @@
-
+<admin-layout>
 <x-admin-sidebar />
 
 <div>
