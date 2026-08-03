@@ -1,5 +1,4 @@
-<admin-layout>
-<x-admin-sidebar />
+
 
 <h1>this is the Create products page</h1>
 
@@ -71,4 +70,4 @@
 
 
 
-</admin-layout>
+
