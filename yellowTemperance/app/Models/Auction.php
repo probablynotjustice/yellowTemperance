@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Auction extends Model
 {
@@ -34,5 +35,9 @@ class Auction extends Model
     public function winner()
     {
         return $this->belongsTo(User::class, 'winner_id');
+    }
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
     }
 }

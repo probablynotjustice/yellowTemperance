@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Wallet extends Model
 {
@@ -24,9 +25,13 @@ class Wallet extends Model
         return $this->hasMany(WalletTransaction::class);
     }
     public function getAvailableBalance()
-{
-    return $this->balance - $this->held_balance;
-}
+    {
+        return $this->balance - $this->held_balance;
+    }
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
+    }
 }
 
 

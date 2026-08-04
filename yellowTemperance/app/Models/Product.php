@@ -5,6 +5,7 @@ use App\Models\User;
 USE App\Models\Auction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Product extends Model
 {
@@ -37,5 +38,9 @@ class Product extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'vendor_id');
+    }
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
     }
 }

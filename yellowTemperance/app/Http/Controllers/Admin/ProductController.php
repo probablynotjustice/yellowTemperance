@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Category;
-
+use App\Models\ActivityLog;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -49,7 +49,18 @@ class ProductController extends Controller
         ]);
         $validated['slug'] = Str::slug($validated['name']);
 
-        Product::create($validated);
+        $product = Product::create($validated);
+        ActivityLog::record(
+            auth()->user(),
+            $product,
+            'created',
+            "Created product '{$product->name}'.",
+            null,
+            $product->toArray()
+        );
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product created successfully.');
     }
     public function show(Product $product)
     {
@@ -87,7 +98,17 @@ class ProductController extends Controller
             'ticket_cost' => 'nullable|numeric|min:0',
         ]);
         $validated['slug'] = Str::slug($validated['name']);
+        $old = $product->toArray();
         $product->update($validated);
+        ActivityLog::record(
+            auth()->user(),
+            $product,
+            'updated',
+            "Updated product '{$product->name}'.",
+            $old,
+            $product->fresh()->toArray()
+        );
+
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Product updated successfully.');
@@ -100,8 +121,18 @@ class ProductController extends Controller
                 'category' => 'This product cannot be deleted because it is assigned to one or more products.',
             ]);
         }
+        $old = $product->toArray();
+
         $product->delete();
 
+        ActivityLog::record(
+            auth()->user(),
+            $product,
+            'deleted',
+            "Deleted product '{$old['name']}'.",
+            $old,
+            null
+        );
 
         return redirect()
             ->route('admin.categories.index')

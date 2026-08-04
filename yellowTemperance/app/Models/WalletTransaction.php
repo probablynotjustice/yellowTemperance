@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class WalletTransaction extends Model
 {
@@ -18,6 +19,10 @@ class WalletTransaction extends Model
     public function wallet()
     {
         return $this->belongsTo(Wallet::class);
+    }
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
     }
 }
 

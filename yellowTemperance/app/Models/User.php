@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class User extends Authenticatable
 {
@@ -121,27 +122,31 @@ class User extends Authenticatable
 
    public function canBidOn(Auction $auction): bool
    {
-    if (! $this->canBid()) {
-        return false;
-    }
+        if (! $this->canBid()) {
+            return false;
+        }
 
-    if ($auction->product->vendor_id === $this->id) {
-        return false;
-    }
+        if ($auction->product->vendor_id === $this->id) {
+            return false;
+        }
 
-    if ($auction->status !== 'active') {
-        return false;
-    }
+        if ($auction->status !== 'active') {
+            return false;
+        }
 
-    if (! $this->wallet) {
-        return false;
-    }
+        if (! $this->wallet) {
+            return false;
+        }
 
-    if ($this->wallet->balance < $auction->ticket_cost) {
-        return false;
-    }
+        if ($this->wallet->balance < $auction->ticket_cost) {
+            return false;
+        }
 
     return true;
-}
+    }
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(ActivityLog::class, 'loggable');
+    }
 
 }
