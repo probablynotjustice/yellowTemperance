@@ -19,7 +19,7 @@ class AuctionController extends Controller
         $auctions = Auction::with([
             'product.vendor',
             'product',
-            'category',
+            'product.category',
             'bids',
         ])->latest()->get();
 
@@ -66,10 +66,11 @@ public function store(Request $request, Product $product)
 public function update(Request $request, Auction $auction)
     {
         $validated = $request->validate([
-            'starting_bid' => ['required', 'numeric', 'min:1'],
-            'ticket_cost' => ['required', 'numeric', 'min:0'],
-            'starts_at' => ['required', 'date'],
-            'ends_at' => ['required', 'date', 'after:starts_at'],
+            'starting_bid' => ['required', 'numeric', 'min:0'],
+            'ticket_cost'  => ['required', 'numeric', 'min:0'],
+            'starts_at'    => ['required', 'date'],
+            'ends_at'      => ['required', 'date', 'after:starts_at'],
+            'status'       => ['required', 'in:pending,active,closed,cancelled'],
         ]);
 
         $old = $auction->toArray();
@@ -89,6 +90,15 @@ public function update(Request $request, Auction $auction)
             ->route('vendor.auctions.show', $auction)
             ->with('success', 'Auction updated.');
     }
+
+    public function edit(Auction $auction)
+    {
+        return view(
+            'admin.auctions.edit',
+            compact('auction')
+        );
+    }
+
 public function destroy(Auction $auction)
     {
         $old = $auction->toArray();

@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\AuctionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -56,6 +57,25 @@ Route::middleware(['auth','verified', 'role:admin'])
                 Route::put('/{product}', [ProductController::class, 'update'])
                     ->name('update');
                 Route::delete('/{product}', [ProductController::class, 'destroy'])
+                    ->name('destroy');
+            });
+
+        Route::prefix('auctions')
+            ->name('auctions.')
+            ->group(function () {
+                Route::get('/', [AuctionController::class, 'index'])
+                    ->name('index');
+                Route::get('create', [AuctionController::class, 'create'])
+                    ->name('create');
+                Route::post('/', [AuctionController::class, 'store'])
+                    ->name('store');
+                Route::get('/{auction}', [AuctionController::class, 'show'])
+                    ->name('show');
+                Route::get('/{auction}/edit', [AuctionController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{auction}', [AuctionController::class, 'update'])
+                    ->name('update');
+                Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
             });
 

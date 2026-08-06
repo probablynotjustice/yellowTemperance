@@ -19,5 +19,7 @@
     <a href="{{ route('admin.categories.index') }}">
         Categories
     </a>
-
+    <a href="{{  route('admin.auctions.index') }}">
+        Auctions
+    </a>
 </nav>
