@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+
+@extends('layouts.admin')
+
+@section('content')
 <h1>PRODUCTS</h1>
 <a href="/admin/products/create">Create Product</a>
 
@@ -73,3 +77,4 @@
 
 @endforeach
 
+@endsection

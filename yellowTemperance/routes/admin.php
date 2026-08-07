@@ -94,6 +94,8 @@ Route::middleware(['auth','verified', 'role:admin'])
                     ->name('edit');
                 Route::put('/{category}', [CategoryController::class, 'update'])
                     ->name('update');
+                Route::get('/{category}/auctions', [CategoryController::class, 'auctions'])
+                    ->name('auctions');
                 Route::delete('/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
         });

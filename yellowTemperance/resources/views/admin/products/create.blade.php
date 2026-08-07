@@ -1,8 +1,10 @@
+@extends('layouts.admin')
 
+@section('content')
 
 <h1>this is the Create products page</h1>
 
-<h1>this is the Vendor's Product Management page</h1>
+<h1>this is the Vendor's Admin's Management page</h1>
 
 <h1>Create Product</h1>
 
@@ -71,3 +73,4 @@
 
 
 
+@endsection

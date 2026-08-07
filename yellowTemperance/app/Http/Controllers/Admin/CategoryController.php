@@ -6,19 +6,26 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+
 use App\Models\Category;
+use App\Models\Auction;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-           $categories = Category::orderBy('name')->get();
+ public function index()
+{
+    $categories = Category::withCount('products')
+        ->orderBy('name')
+        ->get();
 
-                return view('admin.categories.index', compact('categories'));
-    }
+    return view(
+        'admin.categories.index',
+        compact('categories')
+    );
+}
 
     /**
      * Show the form for creating a new resource.
@@ -61,7 +68,14 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        {
+    $category->load([
+        'products.auctions',
+        'products.vendor',
+    ]);
+
+    return view('admin.categories.show', compact('category'));
+}
     }
 
     /**
@@ -98,6 +112,14 @@ class CategoryController extends Controller
         ->with('success', 'Category updated successfully.');
     }
 
+    public function auctions(Category $category)
+    {
+        $category->load([
+            'products.auctions.product',
+            'products.auctions.bids',
+        ]);
+        return view('admin.categories.auctions', compact('category'));
+    }
     /**
      * Remove the specified resource from storage.
      */

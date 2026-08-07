@@ -1,5 +1,6 @@
-<admin-layout>
+@extends('layouts.admin')
 
+@section('content')
 <x-admin-sidebar />
 
 <h1>Edit Product</h1>
@@ -108,3 +109,5 @@
 </form>
 
 </admin-layout>
+
+@endsection

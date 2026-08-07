@@ -35,9 +35,29 @@
                             Products
                         </a>
                     </li>
+                        <a href="{{ route('admin.users.index') }}">
+                            Users
+                        </a>
+                    <li>
+                        <a href="{{ route('admin.wallets.index') }}">
+                            Wallets
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('admin.categories.index') }}">
+                            Categories
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{  route('admin.auctions.index') }}">
+                            Auctions
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
-
         </aside>
 
 

@@ -1,4 +1,6 @@
-<admin-layout>
+@extends('layouts.admin')
+
+@section('content')
 <x-admin-sidebar />
 
 <div>
@@ -40,3 +42,5 @@
 </a>
 </div>
 </admin-layout>
+
+@endsection

@@ -3,8 +3,10 @@
     <head>
         <!--Nothig here yet-->
     </head>
+@extends('layouts.admin')
 
- <x-admin-sidebar />
+@section('content')
+
 <x-layouts::app :title="__('Dashboard')" class="">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <p> This is the admin Dashboard  Without filament</p>
@@ -81,3 +83,4 @@
 
 
 </html>
+@endsection

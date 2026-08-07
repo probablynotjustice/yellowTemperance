@@ -1,5 +1,7 @@
 
-<admin-layout>
+@extends('layouts.admin')
+
+@section('content')
 <x-admin-sidebar />
 
 <form method="POST" action="{{ route('admin.categories.update', $category) }}">
@@ -20,4 +22,4 @@
 
 </form>
 
-</admin-layout>
+@endsection

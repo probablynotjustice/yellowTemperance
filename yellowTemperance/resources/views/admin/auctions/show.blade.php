@@ -1,7 +1,9 @@
 <h1>shows one auction</h1>
 
 
-<admin-layout>
+@extends('layouts.admin')
+
+@section('content')
 <x-admin-sidebar />
 
 <div class="mb-4">
@@ -160,4 +162,4 @@
 
 @endif
 
-</admin-layout>
+@endsection

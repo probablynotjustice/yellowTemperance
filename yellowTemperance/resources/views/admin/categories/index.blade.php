@@ -39,7 +39,11 @@
 
             <td>{{ $category->id }}</td>
 
-            <td>{{ $category->name }}</td>
+            <td>
+                <a href="{{ route('admin.categories.show', $category) }}">
+                    {{ $category->name }}
+                </a>
+            </td>
 
             <td>{{ $category->products->count() }}</td>
 
@@ -74,5 +78,7 @@
 </table>
 
 @endif
+
+
 
 @endsection
