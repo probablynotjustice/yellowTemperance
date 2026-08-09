@@ -20,44 +20,75 @@
                 <ul>
                     <li>
                         <a href="{{ route('admin.dashboard') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Dashboard
+                            </button>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('admin.categories.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Categories
+                            </button>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('admin.products.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Products
+                            </button>
                         </a>
                     </li>
                         <a href="{{ route('admin.users.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Users
+                            </button>
                         </a>
                     <li>
                         <a href="{{ route('admin.wallets.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Wallets
+                            </button>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{ route('admin.categories.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Categories
+                            </button>
                         </a>
                     </li>
 
                     <li>
+
                         <a href="{{  route('admin.auctions.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Auctions
+                            </button>
                         </a>
                     </li>
 
                 </ul>
             </nav>
+             {{-- Bottom of sidebar --}}
+    <div class="mt-auto border-t p-4">
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button
+                type="submit"
+                class="w-full rounded px-3 py-2 text-left hover:bg-red-400"
+            >
+                Logout
+            </button>
+        </form>
+
+    </div>
+
         </aside>
 
 
