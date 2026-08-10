@@ -1,3 +1,6 @@
+@extends('layouts.admin')
+
+@section('content')
 <div>
 <h1>This is the base users dashboard</h1>
 <p>This view will need:</p>
@@ -62,3 +65,4 @@
     @csrf
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
 </form>
+@endsection

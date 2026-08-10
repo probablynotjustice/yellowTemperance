@@ -74,7 +74,7 @@
                 </ul>
             </nav>
              {{-- Bottom of sidebar --}}
-    <div class="mt-auto border-t p-4">
+    <div class="mt-auto border-t">
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
