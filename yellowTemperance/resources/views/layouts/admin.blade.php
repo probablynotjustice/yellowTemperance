@@ -81,8 +81,7 @@
 
             <button
                 type="submit"
-                class="w-full rounded px-3 py-2 text-left hover:bg-red-400"
-            >
+                class="w-full rounded px-3 py-2 text-left hover:bg-red-400">
                 Logout
             </button>
         </form>

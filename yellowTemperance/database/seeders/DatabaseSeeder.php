@@ -23,6 +23,12 @@ class DatabaseSeeder extends Seeder
         ProductSeeder::class,
         AuctionSeeder::class,
         WalletSeeder::class,
+        CommentSeeder::class,
+    ]);
+
+    $this->call([
+        RoleSeeder::class,
+        CommentSeeder::class,
     ]);
     // User::factory(10)->create();
 
