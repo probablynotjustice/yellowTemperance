@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CommentController;
+
 
 
 
@@ -104,21 +106,21 @@ Route::middleware(['auth','verified', 'role:admin'])
         Route::prefix('comments')
             ->name('comments.')
             ->group(function() {
-                Route::get('/', [CategoryController::class, 'index'])
+                Route::get('/', [CommentController::class, 'index'])
                     ->name('index');
-                Route::get('/create', [CategoryController::class, 'create'])
+                Route::get('/create', [CommentController::class, 'create'])
                     ->name('create');
-                Route::post('/', [CategoryController::class, 'store'])
+                Route::post('/', [CommentController::class, 'store'])
                     ->name('store');
-                Route::get('/{comment}', [CategoryController::class, 'show'])
+                Route::get('/{comment}', [CommentController::class, 'show'])
                     ->name('show');
-                Route::get('/{comment}/edit', [CategoryController::class, 'edit'])
+                Route::get('/{comment}/edit', [CommentController::class, 'edit'])
                     ->name('edit');
-                Route::put('/{comment}', [CategoryController::class, 'update'])
+                Route::put('/{comment}', [CommentController::class, 'update'])
                     ->name('update');
-                Route::get('/{comment}/auctions', [CategoryController::class, 'auctions'])
+                Route::get('/{comment}/auctions', [CommentController::class, 'auctions'])
                     ->name('auctions');
-                Route::delete('/{comment}', [CategoryController::class, 'destroy'])
+                Route::delete('/{comment}', [CommentController::class, 'destroy'])
                     ->name('destroy');
         });
 });
