@@ -59,50 +59,50 @@ class CommentController extends Controller
      * Store a new comment.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'customer_id' => [
-                'required',
-                'exists:users,id',
-            ],
+{
+    $validated = $request->validate([
+        'customer_id' => [
+            'required',
+            'exists:users,id',
+        ],
 
-            'vendor_id' => [
-                'required',
-                'exists:users,id',
-            ],
+        'vendor_id' => [
+            'required',
+            'exists:users,id',
+        ],
 
-            'product_id' => [
-                'required',
-                'exists:products,id',
-            ],
+        'product_id' => [
+            'required',
+            'exists:products,id',
+        ],
 
-            'summary' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+        'summary' => [
+            'required',
+            'string',
+            'max:255',
+        ],
 
-            'detail' => [
-                'required',
-                'string',
-            ],
-        ]);
+        'detail' => [
+            'required',
+            'string',
+        ],
+    ]);
 
-        $comment = Comment::create($validated);
+    $comment = Comment::create($validated);
 
-        ActivityLog::record(
-            auth()->user(),
-            $comment,
-            'created',
-            "Created comment '{$comment->summary}'.",
-            null,
-            $comment->toArray()
-        );
+    ActivityLog::record(
+        auth()->user(),
+        $comment,
+        'created',
+        "Created comment '{$comment->summary}'.",
+        null,
+        $comment->toArray()
+    );
 
-        return redirect()
-            ->route('admin.comments.index')
-            ->with('success', 'Comment created successfully.');
-    }
+    return redirect()
+        ->route('admin.comments.index')
+        ->with('success', 'Comment created successfully.');
+}
 
     /**
      * Display a specific comment.
@@ -156,79 +156,75 @@ class CommentController extends Controller
     /**
      * Update the comment.
      */
-    public function update(
-        Request $request,
-        Comment $comment
-    ) {
-        $validated = $request->validate([
-            'customer_id' => [
-                'required',
-                'exists:users,id',
-            ],
+public function update(Request $request, Comment $comment)
+{
+    $validated = $request->validate([
+        'customer_id' => [
+            'required',
+            'exists:users,id',
+        ],
 
-            'vendor_id' => [
-                'required',
-                'exists:users,id',
-            ],
+        'vendor_id' => [
+            'required',
+            'exists:users,id',
+        ],
 
-            'product_id' => [
-                'required',
-                'exists:products,id',
-            ],
+        'product_id' => [
+            'required',
+            'exists:products,id',
+        ],
 
-            'summary' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+        'summary' => [
+            'required',
+            'string',
+            'max:255',
+        ],
 
-            'detail' => [
-                'required',
-                'string',
-            ],
-        ]);
+        'detail' => [
+            'required',
+            'string',
+        ],
+    ]);
 
-        // Save the original state before changing it
-        $oldValues = $comment->toArray();
+    $oldValues = $comment->toArray();
 
-        $comment->update($validated);
 
-        // Record the change
-        ActivityLog::record(
-            auth()->user(),
-            $comment,
-            'updated',
-            "Updated comment '{$comment->summary}'.",
-            $oldValues,
-            $comment->fresh()->toArray()
-        );
+    $comment->update($validated);
 
-        return redirect()
-            ->route('admin.comments.show', $comment)
-            ->with('success', 'Comment updated successfully.');
-    }
+    ActivityLog::record(
+        auth()->user(),
+        $comment,
+        'updated',
+        "Updated comment '{$comment->summary}'.",
+        $oldValues,
+        $comment->fresh()->toArray()
+    );
+
+    return redirect()
+        ->route('admin.comments.show', $comment)
+        ->with('success', 'Comment updated successfully.');
+}
 
     /**
      * Delete the comment.
      */
-    public function destroy(Comment $comment)
-    {
-        // Save the comment before deleting it
-        $oldValues = $comment->toArray();
+public function destroy(Comment $comment)
+{
+    $oldValues = $comment->toArray();
 
-        ActivityLog::record(
-            auth()->user(),
-            $comment,
-            'deleted',
-            "Deleted comment '{$comment->summary}'.",
-            $oldValues,
-            null
-        );
+    ActivityLog::record(
+        auth()->user(),
+        $comment,
+        'deleted',
+        "Deleted comment '{$comment->summary}'.",
+        $oldValues,
+        null
+    );
 
-        $comment->delete();
+    $comment->delete();
 
-        return redirect()
-            ->route('admin.comments.index')
-            ->with('success', 'Comment deleted successfully.');
-    }
+    return redirect()
+        ->route('admin.comments.index')
+        ->with('success', 'Comment deleted successfully.');
+}
 }

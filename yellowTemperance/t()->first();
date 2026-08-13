@@ -1,0 +1,23 @@
+[90m= [39m[34;4mApp\Models\ActivityLog[39;24m {#7648
+    [34muser_id[39m: [35m29[39m,
+    [34maction[39m: "[32mtest[39m",
+    [34mdescription[39m: "[32mTesting comment activity logging[39m",
+    [34mold_values[39m: [36mnull[39m,
+    [34mnew_values[39m: "[32m{"id":14,"created_at":"2026-08-11T14:15:56.000000Z","updated_at":"2026-08-11T14:15:56.000000Z","customer_id":29,"vendor_id":1,"summary":"GGGGGGGGG","detail":"NiGGGGGGGGGaaaa"}[39m",
+    [34muser_agent[39m: "[32mSymfony[39m",
+    [34mloggable_id[39m: [35m14[39m,
+    [34mloggable_type[39m: "[32mApp\Models\Comment[39m",
+    [34mupdated_at[39m: "[32m2026-08-13 00:11:22[39m",
+    [34mcreated_at[39m: "[32m2026-08-13 00:11:22[39m",
+    [34mid[39m: [35m7[39m,
+    [34mloggable[39m: [34;4mApp\Models\Comment[39;24m {#7578
+      [34mid[39m: [35m14[39m,
+      [34mcreated_at[39m: "[32m2026-08-11 14:15:56[39m",
+      [34mupdated_at[39m: "[32m2026-08-11 14:15:56[39m",
+      [34mcustomer_id[39m: [35m29[39m,
+      [34mvendor_id[39m: [35m1[39m,
+      [34msummary[39m: "[32mGGGGGGGGG[39m",
+      [34mdetail[39m: "[32mNiGGGGGGGGGaaaa[39m",
+    },
+  }
+

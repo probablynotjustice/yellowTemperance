@@ -1,0 +1,50 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#7160
+    [34mall[39m: [
+      [34;4mApp\Models\Comment[39;24m {#7140
+        [34mid[39m: [35m14[39m,
+        [34mcreated_at[39m: "[32m2026-08-11 14:15:56[39m",
+        [34mupdated_at[39m: "[32m2026-08-11 14:15:56[39m",
+        [34mcustomer_id[39m: [35m29[39m,
+        [34mvendor_id[39m: [35m1[39m,
+        [34msummary[39m: "[32mGGGGGGGGG[39m",
+        [34mdetail[39m: "[32mNiGGGGGGGGGaaaa[39m",
+      },
+      [34;4mApp\Models\Comment[39;24m {#7141
+        [34mid[39m: [35m13[39m,
+        [34mcreated_at[39m: "[32m2026-08-11 14:07:21[39m",
+        [34mupdated_at[39m: "[32m2026-08-11 14:07:21[39m",
+        [34mcustomer_id[39m: [35m29[39m,
+        [34mvendor_id[39m: [35m1[39m,
+        [34msummary[39m: "[32mAAAAAAAAAA[39m",
+        [34mdetail[39m: "[32mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[39m",
+      },
+      [34;4mApp\Models\Comment[39;24m {#7167
+        [34mid[39m: [35m12[39m,
+        [34mcreated_at[39m: "[32m2026-08-11 14:01:33[39m",
+        [34mupdated_at[39m: "[32m2026-08-11 14:01:33[39m",
+        [34mcustomer_id[39m: [35m29[39m,
+        [34mvendor_id[39m: [35m1[39m,
+        [34msummary[39m: "[32mFuck Nigga[39m",
+        [34mdetail[39m: "[32mIm having a hard time with these Commments!!!!![39m",
+      },
+      [34;4mApp\Models\Comment[39;24m {#7157
+        [34mid[39m: [35m11[39m,
+        [34mcreated_at[39m: "[32m2026-08-11 13:56:12[39m",
+        [34mupdated_at[39m: "[32m2026-08-11 13:56:12[39m",
+        [34mcustomer_id[39m: [35m29[39m,
+        [34mvendor_id[39m: [35m1[39m,
+        [34msummary[39m: "[32mtest[39m",
+        [34mdetail[39m: "[32mtest[39m",
+      },
+      [34;4mApp\Models\Comment[39;24m {#7168
+        [34mid[39m: [35m9[39m,
+        [34mcreated_at[39m: "[32m2026-08-11 13:30:33[39m",
+        [34mupdated_at[39m: "[32m2026-08-11 13:30:33[39m",
+        [34mcustomer_id[39m: [35m24[39m,
+        [34mvendor_id[39m: [35m5[39m,
+        [34msummary[39m: "[32mWould buy again[39m",
+        [34mdetail[39m: "[32mEverything went smoothly and I would purchase from this vendor again.[39m",
+      },
+    ],
+  }
+

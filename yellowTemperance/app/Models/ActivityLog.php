@@ -51,7 +51,7 @@ class ActivityLog extends Model
                 'description' => $description,
                 'old_values' => $oldValues,
                 'new_values' => $newValues,
-                'ip_address' => request()->ip(),
+
                 'user_agent' => request()->userAgent(),
             ]);
 
