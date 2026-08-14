@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Auction;
 use App\Models\ActivityLog;
 
 class CommentController extends Controller
@@ -19,19 +20,15 @@ class CommentController extends Controller
         $comments = Comment::with([
             'customer',
             'vendor',
-            'product',
+            'auction.product',
         ])
         ->latest()
         ->get();
 
-        return view('admin.comments.index', compact('comments'));
-    }
+        $auctions = Auction::with('product')
+            ->latest()
+            ->get();
 
-    /**
-     * Show the form for creating a comment.
-     */
-    public function create()
-    {
         $customers = User::whereHas('roles', function ($query) {
             $query->where('name', 'customer');
         })
@@ -44,16 +41,41 @@ class CommentController extends Controller
         ->orderBy('name')
         ->get();
 
-        $products = Product::with('vendor')
-            ->orderBy('name')
-            ->get();
-
-        return view('admin.comments.create', compact(
+        return view('admin.comments.index', compact(
+            'comments',
+            'auctions',
             'customers',
-            'vendors',
-            'products'
+            'vendors'
         ));
     }
+
+    /**
+     * Show the form for creating a comment.
+     */
+public function create()
+{
+    $customers = User::whereHas('roles', function ($query) {
+        $query->where('name', 'customer');
+    })
+    ->orderBy('name')
+    ->get();
+
+    $vendors = User::whereHas('roles', function ($query) {
+        $query->where('name', 'vendor');
+    })
+    ->orderBy('name')
+    ->get();
+
+    $auctions = Auction::with('product')
+        ->latest()
+        ->get();
+
+    return view('admin.comments.create', compact(
+        'customers',
+        'vendors',
+        'auctions'
+    ));
+}
 
     /**
      * Store a new comment.
@@ -112,7 +134,7 @@ class CommentController extends Controller
         $comment->load([
             'customer',
             'vendor',
-            'product',
+            'auction.product',
         ]);
 
         return view(

@@ -26,10 +26,6 @@ class DatabaseSeeder extends Seeder
         CommentSeeder::class,
     ]);
 
-    $this->call([
-        RoleSeeder::class,
-        CommentSeeder::class,
-    ]);
     // User::factory(10)->create();
 
         User::factory()->create([

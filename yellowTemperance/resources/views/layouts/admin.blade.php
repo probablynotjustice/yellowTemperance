@@ -41,11 +41,15 @@
                             </button>
                         </a>
                     </li>
+
+                    <li>
                         <a href="{{ route('admin.users.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Users
                             </button>
                         </a>
+                    </li>
+
                     <li>
                         <a href="{{ route('admin.wallets.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
@@ -58,6 +62,14 @@
                         <a href="{{ route('admin.categories.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             Categories
+                            </button>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('admin.comments.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
+                            Comments
                             </button>
                         </a>
                     </li>

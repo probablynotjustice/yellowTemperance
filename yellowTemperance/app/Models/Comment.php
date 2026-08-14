@@ -4,7 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+
+use App\Models\Auction;
 
 class Comment extends Model
 {
@@ -25,20 +28,9 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'vendor_id');
     }
-
-    public function store(Request $request)
+        public function auction(): BelongsTo
     {
-        $validated = $request->validate([
-            'comment' => ['required', 'string', 'max:1000'],
-        ]);
-
-        Comment::create([
-            'comment' => $validated['comment'],
-            'customer_id' => auth()->id(),
-        ]);
-
-        return redirect()->back();
-
+        return $this->belongsTo(Auction::class);
     }
     public function logs(): MorphMany
     {

@@ -22,8 +22,10 @@ return new class extends Migration
             $table->foreignId('vendor_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
+            $table->foreignId('auction_id')
+                ->constrained('auctions')
+                ->cascadeOnDelete();
 
-            // Needs Product
             $table->text('summary');
             $table->text('detail');
         });

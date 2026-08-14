@@ -18,6 +18,7 @@ class CommentController extends Controller {
             Comment::create([
                 'summary' => $validated['summary'],
                 'detail' => $validated['body'],
+                'auction_id' => $auctionId,
                 'customer_id' => auth()->id(),
                 'vendor_id' => $vendor->id,
             ]);

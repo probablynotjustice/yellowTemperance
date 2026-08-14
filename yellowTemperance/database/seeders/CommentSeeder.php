@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Comment;
+use App\Models\Auction;
 use App\Models\User;
 
 class CommentSeeder extends Seeder
@@ -17,6 +18,8 @@ class CommentSeeder extends Seeder
         $vendors = User::whereHas('roles', function ($query) {
             $query->where('name', 'vendor');
         })->get();
+
+        $auctions = Auction::with('product')->get();
 
         if ($customers->isEmpty() || $vendors->isEmpty()) {
             return;
@@ -50,12 +53,15 @@ class CommentSeeder extends Seeder
         ];
 
         foreach ($comments as $comment) {
+            $auction = $auctions->random();
+            $customer = $customers->random();
 
             Comment::create([
-                'customer_id' => $customers->random()->id,
+                'customer_id' => $customer->id,
                 'vendor_id' => $vendors->random()->id,
                 'summary' => $comment['summary'],
                 'detail' => $comment['detail'],
+                'auction_id' => $auction->id,
             ]);
         }
     }

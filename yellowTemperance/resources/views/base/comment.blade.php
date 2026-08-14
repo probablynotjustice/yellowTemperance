@@ -3,7 +3,7 @@
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
 </form>
 <div>
-    <form method="POST" action="{{ route('comments.store') }}">
+    <form method="POST" action="{{ route('admin.comments.store') }}">
         <h1>Enter Comment</h1>
         @csrf
             <div>
