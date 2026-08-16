@@ -14,21 +14,21 @@
         <textarea id="description" name="description" rows="5">{{ old('description') }}</textarea>
     </div>
     <div>
-    <label for="category">Category</label>
-    <select name="category_id" id="category_id" required>
+        <label for="category">Category</label>
+            <select name="category_id" id="category_id" required>
 
-        <option value="">Select a Category</option>
+                <option value="">Select a Category</option>
 
-        @foreach ($categories as $category)
-            <option
-                value="{{ $category->id }}"
-                {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                {{ $category->name }}
-            </option>
-        @endforeach
+                @foreach ($categories as $category)
+                    <option
+                        value="{{ $category->id }}"
+                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
 
-    </select>
-</div>
+            </select>
+    </div>
     <div>
         <label for="retail_price">Retail Price</label>
         <input type="number" id="retail_price" name="retail_price" step="0.01" min="0" value="{{ old('retail_price') }}" required>

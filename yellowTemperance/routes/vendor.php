@@ -19,19 +19,23 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
             return view('vendor.dashboard', compact('user'));
         })->name('dashboard');
 
-        Route::get('/products', [ProductController::class, 'index'])
-            ->name('products');
 
-        Route::post('/products', [ProductController::class, 'store'])
-            ->name('products.store');
-
-        Route::get('/products/{product}', [ProductController::class, 'show'])
-            ->name('products.show');
-
-        //Below this line is the Auction work
-        Route::get('/products/{product}/auction/create', [AuctionController::class, 'create'])
-            ->name('auctions.create');
-
-        Route::post('/products/{product}/auction', [AuctionController::class, 'store'])
-            ->name('auctions.store');
+        Route::prefix('products')
+            ->name('products.')
+            ->group(function () {
+                Route::get('/', [ProductController::class, 'index'])
+                    ->name('index');
+                Route::get('create', [ProductController::class, 'create'])
+                    ->name('create');
+                Route::post('/', [ProductController::class, 'store'])
+                    ->name('store');
+                Route::get('/{product}', [ProductController::class, 'show'])
+                    ->name('show');
+                Route::get('/{product}/edit', [ProductController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{product}', [ProductController::class, 'update'])
+                    ->name('update');
+                Route::delete('/{product}', [ProductController::class, 'destroy'])
+                    ->name('destroy');
+            });
 });

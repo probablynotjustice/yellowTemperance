@@ -20,8 +20,9 @@ class ProductController extends Controller
             'vendor',
             'category',
         ])->latest()->get();
+        $categories = Category::orderBy('name')->get();
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products', 'categories'));
     }
     public function create()
     {

@@ -1,3 +1,8 @@
+@extends('layouts.vendor')
+
+
+@section('content')
+
 <h1>Show dashboard</h1>
 <div>
     Show User:
@@ -14,3 +19,4 @@
                 ${{ $user->wallet?->balance ?? '0.00' }}
             </span>
 </div>
+@endsection

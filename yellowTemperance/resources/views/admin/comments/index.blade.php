@@ -18,7 +18,7 @@
     @csrf
 
 
-    <label for="auction_id">Auction</label>
+    <label for="auction_id">Auction: </label>
 
     <select name="auction_id" id="auction_id">
         @foreach($auctions as $auction)
@@ -29,7 +29,7 @@
     </select>
 
     <div>
-        <label for="customer_id">Customer</label>
+        <label for="customer_id">Customer: </label>
 
         <select name="customer_id" id="customer_id">
             @foreach($customers as $customer)
@@ -41,7 +41,7 @@
     </div>
 
     <div>
-        <label for="vendor_id">Vendor</label>
+        <label for="vendor_id">Vendor: </label>
 
         <select name="vendor_id" id="vendor_id">
             @foreach($vendors as $vendor)
@@ -54,7 +54,7 @@
 
 
     <div>
-        <label for="summary">Summary</label>
+        <label for="summary">Summary: </label>
 
         <input
             type="text"
@@ -65,7 +65,7 @@
     </div>
 
     <div>
-        <label for="detail">Comment</label>
+        <label for="detail">Comment: </label>
 
         <textarea
             name="detail"

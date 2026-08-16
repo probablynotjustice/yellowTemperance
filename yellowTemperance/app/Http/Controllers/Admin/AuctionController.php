@@ -50,6 +50,7 @@ public function store(Request $request, Product $product)
 
         $auction = Auction::create($validated);
 
+            dd('REACHED ACTIVITY LOG', $oldValues, $auction->fresh()->toArray());
         ActivityLog::record(
             auth()->user(),
             $auction,
@@ -64,32 +65,39 @@ public function store(Request $request, Product $product)
             ->with('success', 'Auction created successfully.');
     }
 public function update(Request $request, Auction $auction)
-    {
-        $validated = $request->validate([
-            'starting_bid' => ['required', 'numeric', 'min:0'],
-            'ticket_cost'  => ['required', 'numeric', 'min:0'],
-            'starts_at'    => ['required', 'date'],
-            'ends_at'      => ['required', 'date', 'after:starts_at'],
-            'status'       => ['required', 'in:pending,active,closed,cancelled'],
-        ]);
+{
+    $validated = $request->validate([
+        'product_id' => ['required', 'exists:products,id'],
+        'ticket_cost' => ['nullable', 'numeric', 'min:0'],
+        'starting_bid' => ['required', 'numeric', 'min:0'],
+        'current_bid' => ['required', 'numeric', 'min:0'],
+        'reserve_price' => ['nullable', 'numeric', 'min:0'],
+        'starts_at' => ['required', 'date'],
+        'ends_at' => ['required', 'date', 'after:starts_at'],
+        'status' => ['required', 'string'],
+        'winner_id' => ['nullable', 'exists:users,id'],
+    ]);
 
-        $old = $auction->toArray();
+    // Capture the auction BEFORE changing it
+    $oldValues = $auction->toArray();
 
-        $auction->update($validated);
+    // Update the auction
+    $auction->update($validated);
 
-        ActivityLog::record(
-            auth()->user(),
-            $auction,
-            'auction.updated',
-            "Updated auction for '{$auction->product->name}'.",
-            $old,
-            $auction->fresh()->toArray()
-        );
+    // Record the activity
+    ActivityLog::record(
+        auth()->user(),
+        $auction,
+        'updated',
+        "Updated auction #{$auction->id}.",
+        $oldValues,
+        $auction->fresh()->toArray()
+    );
 
-        return redirect()
-            ->route('vendor.auctions.show', $auction)
-            ->with('success', 'Auction updated.');
-    }
+    return redirect()
+        ->route('admin.auctions.show', $auction)
+        ->with('success', 'Auction updated successfully.');
+}
 
     public function edit(Auction $auction)
     {
