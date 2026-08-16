@@ -50,7 +50,13 @@ class ProductController extends Controller
         ]);
         $validated['slug'] = Str::slug($validated['name']);
 
-        $product = Product::create($validated);
+        $product = Product::create([
+        'vendor_id' => auth()->id(),
+        'category_id' => $validated['category_id'],
+        'name' => $validated['name'],
+        'description' => $validated['description'],
+        'price' => $validated['price'],
+    ]);
         ActivityLog::record(
             auth()->user(),
             $product,
