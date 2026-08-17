@@ -28,13 +28,11 @@ class ProductController extends Controller
     {
         $categories = Category::orderBy('name')->get();
 
-        $vendors = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendor');
-        })->orderBy('name')->get();
-
+        $products = Product::class;
         return view('vendor.products.create', compact(
             'categories',
-            'vendors'
+            'vendors',
+            'products'
         ));
     }
     public function store(Request $request)
@@ -44,18 +42,22 @@ class ProductController extends Controller
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
             'inventory' => ['required', 'integer', 'min:0'],
-            'vendor_id' => 'required|exists:users,id',
+
             'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => 'required|numeric|min:0',
+
         ]);
         $validated['slug'] = Str::slug($validated['name']);
 
         $product = Product::create([
-        'vendor_id' => auth()->id(),
-        'category_id' => $validated['category_id'],
-        'name' => $validated['name'],
-        'description' => $validated['description'],
-        'price' => $validated['price'],
+            'vendor_id' => auth()->id(),
+            'category_id' => $validated['category_id'],
+            'name' => $validated['name'],
+            //'slug' => $validated['slug'],
+            'description' => $validated['description'],
+            'retail_price' => $validated['retail_price'],
+            'price' => $validated['price'],
+            'inventory' => $validated['inventory'],
     ]);
         ActivityLog::record(
             auth()->user(),
