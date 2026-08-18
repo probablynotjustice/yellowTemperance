@@ -26,13 +26,7 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="{{ route('vendor.products.index') }}">
-                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
-                            Products
-                            </button>
-                        </a>
-                    </li>
+
 {{--
                     <li>
                         <a href="{{ route('vendor.categories.index') }}">
@@ -41,7 +35,7 @@
                             </button>
                         </a>
                     </li>
-
+--}}
                     <li>
                         <a href="{{ route('vendor.products.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
@@ -49,7 +43,7 @@
                             </button>
                         </a>
                     </li>
-
+{{--}
                     <li>
                         <a href="{{ route('vendor.users.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">

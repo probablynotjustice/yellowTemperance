@@ -1,4 +1,7 @@
 
+@extends('layouts.vendor')
+
+@section('content')
 <h1>
     This will be the simple Product View,
     it will Exclude much Product Functionality
@@ -72,3 +75,4 @@
         </div>
     </li>
 </div>
+@endsection

@@ -79,17 +79,11 @@ class ProductController extends Controller
     {
         $categories = Category::orderBy('name')->get();
 
-        $vendors = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendor');
-        })->get();
-
         return view(
-            'admin.products.edit',
+            'vendor.products.edit',
             compact(
                 'product',
-                'categories',
-                'vendors'
-            )
+                'categories',)
         );
     }
     public function update(Request $request, Product $product)
@@ -98,22 +92,23 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'vendor_id' => 'required|exists:users,id',
-            'retail_price' => 'required|numeric|min:1',
-            'price' => 'required|numeric|min:0',
-            'inventory' => 'required|integer|min:0',
-            'ticket_cost' => 'nullable|numeric|min:0',
+            'retail_price' => ['required', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'inventory' => ['required', 'integer', 'min:0'],
         ]);
-        $validated['slug'] = Str::slug($validated['name']);
+
         $old = $product->toArray();
+
         $product->update($validated);
+
+        $new = $product->fresh()->toArray();
         ActivityLog::record(
             auth()->user(),
             $product,
             'updated',
             "Updated product '{$product->name}'.",
             $old,
-            $product->fresh()->toArray()
+            $new
         );
 
         return redirect()
