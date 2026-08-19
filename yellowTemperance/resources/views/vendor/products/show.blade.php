@@ -1,3 +1,6 @@
+@extends('layouts.admin')
+
+@section('content')
 
 <div class="border p-4 rounded mb-4">
     <h3>{{ $product->name }}</h3>
@@ -7,8 +10,9 @@
     <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
     <p>Inventory: {{ $product->inventory }}</p>
     <p>Vendor: {{ $product->vendor->name }}</p>
-  {{--   <a href="{{ route('vendor.auctions.create', $product) }}"> --}}
+    <a href="{{ route('vendor.auctions.create', $product) }}">
     Create Auction
 </a>
 </div>
 
+@endsection

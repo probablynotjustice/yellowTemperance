@@ -31,7 +31,7 @@
 @if(auth()->user()->roles->contains('name', 'vendor', 'admin'))
     <flux:sidebar.item
         icon="shield-check"
-        :href="route('vendor.products')"
+        :href="route('vendor.products.index')"
     >
         Sales Management
     </flux:sidebar.item>

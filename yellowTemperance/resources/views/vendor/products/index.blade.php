@@ -61,7 +61,6 @@
                         <a href="{{ route('vendor.products.show', $product->id) }}">
                             {{ $product->name }}
                         </a>
-                        <h3>{{ $product->name }}</h3>
                         <p>{{ $product->description }}</p>
                         <p>{{ $product->category->name }}</p>
                         <p>Retail: ${{ $product->retail_price }}</p>

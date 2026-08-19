@@ -19,7 +19,8 @@ class ProductController extends Controller
         $products = Product::with([
             'vendor',
             'category',
-        ])->latest()->get();
+        ])->where('vendor_id',auth()->id())
+            ->latest()->get();
 
         $categories = Category::orderBy('name')->get();
         return view('vendor.products.index', compact('products', 'categories'));
