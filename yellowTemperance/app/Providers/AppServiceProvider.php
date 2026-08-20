@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
+use App\Listeners\LogSuccessfulLogin;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        Event::listen(
+            Login::class,
+            LogSuccessfulLogin::class
+        );
     }
 
     /**
