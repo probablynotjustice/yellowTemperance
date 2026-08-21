@@ -9,8 +9,10 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Failed;
 use Illuminate\Support\Facades\Event;
 use App\Listeners\LogSuccessfulLogin;
+use App\Listeners\LogFailedLogin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,7 +33,11 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(
             Login::class,
-            LogSuccessfulLogin::class
+            LogSuccessfulLogin::class,
+        );
+        Event::listen(
+            Failed::class,
+            LogFailedLogin::class
         );
     }
 

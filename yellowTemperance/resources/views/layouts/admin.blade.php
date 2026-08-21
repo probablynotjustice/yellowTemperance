@@ -83,6 +83,14 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('admin.activityLogs.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
+                            Activity Logs
+                            </button>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
              {{-- Bottom of sidebar --}}

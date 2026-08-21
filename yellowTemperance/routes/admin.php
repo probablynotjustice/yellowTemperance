@@ -2,7 +2,10 @@
 use App\Http\Controllers\Admin\AuctionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
+use App\Http\Controllers\Admin\UserController;
+use App\Models\ActivityLog;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Comment;
@@ -123,6 +126,25 @@ Route::middleware(['auth','verified', 'role:admin'])
                 Route::delete('/{comment}', [CommentController::class, 'destroy'])
                     ->name('destroy');
         });
+
+
+        Route::prefix('users')
+            ->name('users.')
+            ->group(function() {
+                Route::get('/', [UserController::class, 'index'])
+                    ->name('index');
+                Route::get('/{user}', [UserController::class, 'show'])
+                    ->name('show');
+            //    Route::get('/{user}/edit', [UserController::class, 'edit'])
+            //        ->name('edit');
+            //    Route::put('/{user}', [UserController::class, 'update'])
+            //        ->name('update');
+            //    Route::delete('/{user}', [UserController::class, 'destroy'])
+            //        ->name('destroy');
+        });
+
+    Route::get('activityLogs', [ActivityLogController::class, 'index'])
+        ->name('activityLogs.index');
 });
 //Need a Wallet Controller
 //Need a

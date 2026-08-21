@@ -45,8 +45,11 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('vendor.dashboard')" wire:navigate>
                         {{ __('Vendor Dashboard') }}
                     </flux:sidebar.item>
-                                        <flux:sidebar.item icon="home" :href="route('base.auctions.index')" :current="request()->routeIs('base.auctions.index')" wire:navigate> <!--Need: Check again later-->
+                     <flux:sidebar.item icon="home" :href="route('base.auctions.index')" :current="request()->routeIs('base.auctions.index')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Active Auctions') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('admin.users.index')">
+                        Users
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
