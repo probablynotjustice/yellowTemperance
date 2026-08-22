@@ -6,22 +6,22 @@
 <div class="border rounded-lg p-4">
 
     <p>
-        <strong>ID:</strong>
+        <strong>ID: </strong>
         {{ $user->id }}
     </p>
 
     <p>
-        <strong>Name:</strong>
+        <strong>Name: </strong>
         {{ $user->name }}
     </p>
 
     <p>
-        <strong>Email:</strong>
+        <strong>Email: </strong>
         {{ $user->email }}
     </p>
 
     <p>
-        <strong>Roles:</strong>
+        <strong>Roles: </strong>
     </p>
 
     <ul>
@@ -33,7 +33,7 @@
     </ul>
 
     <p>
-        <strong>Registered:</strong>
+        <strong>Registered: </strong>
         {{ $user->created_at }}
     </p>
 

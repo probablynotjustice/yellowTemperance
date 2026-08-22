@@ -4,6 +4,9 @@
 
 <h1>Activity Logs</h1>
 
+<h1>
+    Activity Logs: {{ $logs->total() }}
+</h1>
 <div>
 
     @forelse ($logs as $log)

@@ -48,7 +48,7 @@ class ProductController extends Controller
             'retail_price' => ['required', 'numeric', 'min:0'],
             'price' => 'required|numeric|min:0',
         ]);
-        $validated['slug'] = Str::slug($validated['name']);
+        // $validated['slug'] = Str::slug($validated['name']);
 
         $product = Product::create($validated);
         ActivityLog::record(
