@@ -64,6 +64,6 @@ Route::prefix('comments')
 
 
 });
-        //Route::get('/ticketAll', [WalletController::class, 'index'])
-        //    ->name('ticketAll');
+        Route::get('/ticketAll', [WalletController::class, 'index'])
+           ->name('ticketAll');
 

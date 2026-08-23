@@ -23,7 +23,7 @@ class WalletController extends Controller
         }
         ])->find(auth()->id());
 
-    return view('base.ticketAll', compact('user'));
+    return view('base.wallets.index', compact('user'));
 
     }
 

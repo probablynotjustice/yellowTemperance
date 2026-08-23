@@ -25,7 +25,13 @@
                             </button>
                         </a>
                     </li>
-
+                    <li>
+                        <a href="{{  route('vendor.wallets.index') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
+                            Wallet
+                            </button>
+                        </a>
+                    </li>
 
 {{--
                     <li>

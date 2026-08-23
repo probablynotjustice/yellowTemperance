@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Base\WalletController;
 use Illuminate\Support\Facades\Route;
 
 use App\Models\User;
@@ -37,5 +38,13 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
                     ->name('update');
                 Route::delete('/{product}', [ProductController::class, 'destroy'])
                     ->name('destroy');
+            });
+
+        Route::prefix('wallets')
+            ->name('wallets.')
+            ->group(function () {
+                Route::get('/', [WalletController::class, 'index'])
+                    ->name('index');
+
             });
 });

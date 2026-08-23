@@ -1,3 +1,6 @@
+@extends('layouts.vendor')
+
+@section('content')
 <div>
     <div>
         <h1>This is where money and tickets will be updated</h1>
@@ -59,3 +62,4 @@
 
 </div>
 <!--Needs a face lift but this is basically the just for this page-->
+@endsection

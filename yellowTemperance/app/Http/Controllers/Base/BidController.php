@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\WalletTransaction;
 use App\Models\Bid;
+use App\Models\ActivityLog;
+
 use Illuminate\Http\Request;
 
 class BidController extends Controller
@@ -44,12 +46,21 @@ class BidController extends Controller
                     'description' => "Bid ticket for Auction #{$auction->id}",
                 ]);
 
-                Bid::create([
+                $bid = Bid::create([
                     'auction_id' => $auction->id,
                     'user_id' => auth()->id(),
                     'promise_amount' => $validated['promise_amount'],
                     'ticket_cost' => $auction->ticket_cost,
                 ]);
+
+                ActivityLog::record(
+                    $user,
+                    $bid,
+                    'created',
+                    "Placed bid of {$bid->promise_amount} on Auction #{$auction->id}.",
+                    null,
+                    $bid->toArray()
+                );
 
                 $auction->update([
                     'current_bid' => $validated['promise_amount'],
