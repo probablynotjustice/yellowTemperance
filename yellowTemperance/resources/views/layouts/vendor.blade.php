@@ -74,16 +74,16 @@
                             </button>
                         </a>
                     </li>
-
+--}}
                     <li>
 
                         <a href="{{  route('vendor.auctions.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
-                            Auctions
+                            My Auctions
                             </button>
                         </a>
                     </li>
---}}
+
 
                 </ul>
             </nav>

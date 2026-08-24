@@ -15,11 +15,11 @@ class AuctionController extends Controller
                 $auctions = Auction::with('product')
                     ->where('status', 'active')
                     ->get();
-                return view('base.auctions.index');
+                return view('vendor.auctions.index', compact('auctions'));
             }
     public function create(Product $product)
         {
-            return view('vendor.auction.create', compact('product'));
+            return view('vendor.auctions.create', compact('product'));
         }
 
     public function store(Request $request, Product $product)

@@ -47,4 +47,22 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
                     ->name('index');
 
             });
+        Route::prefix('auctions')
+            ->name('auctions.')
+            ->group( function () {
+                Route::get('/', [AuctionController::class, 'index'])
+                    ->name('index');
+                Route::get('create', [AuctionController::class, 'create'])
+                    ->name('create');
+                Route::post('/', [AuctionController::class, 'store'])
+                    ->name('store');
+                Route::get('/{product}', [AuctionController::class, 'show'])
+                    ->name('show');
+                Route::get('/{product}/edit', [AuctionController::class, 'edit'])
+                    ->name('edit');
+                Route::put('/{product}', [AuctionController::class, 'update'])
+                    ->name('update');
+                Route::delete('/{product}', [AuctionController::class, 'destroy'])
+                    ->name('destroy');
+            });
 });
