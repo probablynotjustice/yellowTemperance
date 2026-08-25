@@ -17,11 +17,21 @@ class AuctionController extends Controller
                     ->get();
                 return view('vendor.auctions.index', compact('auctions'));
             }
+    public function index2()
+    {
+        $auctions = Auction::with('product')
+            ->whereHas('product', function ($query) {
+                $query->where('vendor_id', auth()->id());
+            })
+            ->latest()
+            ->get();
+        return view('vendor.auctions.index');
+    }
     public function create(Product $product)
         {
             return view('vendor.auctions.create', compact('product'));
         }
-
+///WORTKIGN ON VENDOR AUCTIONS, NEED TO PASS PRODUCT DATA??
     public function store(Request $request, Product $product)
         {
             $validated = $request->validate([

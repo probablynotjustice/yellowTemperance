@@ -110,7 +110,8 @@ class User extends Authenticatable
 
     public function canBid(): bool
     {
-        return $this->hasRole('customer');
+        return $this->hasRole('customer')
+        || $this->hasRole('vendor');
     }
 
 

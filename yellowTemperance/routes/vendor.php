@@ -7,6 +7,7 @@ use App\Models\User;
 
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\AuctionController;
+use App\Http\Controllers\Base\AuctionController as Participant;
 
 
 
@@ -52,17 +53,18 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
             ->group( function () {
                 Route::get('/', [AuctionController::class, 'index'])
                     ->name('index');
+                Route::get('/',[Participant::class, 'index']);
                 Route::get('create', [AuctionController::class, 'create'])
                     ->name('create');
                 Route::post('/', [AuctionController::class, 'store'])
                     ->name('store');
-                Route::get('/{product}', [AuctionController::class, 'show'])
+                Route::get('/{auction}', [AuctionController::class, 'show'])
                     ->name('show');
-                Route::get('/{product}/edit', [AuctionController::class, 'edit'])
+                Route::get('/{auction}/edit', [AuctionController::class, 'edit'])
                     ->name('edit');
-                Route::put('/{product}', [AuctionController::class, 'update'])
+                Route::put('/{auction}', [AuctionController::class, 'update'])
                     ->name('update');
-                Route::delete('/{product}', [AuctionController::class, 'destroy'])
+                Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
             });
 });

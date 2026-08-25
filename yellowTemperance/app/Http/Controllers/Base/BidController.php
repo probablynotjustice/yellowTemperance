@@ -17,7 +17,7 @@ class BidController extends Controller
     {
         $user = auth()->user();
         if (! $user->canBidOn($auction)) {
-                abort(403, 'Shall not do Bidding, son');
+                 abort(403, 'Cannot bid. User ID: ' . $user->id);
         }
 
         $validated = $request->validate([

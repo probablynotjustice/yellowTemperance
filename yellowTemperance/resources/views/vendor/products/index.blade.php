@@ -68,6 +68,31 @@
                         <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
                         <p>Inventory: {{ $product->inventory }}</p>
                         <p>Vendor: {{ $product->vendor->name }}</p>
+                        <div class="flex gap-3">
+                            <a href="{{ route('vendor.products.edit', $product) }}">
+                            <button class="rounded bg-blue-300 p-3"type="button">
+                                Edit Product
+                            </button>
+                            </a>
+                            <a>
+                                <form action="{{ route('vendor.products.destroy', $product) }}"
+                                    method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="rounded bg-red-500 p-3" type="submit">
+                                        Delete
+                                    </button>
+                                </form>
+                            </a>
+                            </a>
+                            <a href="{{ route('vendor.auctions.create', $product) }}">
+                                <button class="rounded bg-green-300 p-3"type="button">
+                                    Create Auction
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 @endforeach
             </ol>
