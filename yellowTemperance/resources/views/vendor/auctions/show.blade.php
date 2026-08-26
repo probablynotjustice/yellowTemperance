@@ -1,3 +1,7 @@
+@extends('layouts.vendor')
+
+@section('content')
+
 <h1>Shows the Individual Auction</h1>
 <h1>{{ $auction->product->name }}</h1>
 
@@ -48,3 +52,4 @@
 @endif
 
 
+@endsection

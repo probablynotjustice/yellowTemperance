@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Panel</title>
+    <title>Vendor Panel</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -15,7 +15,7 @@
             <h2 class="text-xl font-bold mb-6">
                 Vendor SidePanel
             </h2>
-
+            <p class="font-bold text-orange-600">Ticket Count: {{ auth()->user()->wallet->balance }} </p>
             <nav>
                 <ul>
                     <li>
@@ -76,10 +76,17 @@
                     </li>
 --}}
                     <li>
-
                         <a href="{{  route('vendor.auctions.index') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
                             My Auctions
+                            </button>
+                        </a>
+                    </li>
+                                        <li>
+
+                        <a href="{{  route('vendor.auctions.participate') }}">
+                            <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
+                            All Auctions
                             </button>
                         </a>
                     </li>

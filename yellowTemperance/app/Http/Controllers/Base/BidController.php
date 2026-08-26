@@ -37,7 +37,22 @@ class BidController extends Controller
                     throw new \Exception('Inssufecient Funds. Not Enough Tickets.');
                 }
 
+                $oldBalance = $wallet->balance;
+
                 $wallet->decrement('balance', $auction->ticket_cost);
+
+                ActivityLog::record(
+                    $user,
+                    $wallet,
+                    'debited',
+                    "Deducted {$auction->ticket_cost} tickets for bid on Auction #{$auction->id}.",
+                    [
+                        'balance' => $oldBalance,
+                    ],
+                    [
+                        'balance' => $wallet->balance,
+                    ]
+                );
 
                 WalletTransaction::create([
                     'wallet_id'   => $wallet->id,

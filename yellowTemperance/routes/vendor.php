@@ -53,7 +53,8 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
             ->group( function () {
                 Route::get('/', [AuctionController::class, 'index'])
                     ->name('index');
-                Route::get('/',[Participant::class, 'index']);
+                Route::get('participate',[Participant::class, 'index'])
+                    ->name('participate');
                 Route::get('create', [AuctionController::class, 'create'])
                     ->name('create');
                 Route::post('/', [AuctionController::class, 'store'])

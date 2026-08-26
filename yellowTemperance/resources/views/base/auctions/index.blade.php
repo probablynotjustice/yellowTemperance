@@ -1,3 +1,7 @@
+@extends('layouts.vendor')
+
+@section('content')
+
 <h1>Active Auctions</h1>
 
 @forelse ($auctions as $auction)
@@ -31,3 +35,4 @@
     <p>No active auctions.</p>
 
 @endforelse
+@endsection

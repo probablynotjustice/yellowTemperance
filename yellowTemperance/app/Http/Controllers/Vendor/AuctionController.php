@@ -12,6 +12,7 @@ class AuctionController extends Controller
 
     public function index()
             {
+
                 $auctions = Auction::with('product')
                     ->where('status', 'active')
                     ->get();
@@ -19,13 +20,14 @@ class AuctionController extends Controller
             }
     public function index2()
     {
+
         $auctions = Auction::with('product')
             ->whereHas('product', function ($query) {
                 $query->where('vendor_id', auth()->id());
             })
             ->latest()
             ->get();
-        return view('vendor.auctions.index');
+        return view('vendor.auctions.index', compact('auctions'));
     }
     public function create(Product $product)
         {
