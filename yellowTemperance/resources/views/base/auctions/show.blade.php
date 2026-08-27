@@ -1,3 +1,10 @@
+@if(auth()->user()->roles->contains('name', 'vendor'))
+    @extends('layouts.vendor')
+@else
+    @extends('layouts.app.base')
+@endif
+
+@section('content')
 <h1>Shows the Individual Auction</h1>
 <h1>{{ $auction->product->name }}</h1>
 
@@ -47,3 +54,4 @@
     <p>This auction has ended.</p>
 
 @endif
+@endsection
