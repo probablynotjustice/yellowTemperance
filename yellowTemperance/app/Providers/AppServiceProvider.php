@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use App\Events\AuctionViewed;
+use App\Listeners\RecordAuctionView;
 
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Failed;
@@ -40,6 +42,12 @@ class AppServiceProvider extends ServiceProvider
             LogFailedLogin::class
         );
     }
+
+    protected $listen = [
+    AuctionViewed::class => [
+        RecordAuctionView::class,
+    ],
+];
 
     /**
      * Configure default behaviors for production-ready applications.
