@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vendor Panel</title>
+    <title> Panel</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -10,7 +10,7 @@
 
     <div class="flex">
 
-        <aside class="w-64 bg-gray-800 text-white min-h-screen p-4">
+        <aside class="w-64 bg-gray-800 text-white min-h-screen p-4 flex flex-col">
 
             <h2 class="text-xl font-bold mb-6">
                 Temporary Base SidePanel

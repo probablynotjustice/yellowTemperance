@@ -11,7 +11,7 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\ActivityLog;
 use App\Models\Product;
-use App\Events\AuctionViewed;
+
 
 class AuctionController extends Controller
 {
@@ -35,10 +35,6 @@ class AuctionController extends Controller
             'bids.user',
             'winner',
         ]);
-            AuctionViewed::dispatch(
-                auth()->user(),
-                $auction
-            );
 
         return view('admin.auctions.show', compact('auction'));
     }
