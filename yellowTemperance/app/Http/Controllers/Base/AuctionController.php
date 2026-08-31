@@ -33,4 +33,20 @@ class AuctionController extends Controller
 
                 return view('base.auctions.show', compact('auction'));
             }
+    public function participating()
+        {
+            $user = auth()->user();
+
+            $auctions = Auction::with([
+                'product',
+                'product.vendor',
+                'product.category',
+                'bids',
+            ])->where('status', 'active')
+            ->whereHas('bids', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+            })->latest()->get();
+
+            return view('base.auctions.participating', compact('auctions'));
+        }
 }

@@ -24,20 +24,20 @@ Route::middleware(['auth', 'verified'])
             return view('base.dashboard', compact('user'));
         })->name('dashboard');
 
-        //Auction and bid Functionality
 
-            Route::prefix('auctions')->group(function () {
+        Route::prefix('auctions')
+            ->name('auctions.')
+            ->group( function () {
+                Route::get('/', [AuctionController::class, 'index'])
+                    ->name('index');
+                Route::get('/participating', [AuctionController::class, 'participating'])
+                    ->name('participating');
+                Route::get('/{auction}', [AuctionController::class, 'show'])
+                    ->name('show');
 
-            Route::get('/', [AuctionController::class, 'index'])
-                ->name('auctions.index');
-
-            Route::get('/{auction}', [AuctionController::class, 'show'])
-                ->name('auctions.show');
-
-            Route::post('/{auction}/bid', [BidController::class, 'store'])
+                Route::post('/{auction}/bid', [BidController::class, 'store'])
                 ->name('auctions.bid');
-
-        });
+            });
 });
         //Wallet Functions
 
@@ -66,4 +66,5 @@ Route::prefix('comments')
 });
         Route::get('/ticketAll', [WalletController::class, 'index'])
            ->name('ticketAll');
+
 

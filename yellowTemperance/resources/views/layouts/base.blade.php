@@ -76,9 +76,9 @@
                     </li>
 --}}
                     <li>
-                        <a href="{{  route('vendor.auctions.index') }}">
+                        <a href="{{  route('base.auctions.participating') }}">
                             <button class="w-full rounded px-3 py-2 text-left hover:text-black hover:bg-blue-200">
-                            My Auctions
+                            My Auctions --Shows participation--
                             </button>
                         </a>
                     </li>

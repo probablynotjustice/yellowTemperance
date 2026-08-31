@@ -1,7 +1,7 @@
 @if(auth()->user()->roles->contains('name', 'vendor'))
     @extends('layouts.vendor')
 @else
-    @extends('layouts.app.base')
+    @extends('layouts.base')
 @endif
 
 @section('content')

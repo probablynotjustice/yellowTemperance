@@ -1,7 +1,10 @@
-@extends('layouts.vendor')
+@if(auth()->user()->roles->contains('name', 'vendor'))
+    @extends('layouts.vendor')
+@else
+    @extends('layouts.base')
+@endif
 
 @section('content')
-
 <h1>Active Auctions</h1>
 
 @forelse ($auctions as $auction)
