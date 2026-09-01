@@ -36,21 +36,22 @@ Route::middleware(['auth', 'verified'])
                     ->name('show');
 
                 Route::post('/{auction}/bid', [BidController::class, 'store'])
-                ->name('auctions.bid');
+                ->name('bid');
             });
+
+    Route::prefix('wallet')
+        ->name('wallets.')
+        ->group(function() {
+            Route::get('/', [WalletController::class, 'index'])
+                ->name('index');
+            Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
+                ->name('add.custom');
+            Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
+                ->name('add');
+});
 });
         //Wallet Functions
 
-Route::prefix('wallet')
-    ->name('wallet.')
-    ->group(function() {
-        Route::get('/', [WalletController::class, 'index'])
-            ->name('index');
-        Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
-            ->name('add.custom');
-        Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
-            ->name('add');
-});
 
 
 Route::prefix('comments')

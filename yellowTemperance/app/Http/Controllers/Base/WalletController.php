@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\ActivityLog;
 
 class WalletController extends Controller
 {
@@ -32,27 +33,58 @@ class WalletController extends Controller
         $validated = $request->validate([
             'amount' => ['required', 'numeric', 'min:1', 'max:1000'],
         ]);
+        $user = auth()->user();
+        $wallet = $user->wallet;
         $wallet = auth()->user()->wallet;
         $amount = $validated['amount'];
         $wallet->increment('balance', $amount);
-        $wallet->transactions()->create([
+        $transaction = $wallet->transactions()->create([
             'amount' => $amount,
             'type' => 'funding',
             'description' => "Custom deposit of: $amount",
         ]);
+
+            ActivityLog::record(
+                $user,
+                $wallet,
+                'funded',
+                "Added {$amount} credits to wallet.",
+                null,
+                [
+                    'amount' => $amount,
+                    'transaction_id' => $transaction->id,
+                    'new_balance' => $wallet->fresh()->balance,
+                    'type' => 'custom_deposit',
+                ]
+            );
         return redirect()->back();
     }
 
     public function addPreset(int $amount)
     {
         abort_unless(in_array((int)$amount, [1, 10, 100]), 404);
+        $user = auth()->user();
         $wallet = auth()->user()->wallet;
         $wallet->increment('balance', $amount);
-        $wallet->transactions()->create([
+        $transaction = $wallet->transactions()->create([
             'amount' => $amount,
             'type' => 'funding',
             'description' => "Added {$amount} credit",
         ]);
+
+            ActivityLog::record(
+                $user,
+                $wallet,
+                'funded',
+                "Added {$amount} credits to wallet using a preset amount.",
+                null,
+                [
+                    'amount' => $amount,
+                    'transaction_id' => $transaction->id,
+                    'new_balance' => $wallet->fresh()->balance,
+                    'type' => 'preset_deposit',
+                ]
+            );
         return redirect()->back();
     }
     /**

@@ -21,19 +21,19 @@
 <div>
     <h1>Wallet Update</h1>
     <div>
-        <form method="POST" action="{{ route('wallet.add', 1) }}">
+        <form method="POST" action="{{ route('base.wallets.add', 1) }}">
         @csrf
             <button type="submit"><span>Add: <br /></span>+1</button>
         </form>
-        <form method="POST" action="{{ route('wallet.add', 10) }}">
+        <form method="POST" action="{{ route('base.wallets.add', 10) }}">
             @csrf
             <button type="submit">Add:<br />+10</button>
         </form>
-        <form method="POST" action="{{ route('wallet.add', 100) }}">
+        <form method="POST" action="{{ route('base.wallets.add', 100) }}">
             @csrf
             <button type="submit">Add:<br />+100</button>
         </form>
-        <form method="POST" action="{{ route('wallet.add.custom') }}">
+        <form method="POST" action="{{ route('base.wallets.add.custom') }}">
             @csrf
             <input type="bumber" name="amount" step="1.00" min="1.00"
                 placeholder="Enter amount"
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<p>{{ route('wallet.add.custom') }}</p>
+<p>{{ route('base.wallets.add.custom') }}</p>
     <div>
      <h1>this is a list of Transactions</h1>
         @foreach ($user->wallet->transactions as $transaction)
