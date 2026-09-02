@@ -1,8 +1,4 @@
-@if(auth()->user()->roles->contains('name', 'vendor'))
-    @extends('layouts.vendor')
-@else
-    @extends('layouts.base')
-@endif
+@extends('layouts.app.sidebar')
 
 @section('content')
 <h1>Shows the Individual Auction</h1>

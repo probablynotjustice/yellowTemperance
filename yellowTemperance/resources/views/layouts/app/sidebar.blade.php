@@ -15,6 +15,134 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
+
+        {{-- ========================================= --}}
+        {{-- VENDOR SIDEBAR                            --}}
+        {{-- ========================================= --}}
+             @if(auth()->user()->hasRole('vendor'))
+
+            <flux:sidebar.item
+                icon="home"
+                :href="route('vendor.dashboard')"
+                :current="request()->routeIs('vendor.dashboard')"
+                wire:navigate
+            >
+                Vendor Dashboard
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="shopping-bag"
+                :href="route('vendor.products.index')"
+                :current="request()->routeIs('vendor.products.*')"
+                wire:navigate
+            >
+                My Products
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="gavel"
+                :href="route('vendor.auctions.index')"
+                :current="request()->routeIs('vendor.auctions.*')"
+                wire:navigate
+            >
+                My Auctions
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="wallet"
+                :href="route('vendor.wallets.index')"
+                :current="request()->routeIs('vendor.wallets.*')"
+                wire:navigate
+            >
+                Wallet
+            </flux:sidebar.item>
+ {{-- ========================================= --}}
+        {{-- ADMIN SIDEBAR                             --}}
+        {{-- ========================================= --}}
+
+        @elseif(auth()->user()->hasRole('admin'))
+
+            <flux:sidebar.item
+                icon="home"
+                :href="route('admin.dashboard')"
+                :current="request()->routeIs('admin.dashboard')"
+                wire:navigate
+            >
+                Admin Dashboard
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="users"
+                :href="route('admin.users.index')"
+                :current="request()->routeIs('admin.users.*')"
+                wire:navigate
+            >
+                Users
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="chat-bubble-left-right"
+                :href="route('admin.comments.index')"
+                :current="request()->routeIs('admin.comments.*')"
+                wire:navigate
+            >
+                Comments
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="wallet"
+                :href="route('admin.wallets.index')"
+                :current="request()->routeIs('admin.wallets.*')"
+                wire:navigate
+            >
+                Wallets
+            </flux:sidebar.item>
+
+
+        {{-- ========================================= --}}
+        {{-- BASE / CUSTOMER SIDEBAR                   --}}
+        {{-- ========================================= --}}
+
+        @else
+
+            <flux:sidebar.item
+                icon="home"
+                :href="route('base.dashboard')"
+                :current="request()->routeIs('base.dashboard')"
+                wire:navigate
+            >
+                Base Dashboard
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="gavel"
+                :href="route('base.auctions.index')"
+                :current="request()->routeIs('base.auctions.*')"
+                wire:navigate
+            >
+                Active Auctions
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="wallet"
+                :href="route('base.wallets.index')"
+                :current="request()->routeIs('base.wallets.*')"
+                wire:navigate
+            >
+                Tickets
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="chat-bubble-left-right"
+                :href="route('base.comments.index')"
+                :current="request()->routeIs('base.comments.*')"
+                wire:navigate
+            >
+                Comments
+            </flux:sidebar.item>
+
+        @endif
+        {{-- -}
                     <flux:sidebar.item icon="home" :href="route('base.dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Base Dashboard') }} <!--inteded to navigate to Admin View-->
 
@@ -28,6 +156,7 @@
                         Admin Panel
                     </flux:sidebar.item>
                 @endif
+
 @if(auth()->user()->roles->contains('name', 'vendor', 'admin'))
     <flux:sidebar.item
         icon="shield-check"
@@ -36,10 +165,10 @@
         Sales Management
     </flux:sidebar.item>
 @endif
-                    <flux:sidebar.item icon="home" :href="route('comments.index')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
+                    <flux:sidebar.item icon="home" :href="route('admin.comments.index')" :current="request()->routeIs('base.comment')" wire:navigate> <!--Need: Check again later-->
                         {{ __('Comment') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="home" :href="route('wallet.index')" :current="request()->routeIs('wallet.index')" wire:navigate>
+                    <flux:sidebar.item icon="home" :href="route('admin.wallets.index')" :current="request()->routeIs('wallet.index')" wire:navigate>
                         {{ __('Tickets') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('vendor.dashboard')" wire:navigate>
@@ -51,6 +180,8 @@
                     <flux:sidebar.item icon="users" :href="route('admin.users.index')">
                         Users
                     </flux:sidebar.item>
+
+                    --}}
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

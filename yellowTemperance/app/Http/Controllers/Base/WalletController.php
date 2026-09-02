@@ -34,6 +34,8 @@ class WalletController extends Controller
             'amount' => ['required', 'numeric', 'min:1', 'max:1000'],
         ]);
         $user = auth()->user();
+        //NEED TO SEE IF THIS CAUSES CONFLICTS LATER ON
+        //$WALLET IS ADDED TWICE
         $wallet = $user->wallet;
         $wallet = auth()->user()->wallet;
         $amount = $validated['amount'];
