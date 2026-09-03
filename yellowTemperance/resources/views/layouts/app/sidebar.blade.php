@@ -40,7 +40,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
-                icon="gavel"
+                icon="home"
                 :href="route('vendor.auctions.index')"
                 :current="request()->routeIs('vendor.auctions.*')"
                 wire:navigate
@@ -56,7 +56,7 @@
             >
                 Wallet
             </flux:sidebar.item>
- {{-- ========================================= --}}
+        {{-- ========================================= --}}
         {{-- ADMIN SIDEBAR                             --}}
         {{-- ========================================= --}}
 
@@ -115,7 +115,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
-                icon="gavel"
+                icon="home"
                 :href="route('base.auctions.index')"
                 :current="request()->routeIs('base.auctions.*')"
                 wire:navigate
@@ -124,7 +124,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
-                icon="wallet"
+                icon="home"
                 :href="route('base.wallets.index')"
                 :current="request()->routeIs('base.wallets.*')"
                 wire:navigate
@@ -133,7 +133,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
-                icon="chat-bubble-left-right"
+                icon="home"
                 :href="route('base.comments.index')"
                 :current="request()->routeIs('base.comments.*')"
                 wire:navigate
@@ -195,9 +195,18 @@
                 <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
                     {{ __('Documentation') }}
                 </flux:sidebar.item>
-                <flux:sidebar.item icon="folder-git-2">
-                    {{ __('Logout !!! Need2Fix') }}
-                </flux:sidebar.item>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+
+                        <flux:sidebar.item
+                            as="button"
+                            type="submit"
+                            icon="arrow-right-start-on-rectangle"
+                            class="w-full cursor-pointer"
+                        >
+                            {{ __('Log Out') }}
+                        </flux:sidebar.item>
+                    </form>
             </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />

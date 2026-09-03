@@ -1,6 +1,5 @@
-@extends('layouts.app.sidebar')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
 <h1>Shows the Individual Auction</h1>
 <h1>{{ $auction->product->name }}</h1>
 
@@ -50,4 +49,5 @@
     <p>This auction has ended.</p>
 
 @endif
-@endsection
+
+</x-layouts::app>

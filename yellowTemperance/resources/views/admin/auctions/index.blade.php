@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 
 
 <x-admin-sidebar />
@@ -128,5 +126,5 @@
 
 @endif
 
-@endsection
+</x-layouts::app>
 

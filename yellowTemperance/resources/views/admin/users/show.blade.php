@@ -1,6 +1,5 @@
-@extends('layouts.admin')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
 <h1>{{ $user->name }}</h1>
 
 <div class="border rounded-lg p-4">
@@ -43,4 +42,4 @@
     Back to Users
 </a>
 
-@endsection
+</x-layouts::app>

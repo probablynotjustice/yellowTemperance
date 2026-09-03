@@ -1,10 +1,7 @@
-@extends('layouts.admin')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
 
 <admin-layout>
-
-
     <div>
         <a href="{{ route('admin.categories.index') }}">
             ← Back to Categories
@@ -107,7 +104,5 @@
         </p>
 
     @endforelse
-
-</admin-layout>
-
-@endsection
+    </admin-layout>
+</x-layouts::app>

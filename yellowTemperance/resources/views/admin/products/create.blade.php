@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 
 <h1>this is the Create products page</h1>
 
@@ -70,7 +68,4 @@
     <button type="submit">Create Product</button>
 </form>
 
-
-
-
-@endsection
+</x-layouts::app>

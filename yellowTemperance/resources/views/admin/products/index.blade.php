@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 <h1>PRODUCTS</h1>
 <a href="/admin/products/create">Create Product</a>
 
@@ -76,5 +73,4 @@
 
 
 @endforeach
-
-@endsection
+</x-layouts::app>

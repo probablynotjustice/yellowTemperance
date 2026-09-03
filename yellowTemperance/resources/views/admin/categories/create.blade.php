@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 
 <h1>Create Category</h1>
 
@@ -57,4 +55,4 @@
 </a>
 
 
-@endsection
+</x-layouts::app>

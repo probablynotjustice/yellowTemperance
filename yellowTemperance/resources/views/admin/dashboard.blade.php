@@ -3,9 +3,8 @@
     <head>
         <!--Nothig here yet-->
     </head>
-@extends('layouts.admin')
 
-@section('content')
+
 
 <x-layouts::app :title="__('Dashboard')" class="">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
@@ -83,4 +82,3 @@
 
 
 </html>
-@endsection

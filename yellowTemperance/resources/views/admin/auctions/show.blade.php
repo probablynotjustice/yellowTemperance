@@ -1,9 +1,8 @@
 <h1>shows one auction</h1>
 
 
-@extends('layouts.admin')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
 <x-admin-sidebar />
 
 <div class="mb-4">
@@ -162,4 +161,4 @@
 
 @endif
 
-@endsection
+</x-layouts::app>

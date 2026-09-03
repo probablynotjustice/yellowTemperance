@@ -1,7 +1,5 @@
 
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 <form method="POST" action="{{ route('logout') }}">
     @csrf
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
@@ -95,4 +93,5 @@
     </div>
 
 @endforeach
-@endsection
+
+</x-layouts::app>

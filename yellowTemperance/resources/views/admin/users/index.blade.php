@@ -1,6 +1,5 @@
-@extends('layouts.admin')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
 <h1>This is the User.Index</h1>
 <h1>Users</h1>
 
@@ -42,4 +41,4 @@
 
 @endforelse
 
-@endsection
+</x-layouts::app>

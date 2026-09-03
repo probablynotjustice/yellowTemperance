@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 
 <div class="border p-4 rounded mb-4">
     <h3>{{ $product->name }}</h3>
@@ -15,4 +13,4 @@
 </a>
 </div>
 
-@endsection
+</x-layouts::app>

@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts::app :title="__('Activity Logs')" class="">
 
 <h1>Activity Logs</h1>
 
@@ -66,4 +64,4 @@
 </div>
 
 {{ $logs->links() }}
-@endsection
+</x-layouts::app>

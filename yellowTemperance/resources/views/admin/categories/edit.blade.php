@@ -1,7 +1,6 @@
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@extends('layouts.admin')
 
-@section('content')
 <x-admin-sidebar />
 
 <form method="POST" action="{{ route('admin.categories.update', $category) }}">
@@ -22,4 +21,4 @@
 
 </form>
 
-@endsection
+</x-layouts::app>

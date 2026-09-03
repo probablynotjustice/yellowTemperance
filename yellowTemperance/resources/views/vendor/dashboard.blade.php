@@ -1,7 +1,6 @@
-@extends('layouts.vendor')
 
 
-@section('content')
+<x-layouts::app :title="__('Dashboard')" class="">
 
 <h1>Show dashboard</h1>
 <div>
@@ -19,4 +18,5 @@
                 ${{ $user->wallet?->balance ?? '0.00' }}
             </span>
 </div>
-@endsection
+
+</x-layouts::app>
