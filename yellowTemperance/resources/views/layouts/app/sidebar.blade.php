@@ -142,6 +142,15 @@
                 Comments
             </flux:sidebar.item>
 
+                        <flux:sidebar.item
+                icon="home"
+                :href="route('base.comments.index')"
+                :current="request()->routeIs('base.comments.*')"
+                wire:navigate
+            >
+                Recipts
+            </flux:sidebar.item>
+
         @endif
         {{-- -}
                     <flux:sidebar.item icon="home" :href="route('base.dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
