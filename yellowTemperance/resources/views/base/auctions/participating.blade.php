@@ -1,10 +1,6 @@
-@if(auth()->user()->roles->contains('name', 'vendor'))
-    @extends('layouts.vendor')
-@else
-    @extends('layouts.base')
-@endif
+<x-layouts::app :title="__('Base Auctions')" class="">
 
-@section('content')
+
 
 @if ($auctions->isEmpty())
 
@@ -64,4 +60,5 @@
 @endif
 
 @endif
-@endsection
+
+</x-layouts::app>

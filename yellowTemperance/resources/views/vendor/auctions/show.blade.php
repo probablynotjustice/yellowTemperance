@@ -1,6 +1,5 @@
-@extends('layouts.vendor')
+<x-layouts::app :title="__('Base Auctions')" class="">
 
-@section('content')
 
 <h1>Shows the Individual Auction</h1>
 <h1>{{ $auction->product->name }}</h1>
@@ -52,4 +51,4 @@
 @endif
 
 
-@endsection
+</x-layouts::app>

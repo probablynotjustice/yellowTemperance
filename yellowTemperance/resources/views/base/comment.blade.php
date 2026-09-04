@@ -1,7 +1,7 @@
-<form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
-</form>
+<x-layouts::app :title="__('Base Auctions')" class="">
+
+
+
 <div>
     <form method="POST" action="{{ route('admin.comments.store') }}">
         <h1>Enter Comment</h1>
@@ -40,3 +40,5 @@
     </div>
 
 @endforeach
+
+</x-layouts::app>

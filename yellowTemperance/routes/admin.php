@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ActivityLogController;
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WalletController;
 use App\Models\ActivityLog;
 use App\Models\User;
 use App\Models\Role;
@@ -40,9 +41,10 @@ Route::middleware(['auth','verified', 'role:admin'])
         Route::prefix('wallets')
             ->name('wallets.')
             ->group(function () {
-                Route::get('/', function()  {
-                    return view('admin.wallets.index');
-                })->name('index');
+                Route::get('/', [WalletController::class, 'index'])
+                    ->name('index');
+                Route::get('/{user}', [WalletController::class, 'show'])
+                    ->name('show');
             });
 
 

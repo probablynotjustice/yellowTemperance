@@ -1,6 +1,6 @@
-@extends('layouts.base')
+<x-layouts::app :title="__('Dashboard')" class="">
 
-@section('content')
+
 <div>
 <div>
     <h1>This is the base users dashboard</h1>
@@ -51,4 +51,5 @@
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>
 </form>
 </div>
-@endsection
+
+</x-layouts::app>

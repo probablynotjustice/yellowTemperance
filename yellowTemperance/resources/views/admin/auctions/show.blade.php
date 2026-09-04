@@ -1,7 +1,7 @@
 <h1>shows one auction</h1>
 
 
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Individual Auction')" class="">
 
 <x-admin-sidebar />
 

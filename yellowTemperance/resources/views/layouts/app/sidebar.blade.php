@@ -12,6 +12,7 @@
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
+            <p class="font-bold text-orange-600">Ticket Count: {{ auth()->user()->wallet->balance }} </p>
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">

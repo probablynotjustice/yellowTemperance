@@ -37,35 +37,31 @@ Route::middleware(['auth', 'verified'])
 
                 Route::post('/{auction}/bid', [BidController::class, 'store'])
                 ->name('bid');
-            });
+        });
 
-    Route::prefix('wallet')
-        ->name('wallets.')
-        ->group(function() {
-            Route::get('/', [WalletController::class, 'index'])
-                ->name('index');
-            Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
-                ->name('add.custom');
-            Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
-                ->name('add');
+        Route::prefix('wallet')
+            ->name('wallets.')
+            ->group(function() {
+                Route::get('/', [WalletController::class, 'index'])
+                    ->name('index');
+                Route::post('/wallet/add/custom', [WalletController::class, 'addCustom'])
+                    ->name('add.custom');
+                Route::post('wallet/add/{amount}', [WalletController::class, 'addPreset'])
+                    ->name('add');
+        });
+
+        Route::prefix('comments')
+            ->name('comments.')
+            ->group( function() {
+                Route::get('/', [CommentController::class, 'index'])
+                    ->name('index');
+                Route::post('/comment', [CommentController::class, 'store'])
+                    ->name('store');
+        });
 });
-});
-        //Wallet Functions
 
 
-
-Route::prefix('comments')
-    ->name('comments.')
-    ->group(function () {
-        Route::get('/comment', [CommentController::class, 'index'])
-            ->name('index');
-
-        Route::post('/comment', [CommentController::class, 'store'])
-            ->name('store');
-
-
-});
-        Route::get('/ticketAll', [WalletController::class, 'index'])
+    Route::get('/ticketAll', [WalletController::class, 'index'])
            ->name('ticketAll');
 
 

@@ -1,10 +1,6 @@
-@if(auth()->user()->roles->contains('name', 'vendor'))
-    @extends('layouts.vendor')
-@else
-    @extends('layouts.base')
-@endif
+<x-layouts::app :title="__('Auction Participation')" class="">
 
-@section('content')
+
 <h1>Active Auctions</h1>
 
 @forelse ($auctions as $auction)
@@ -38,4 +34,5 @@
     <p>No active auctions.</p>
 
 @endforelse
-@endsection
+
+</x-layouts::app>

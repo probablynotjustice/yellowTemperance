@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Auctions Edit')" class="">
 
 <x-admin-sidebar />
 
