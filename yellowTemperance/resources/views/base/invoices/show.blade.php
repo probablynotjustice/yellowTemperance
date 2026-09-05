@@ -92,122 +92,123 @@
     </div>
 
     {{-- Bidding Activity --}}
-    <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+  {{-- Bidding Activity --}}
 
-        <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Bidding Activity
-            </h2>
+<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
 
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Bids and tickets associated with this invoice.
-            </p>
-        </div>
+```
+<div class="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+        Bidding Activity
+    </h2>
 
-        @if($invoice->items->isEmpty())
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Auctions you have bid on.
+    </p>
+</div>
 
-            <div class="p-8 text-center text-gray-500 dark:text-gray-400">
-                No bidding activity is associated with this invoice.
-            </div>
+@php
+    $bidItems = $invoice->items->filter(
+        fn ($item) => $item->bid && $item->bid->auction
+    );
+@endphp
 
-        @else
+@if($bidItems->isEmpty())
 
-            <div class="overflow-x-auto">
+    <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+        You have not bid on any auctions.
+    </div>
 
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+@else
 
-                    <thead class="bg-gray-50 dark:bg-gray-900">
-                        <tr>
+    <div class="overflow-x-auto">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                Product
-                            </th>
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                Auction
-                            </th>
+            <thead class="bg-gray-50 dark:bg-gray-900">
+                <tr>
 
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                Bid Amount
-                            </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Product
+                    </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                Tickets
-                            </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Auction
+                    </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                Date
-                            </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Bid Amount
+                    </th>
 
-                        </tr>
-                    </thead>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Tickets
+                    </th>
 
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Date
+                    </th>
 
-                        @foreach($invoice->items as $item)
+                </tr>
+            </thead>
 
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
 
-                                {{-- Product --}}
-                                <td class="whitespace-nowrap px-6 py-4">
+                @foreach($bidItems as $item)
 
-                                    @if($item->product)
-                                        <span class="font-medium text-gray-900 dark:text-white">
-                                            {{ $item->product->name }}
-                                        </span>
-                                    @else
-                                        <span class="text-gray-500 dark:text-gray-400">
-                                            Product unavailable
-                                        </span>
-                                    @endif
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
 
-                                </td>
+                        {{-- Product --}}
+                        <td class="whitespace-nowrap px-6 py-4">
 
-                                {{-- Auction --}}
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                            <span class="font-medium text-gray-900 dark:text-white">
+                                {{ $item->bid->auction->product->name ?? 'Product unavailable' }}
+                            </span>
 
-                                    @if($item->auction_id)
-                                        Auction #{{ $item->auction_id }}
-                                    @else
-                                        -
-                                    @endif
+                        </td>
 
-                                </td>
+                        {{-- Auction --}}
+                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
 
-                                {{-- Bid Amount --}}
-                                <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            Auction #{{ $item->bid->auction->id }}
 
-                                    ${{ number_format($item->bid_amount, 2) }}
+                        </td>
 
-                                </td>
+                        {{-- Bid Amount --}}
+                        <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
 
-                                {{-- Tickets --}}
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                            ${{ number_format($item->bid->promise_amount, 2) }}
 
-                                    {{ $item->tickets_used }}
+                        </td>
 
-                                </td>
+                        {{-- Tickets --}}
+                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
 
-                                {{-- Date --}}
-                                <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                            {{ $item->bid->ticket_cost }}
 
-                                    {{ $item->bid_placed_at?->format('M d, Y h:i A') ?? 'N/A' }}
+                        </td>
 
-                                </td>
+                        {{-- Date --}}
+                        <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
 
-                            </tr>
+                            {{ $item->bid->created_at->format('M d, Y h:i A') }}
 
-                        @endforeach
+                        </td>
 
-                    </tbody>
+                    </tr>
 
-                </table>
+                @endforeach
 
-            </div>
+            </tbody>
 
-        @endif
+        </table>
 
     </div>
+
+@endif
+```
+
+</div>
+
 
     {{-- Invoice Period --}}
     @if($invoice->period_start || $invoice->period_end)

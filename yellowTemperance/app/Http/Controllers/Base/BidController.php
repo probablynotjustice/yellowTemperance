@@ -8,8 +8,12 @@ use App\Models\Auction;
 use App\Models\WalletTransaction;
 use App\Models\Bid;
 use App\Models\ActivityLog;
+use Illuminate\Support\Str;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 
 use Illuminate\Http\Request;
+use Filament\Actions\Concerns\BelongsTo;
 
 class BidController extends Controller
 {
@@ -68,6 +72,38 @@ class BidController extends Controller
                     'ticket_cost' => $auction->ticket_cost,
                 ]);
 
+                    $invoice = Invoice::firstOrCreate([
+                        'user_id' => $user->id,
+                        'status' => 'outstanding',
+                        ],
+                        [
+                        'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
+                        'issued_at' => now(),
+                        'period_start' => now(),
+                        'period_end' => now(),
+                        'total_bids' => 0,
+                        'total_tickets_used' => 0,
+                    ]);
+
+                    InvoiceItem::create([
+                        'invoice_id' => $invoice->id,
+                        'bid_id' => $bid->id,
+                        'product_id' => $auction->product_id,
+                        'description' => 'Bid on ' . ($auction->product->name ?? 'Unknown Product') .
+                        ' - Auction #' . $auction->id,
+                        'quantity' => $bid->ticket_cost,
+                        'unit_price' => $bid->promise_amount,
+                        'total' => $bid->promise_amount,
+                    ]);
+
+                    $invoice->increment('total_bids');
+                    $invoice->increment('total_tickets_used', $bid->ticket_cost);
+
+                    $invoice->update([
+                        'period_end' => $bid->created_at,
+                    ]);
+
+
                 ActivityLog::record(
                     $user,
                     $bid,
@@ -84,4 +120,9 @@ class BidController extends Controller
 
         return redirect()->back();
     }
+
+    public function product()
+{
+    return $this->belongsTo(Product::class);
+}
 }

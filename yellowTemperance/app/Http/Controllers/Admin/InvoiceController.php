@@ -27,11 +27,13 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        $invoice->load([
-            'user',
-            'items.product',
-        ]);
+   abort_unless($invoice->user_id === Auth::id(), 403);
 
-        return view('admin.invoices.show', compact('invoice'));
+    $invoice->load([
+        'user',
+        'items.bid.auction.product',
+    ]);
+
+    return view('base.invoices.show', compact('invoice'));
     }
 }

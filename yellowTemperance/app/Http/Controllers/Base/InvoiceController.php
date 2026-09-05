@@ -12,10 +12,16 @@ use App\Models\Invoice;
 
 class InvoiceController extends Controller
 {
-public function index() {
-    $invoices = Invoice::with('items')
+public function index()
+    {
+        $invoices = Invoice::with([
+        'items.bid.auction.product',
+        ])
         ->where('user_id', Auth::id())
-        ->latest('issued_at') ->get();
+        ->latest('issued_at')
+        ->get();
+
+
         return view('base.invoices.index', compact('invoices'));
     }
 
