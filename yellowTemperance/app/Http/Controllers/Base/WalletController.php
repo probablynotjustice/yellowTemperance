@@ -50,7 +50,7 @@ class WalletController extends Controller
                 $user,
                 $wallet,
                 'funded',
-                "Added {$amount} credits to wallet.",
+                "Added {$amount} tickets to wallet.",
                 null,
                 [
                     'amount' => $amount,

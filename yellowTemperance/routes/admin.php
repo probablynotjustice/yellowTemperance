@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ActivityLogController;
 
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Models\ActivityLog;
@@ -143,6 +144,15 @@ Route::middleware(['auth','verified', 'role:admin'])
             //        ->name('update');
             //    Route::delete('/{user}', [UserController::class, 'destroy'])
             //        ->name('destroy');
+        });
+
+        Route::prefix('invoices')
+            ->name('invoices.')
+            ->group( function () {
+                Route::get('/', [InvoiceController::class, 'index'])
+                    ->name('index');
+                Route::get('/{invoice}', [InvoiceController::class , 'show'])
+                    ->name('show');
         });
 
     Route::get('activityLogs', [ActivityLogController::class, 'index'])

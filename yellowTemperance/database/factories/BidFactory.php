@@ -18,7 +18,7 @@ class BidFactory extends Factory
     {
         return [
             'ticket_cost' =>fake()->numberBetween(1,5),
-            'promise _amount' =>0
+            'promise_amount' =>0
         ];
     }
 }

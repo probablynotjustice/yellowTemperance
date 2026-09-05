@@ -55,8 +55,9 @@
                 :current="request()->routeIs('vendor.wallets.*')"
                 wire:navigate
             >
-                Wallet
+                Wallets
             </flux:sidebar.item>
+
         {{-- ========================================= --}}
         {{-- ADMIN SIDEBAR                             --}}
         {{-- ========================================= --}}
@@ -98,7 +99,14 @@
             >
                 Wallets
             </flux:sidebar.item>
-
+                        <flux:sidebar.item
+                icon="home"
+                :href="route('admin.invoices.index')"
+                :current="request()->routeIs('base.comments.*')"
+                wire:navigate
+            >
+                Invoices
+            </flux:sidebar.item>
 
         {{-- ========================================= --}}
         {{-- BASE / CUSTOMER SIDEBAR                   --}}
@@ -142,9 +150,9 @@
                 Comments
             </flux:sidebar.item>
 
-                        <flux:sidebar.item
+            <flux:sidebar.item
                 icon="home"
-                :href="route('base.comments.index')"
+                :href="route('base.invoices.index')"
                 :current="request()->routeIs('base.comments.*')"
                 wire:navigate
             >

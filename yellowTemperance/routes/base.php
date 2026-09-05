@@ -8,6 +8,8 @@ use App\Http\Controllers\Base\AuctionController;
 use App\Http\Controllers\Base\BidController;
 use App\Http\Controllers\Base\CommentController;
 use App\Http\Controllers\Base\WalletController;
+use App\Http\Controllers\Base\InvoiceController;
+
 
 
 
@@ -57,6 +59,18 @@ Route::middleware(['auth', 'verified'])
                     ->name('index');
                 Route::post('/comment', [CommentController::class, 'store'])
                     ->name('store');
+        });
+
+        Route::prefix('invoices')
+            ->name('invoices.')
+            ->group(function () {
+
+                Route::get('/', [InvoiceController::class, 'index'])
+                    ->name('index');
+
+                Route::get('/{invoice}', [InvoiceController::class, 'show'])
+                    ->name('show');
+
         });
 });
 

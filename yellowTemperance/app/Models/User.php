@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -150,4 +151,8 @@ class User extends Authenticatable
         return $this->morphMany(ActivityLog::class, 'loggable');
     }
 
+    public function invoices()
+        {
+            return $this->hasMany(Invoice::class);
+        }
 }
