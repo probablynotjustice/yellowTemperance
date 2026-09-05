@@ -30,6 +30,7 @@ class InvoiceSeeder extends Seeder
             $invoice = Invoice::create([
                 'user_id' => $userId,
                 'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
+
                 'status' => 'outstanding',
                 'issued_at' => now(),
                 'period_start' => $userBids->min(
@@ -50,6 +51,7 @@ class InvoiceSeeder extends Seeder
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'product_id' => $product?->id,
+                    'bid_id' => $bid->id,
 
                     'description' => sprintf(
                         'Bid on %s - Auction #%s',

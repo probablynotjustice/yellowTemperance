@@ -23,10 +23,12 @@ public function index() {
     {
         abort_unless($invoice->user_id === auth()->id(), 403);
         $invoice->load([
-            'items.product',
             'user',
+            'items.product',
+            'items.bid.auction.product',
         ]);
-        return view('base.invoices.show', compact('invoice','user'));
+
+        return view('admin.invoices.show', compact('invoice'));
     }
 
 }

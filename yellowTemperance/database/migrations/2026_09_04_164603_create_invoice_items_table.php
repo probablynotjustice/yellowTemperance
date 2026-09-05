@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('invoice_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('bid_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->foreignId('product_id')
                 ->nullable()
                 ->constrained()
@@ -24,6 +27,8 @@ return new class extends Migration
             $table->unsignedInteger('quantity')->default(1);
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total', 10, 2);
+
+
             $table->timestamps();
         });
     }

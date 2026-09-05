@@ -13,6 +13,7 @@ class InvoiceItem extends Model
     protected $fillable = [
         'invoice_id',
         'product_id',
+        'bid_id',
         'description',
         'quantity',
         'unit_price',
@@ -34,4 +35,8 @@ class InvoiceItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function bid(): BelongsTo
+        {
+            return $this->belongsTo(Bid::class);
+        }
 }
