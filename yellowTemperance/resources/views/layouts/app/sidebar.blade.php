@@ -230,7 +230,7 @@
             <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
         </flux:sidebar>
 
-
+        <div class="flex min-h-screen min-w-0 flex-1 flex-col">
         <!-- Mobile User Menu -->
         <flux:header class="lg:hidden">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
@@ -285,9 +285,11 @@
                 </flux:menu>
             </flux:dropdown>
         </flux:header>
-
+        <main class="flex-1 min-w-0">
         {{ $slot }}
+         </main>
 
+    </div>
         @fluxScripts
     </body>
 

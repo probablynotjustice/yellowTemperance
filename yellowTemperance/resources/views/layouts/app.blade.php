@@ -1,12 +1,12 @@
 <x-layouts::app.sidebar :title="$title ?? null" class="min-h-screen">
-        <div class="flex min-h-screen flex-col"></div>
-<flux:main>
-        {{ $slot }}
-    </flux:main>
+    <div class="flex min-h-screen min-w-0 flex-1 flex-col">
+        <flux:main class="flex-1">
+            {{ $slot }}
+        </flux:main>
 
-    <footer>
-<x-footer />
-</footer>
-</div>
+        <footer class="w-full">
+            <x-footer />
+        </footer>
+    </div>
 </x-layouts::app.sidebar>
 
