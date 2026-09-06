@@ -74,12 +74,39 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
+                icon="home"
+                :href="route('admin.products.index')"
+                :current="request()->routeIs('admin.products')"
+                wire:navigate
+            >
+                Products
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="home"
+                :href="route('admin.auctions.index')"
+                :current="request()->routeIs('admin.auctions')"
+                wire:navigate
+            >
+                Auctions
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
                 icon="users"
                 :href="route('admin.users.index')"
                 :current="request()->routeIs('admin.users.*')"
                 wire:navigate
             >
                 Users
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="users"
+                :href="route('admin.categories.index')"
+                :current="request()->routeIs('admin.Categories')"
+                wire:navigate
+            >
+                Categories
             </flux:sidebar.item>
 
             <flux:sidebar.item

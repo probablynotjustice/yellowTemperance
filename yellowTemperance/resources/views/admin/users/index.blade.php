@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin User Overview')" class="">
 
 <h1>This is the User.Index</h1>
 <h1>Users</h1>

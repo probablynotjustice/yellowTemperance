@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Auctions Edit')" class="">
+<x-layouts::app :title="__('Admin Auctions Edit')" class="">
 
     <h1 class="text-2xl font-bold mb-6">
         User Wallets

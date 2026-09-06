@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin Create Products')" class="">
 
 <h1>this is the Create products page</h1>
 

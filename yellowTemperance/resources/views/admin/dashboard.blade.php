@@ -6,7 +6,7 @@
 
 
 
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin Dashboard')" class="">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <p> This is the admin Dashboard  Without filament</p>
         <p><a href="{{ route('admin.products.index') }}">Manage Products</a></p>

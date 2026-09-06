@@ -1,9 +1,4 @@
-<h1>shows one auction</h1>
-
-
-<x-layouts::app :title="__('Individual Auction')" class="">
-
-<x-admin-sidebar />
+<x-layouts::app :title="__('Admin Individual Auction')" class="">
 
 <div class="mb-4">
     <a href="{{ route('admin.auctions.index') }}">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin Products Overview')" class="">
 <h1>PRODUCTS</h1>
 <a href="/admin/products/create">Create Product</a>
 

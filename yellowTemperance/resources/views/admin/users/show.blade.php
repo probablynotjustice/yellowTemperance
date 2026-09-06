@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin Individual User')" class="">
 
 <h1>{{ $user->name }}</h1>
 

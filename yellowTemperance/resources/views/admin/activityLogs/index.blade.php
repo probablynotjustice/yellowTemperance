@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Activity Logs')" class="">
+<x-layouts::app :title="__('Admin Activity Logs')" class="">
 
 <h1>Activity Logs</h1>
 

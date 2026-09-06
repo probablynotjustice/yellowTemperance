@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Dashboard')" class="">
+<x-layouts::app :title="__('Admin Categories Overview')" class="">
 
 <h1>display all Categories</h1>
 <h1>Categories</h1>

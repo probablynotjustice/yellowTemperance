@@ -1,5 +1,5 @@
+<x-layouts::app :title="__('Admin Comments Overview')" class="">
 
-<x-layouts::app :title="__('Dashboard')" class="">
 <form method="POST" action="{{ route('logout') }}">
     @csrf
     <button class="rounded-lg bg-slate-400 text-red-500 "type="submit">Log Out</button>

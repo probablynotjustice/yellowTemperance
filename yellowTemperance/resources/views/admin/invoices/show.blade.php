@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Base Auctions')" class="">
+<x-layouts::app :title="__('Admin Individual Auction')" class="">
 
 
 <div class="mx-auto max-w-6xl px-4 py-8">
