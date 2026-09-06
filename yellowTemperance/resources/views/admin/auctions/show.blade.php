@@ -1,25 +1,6 @@
 <x-layouts::app :title="__('Admin Individual Auction')" class="">
 
-<div class="mb-4">
-    <a href="{{ route('admin.auctions.index') }}">
-        ← Back to Auctions
-    </a>
 
-    <a href="{{ route('admin.auctions.edit', $auction) }}">
-        Edit Auction
-    </a>
-
-    <form action="{{ route('admin.auctions.destroy', $auction) }}"
-          method="POST"
-          style="display:inline;">
-        @csrf
-        @method('DELETE')
-
-        <button type="submit">
-            Delete
-        </button>
-    </form>
-</div>
 
 <h1>Auction Details</h1>
 
@@ -116,7 +97,7 @@
 
 @else
 
-<table border="1" cellpadding="8">
+<table class="w-full" border="1" cellpadding="8">
 
     <thead>
 
@@ -132,14 +113,14 @@
 
     <tbody>
 
-    @foreach($auction->bids->sortByDesc('amount') as $bid)
+    @foreach($auction->bids->sortByDesc('promise_amount') as $bid)
 
         <tr>
 
             <td>{{ $bid->user->name }}</td>
 
             <td>
-                ${{ number_format($bid->amount, 2) }}
+                ${{ number_format($bid->promise_amount, 2) }}
             </td>
 
             <td>
@@ -155,5 +136,26 @@
 </table>
 
 @endif
+
+<div class="flex mb-4 mt-5 gap-x-4">
+    <a href="{{ route('admin.auctions.index') }}">
+        ← Back to Auctions
+    </a>
+
+    <a href="{{ route('admin.auctions.edit', $auction) }}">
+        Edit Auction
+    </a>
+
+    <form action="{{ route('admin.auctions.destroy', $auction) }}"
+          method="POST"
+          style="display:inline;">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit">
+            Delete
+        </button>
+    </form>
+</div>
 
 </x-layouts::app>
