@@ -70,5 +70,9 @@ class InvoiceSeeder extends Seeder
                 ]);
             }
         }
+
+        $this->command->info(
+            '     Invoice Seeded.. But, i still dont know why it takes so long to Finish.'
+        );
     }
 }

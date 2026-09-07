@@ -49,6 +49,9 @@ class BidSeeder extends Seeder
                 'current_bid' => $currentBid,
             ]);
         }
+        $this->command->info(
+            '     Bid Seeded.. But, it took a while..'
+        );
 
     }
 }

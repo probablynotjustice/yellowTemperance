@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
         CommentSeeder::class,
         BidSeeder::class,
         InvoiceSeeder::class,
+        AuctionResultsSeeder::class,
+        AuctionResultsInvoiceSeeder::class,
     ]);
 
     // User::factory(10)->create();
