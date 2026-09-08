@@ -73,6 +73,8 @@ Route::middleware(['auth','verified', 'role:admin'])
             ->group(function () {
                 Route::get('/', [AuctionController::class, 'index'])
                     ->name('index');
+                /*Route::get('/closedAuctions', [AuctionController::class, 'closedAuctions'])
+                    ->name('closedAuctions')*/
                 Route::get('create', [AuctionController::class, 'create'])
                     ->name('create');
                 Route::post('/', [AuctionController::class, 'store'])

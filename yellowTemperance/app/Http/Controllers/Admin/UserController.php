@@ -18,8 +18,28 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load('roles');
+        $user->load([
+            'roles',
+            'wallet',
+            'bids.auction.product',
+            'invoices.items.bid.auction.product',
+            ]);
+        $wins = $user->bids
+            ->filter(function ($bid) {
+                return $bid->auction
+                    && $bid->auction->winner_id ==$bid->user_id;
+            });
 
-        return view('admin.users.show', compact('user'));
+        $outstandingInvoices = $user->invoices
+            ->where('status', "outstanding")
+            ->filter(function ($invoice) {
+                return $invoice->items->contains(function ($item) {
+                    return $item->bid
+                        && $item->bid->auction
+                        && $item->bid->auction->winner_id == $item->bid->user_id;
+
+                    });
+            });
+        return view('admin.users.show', compact('user', 'wins', 'outstandingInvoices'));
     }
 }

@@ -27,6 +27,19 @@ class AuctionController extends Controller
         return view('admin.auctions.index', compact('auctions'));
     }
 
+        public function CLosedAuctions()
+    {
+        $auctions = Auction::with([
+            'product.vendor',
+            'product',
+            'product.category',
+            'bids',
+        ])->latest()->get()
+            ->where('status', 'closed');
+
+        return view('admin.auctions.index', compact('auctions'));
+    }
+
     public function show(Auction $auction)
     {
         $auction->load([
