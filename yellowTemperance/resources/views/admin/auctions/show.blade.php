@@ -15,9 +15,15 @@
 
     <hr>
 
-    <p>
+    <p  class="block rounded-lg  p-2 hover:bg-black dark:hover:bg-zinc-800">
+          <a
+                href="{{ route('admin.users.show', $auction->product->vendor) }}"
+
+            >
+
         <strong>Vendor:</strong>
         {{ $auction->product->vendor->name }}
+        </a>
     </p>
 
     <p>
@@ -79,11 +85,13 @@
     @if($auction->winner)
 
         <hr>
-
-        <p>
+<a href="{{ route('admin.users.show', $auction->winner->id) }}">
+     <p>
             <strong>Winner:</strong>
             {{ $auction->winner->name }}
-        </p>
+    </p>
+</a>
+
 
     @endif
 
