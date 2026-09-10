@@ -23,6 +23,14 @@ class Auction extends Model
         'winner_id',
     ];
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'starting_bid' => 'decimal:2',
+        'current_bid' => 'decimal:2',
+        'reserve_price' => 'decimal:2',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);

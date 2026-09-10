@@ -131,15 +131,29 @@
                             <tr>
 
                                 <td class="px-6 py-4">
+                                    <a href="{{ route('admin.auctions.show', $auction) }}"
+                                        class="block hover:underline">
                                     #{{ $auction->id ?? 'N/A' }}
+                                </a>
                                 </td>
 
                                 <td class="px-6 py-4">
+                                    <a href="{{ route('admin.products.show', $auction->product) }}"
+                                        class="block hover:underline">
                                     {{ $auction->product->name ?? 'Product unavailable' }}
+                                    </a>
                                 </td>
 
                                 <td class="px-6 py-4 font-semibold">
+                                  {{--  <a href="{{ route('admin.invoices.show', $user->invoices) }}"
+                                        class="block hover:underline">
+
+                                        Ill Need to build the Relationship between InvoiceItem
+                                        and Invoive inorder to get this working
+
+                                        --}}
                                     ${{ number_format($bid->promise_amount, 2) }}
+                                    </a>
                                 </td>
 
                                 <td class="px-6 py-4">
