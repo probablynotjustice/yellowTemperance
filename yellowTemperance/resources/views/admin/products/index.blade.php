@@ -18,16 +18,24 @@
 
     <tbody>
         @foreach ($products as $product)
-            <tr>
+            <tr class="border-b-2 border-grey-200">
                 <td>
                     <a href="{{ route('admin.products.show', $product) }}">
                         {{ $product->name }}
                     </a>
                 </td>
 
-                <td>{{ $product->vendor->name }}</td>
+                <td>
+                    <a href="{{ route('admin.users.show', $product->vendor->id) }}">
+                    {{ $product->vendor->name }}
+                    </a>
+                </td>
 
-                <td>{{ $product->category->name }}</td>
+                <td>
+                    <a href="{{ route('admin.categories.show', $product->category) }}">
+                    {{ $product->category->name }}
+                    </a>
+                </td>
                                 <td>{{ $product->inventory }}</td>
 
                 <td>${{ number_format($product->price, 2) }}</td>

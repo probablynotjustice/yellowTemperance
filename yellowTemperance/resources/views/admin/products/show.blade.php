@@ -29,15 +29,21 @@
     <p>Sale Price: ${{ $product->price }}</p>
     <p>Ticket Cost: ${{ $product->ticket_cost }}</p>
     <p>Inventory: {{ $product->inventory }}</p>
-    <p>Vendor: {{ $product->vendor->name }}</p>
+    <a href="{{ route('admin.users.show', $product->vendor->id) }}">
+        <p>Vendor: {{ $product->vendor->name }}</p>
+    </a>
     <a href="{{ route('admin.products.edit', $product) }}">
-    <button type="button">
-        Edit Product
-    </button>
-</a>
+        <button type="button"
+            class="text-gray-600 bg-amber-400 px-3 rounded hover:bg-amber-200">
+            Edit Product
+        </button>
+    </a>
     <a href="{{ route('vendor.auctions.create', $product) }}">
-    Create Auction
-</a>
+        <button type="button"
+            class="text-gray-400 bg-green-700 px-3 rounded hover:bg-green-300">
+            Create Auction
+        </button>
+    </a>
 </div>
 </admin-layout>
 
