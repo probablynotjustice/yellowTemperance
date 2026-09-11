@@ -6,7 +6,12 @@
 
 <div class="border p-4 rounded mb-4">
 
-    <h2>{{ $auction->product->name }}</h2>
+    <h2>
+        <a href="{{ route('admin.products.show',$auction->product) }}"
+            class="font-extrabold text-4xl ">
+        {{ $auction->product->name }}
+        </a>
+    </h2>
 
     <p>
         <strong>Description:</strong><br>
@@ -27,8 +32,11 @@
     </p>
 
     <p>
+        <a href="{{ route('admin.categories.show', $auction->product->category) }}">
         <strong>Category:</strong>
+
         {{ $auction->product->category->name }}
+        </a>
     </p>
 
     <p>
@@ -105,7 +113,7 @@
 
 @else
 
-<table class="w-full" border="1" cellpadding="8">
+<table class="w-full" cellpadding="8" >
 
     <thead>
 
@@ -125,7 +133,11 @@
 
         <tr>
 
-            <td>{{ $bid->user->name }}</td>
+            <td>
+                <a href="{{ route('admin.users.show', $bid->user->id) }}">
+                    {{ $bid->user->name }}
+                </a>
+            </td>
 
             <td>
                 ${{ number_format($bid->promise_amount, 2) }}

@@ -46,7 +46,7 @@
 
     @foreach($auctions as $auction)
 
-        <tr>
+        <tr class="border-b-2 my-10">
 
             <td>{{ $auction->id }}</td>
 
@@ -56,7 +56,11 @@
                 </a>
             </td>
 
-            <td>{{ $auction->product->vendor->name }}</td>
+            <td>
+                <a href="{{ route('admin.users.show', $auction->product->vendor->id) }}">
+                    {{ $auction->product->vendor->name }}
+                </a>
+            </td>
 
             <td>{{ ucfirst($auction->status) }}</td>
 
@@ -88,13 +92,15 @@
 
             <td>
 
-                <a href="{{ route('admin.auctions.show', $auction) }}">
+                <a href="{{ route('admin.auctions.show', $auction) }}"
+                    class="bg-gray-300 rounded">
                     View
                 </a>
 
                 |
 
-                <a href="{{ route('admin.auctions.edit', $auction) }}">
+                <a href="{{ route('admin.auctions.edit', $auction) }}"
+                    class="font-semibold text-gray-200 bg-amber-400 rounded hover:bg-amber-200">
                     Edit
                 </a>
 
@@ -108,7 +114,8 @@
                     @csrf
                     @method('DELETE')
 
-                    <button type="submit">
+                    <button type="submit"
+                        class="font-semibold text-gray-200 bg-red-500 rounded hover:bg-red-500">
                         Delete
                     </button>
 
