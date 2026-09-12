@@ -8,6 +8,33 @@
     @csrf
     @method('PUT')
 
+
+
+@if ($errors->any())
+    <div class="rounded-lg border border-red-500 bg-red-50 p-4 text-red-700">
+        <strong>Validation errors:</strong>
+
+        <ul class="mt-2 list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<div>
+    <div>{{ $auction->product->name }}</div>
+    <label for="product_id">
+        Product ID: {{ $auction->product->id }}
+    </label>
+    <input
+        id="product"
+        name="product_id"
+        type="text"
+        value="{{ $auction->product->id }}">
+    </label>
+</div>
+
     <div>
 
         <label for="starting_bid">
@@ -16,7 +43,7 @@
 
         <input
             type="number"
-            step="0.01"
+            step="1.00"
             min="0"
             id="starting_bid"
             name="starting_bid"
@@ -26,6 +53,21 @@
         @error('starting_bid')
             <div>{{ $message }}</div>
         @enderror
+
+    </div>
+
+    <div>
+        <label>
+            Current Bid
+        </label>
+        <input
+            type="number"
+            step="1.00"
+            min="0"
+            id="current_bid"
+            name="current_bid"
+            value="{{ old('current_bid', $auction->current_bid) }}"
+        >
 
     </div>
 
@@ -39,7 +81,7 @@
 
         <input
             type="number"
-            step="0.01"
+            step="1"
             min="0"
             id="ticket_cost"
             name="ticket_cost"

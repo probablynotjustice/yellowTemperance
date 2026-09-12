@@ -27,7 +27,7 @@ class AuctionController extends Controller
         return view('admin.auctions.index', compact('auctions'));
     }
 
-        public function CLosedAuctions()
+        public function ClosedAuctions()
     {
         $auctions = Auction::with([
             'product.vendor',
