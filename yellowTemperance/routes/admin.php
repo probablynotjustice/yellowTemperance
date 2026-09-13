@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Admin\AuctionController;
+use App\Http\Controllers\Admin\BidController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ActivityLogController;
@@ -87,6 +88,14 @@ Route::middleware(['auth','verified', 'role:admin'])
                     ->name('update');
                 Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
+            });
+        Route::prefix('bids')
+            ->name('bids.')
+            ->group(function () {
+                Route::get('/', [BidController::class, 'index'])
+                    ->name('index');
+                Route::get('/{bid}', [BidController::class, 'index'])
+                    ->name('show');
             });
 
         Route::prefix('categories')

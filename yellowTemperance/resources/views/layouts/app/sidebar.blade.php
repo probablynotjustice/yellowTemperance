@@ -102,6 +102,15 @@
 
             <flux:sidebar.item
                 icon="users"
+                :href="route('admin.bids.index')"
+                :current="request()->routeIs('admin.bids.*')"
+                wire:navigate
+            >
+                Bids
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="users"
                 :href="route('admin.categories.index')"
                 :current="request()->routeIs('admin.Categories')"
                 wire:navigate
