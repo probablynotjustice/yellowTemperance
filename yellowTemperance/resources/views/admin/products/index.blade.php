@@ -42,7 +42,8 @@
 
                 <td>
                     <a href="{{ route('admin.products.edit', $product) }}">
-                        <button type="button">
+                        <button type="button"
+                                class="hover:underline">
                             Edit Product
                         </button>
                     </a>
@@ -54,7 +55,8 @@
                         @csrf
                         @method('DELETE')
 
-                        <button type="submit">
+                        <button type="submit"
+                                class="hover:underline">
                             Delete
                         </button>
                     </form>

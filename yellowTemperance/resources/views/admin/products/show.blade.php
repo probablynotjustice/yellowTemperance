@@ -27,7 +27,7 @@
     <p>{{ $product->description }}</p>
     <p>Retail: ${{ $product->retail_price }}</p>
     <p>Sale Price: ${{ $product->price }}</p>
-    <p>Ticket Cost: ${{ $product->auction->ticket_cost }}</p>
+    {{-- -<p>Ticket Cost: ${{ $product->ticket_cost }}</p> --}}
     <p>Inventory: {{ $product->inventory }}</p>
     <a href="{{ route('admin.users.show', $product->vendor->id) }}">
         <p>Vendor: {{ $product->vendor->name }}</p>
