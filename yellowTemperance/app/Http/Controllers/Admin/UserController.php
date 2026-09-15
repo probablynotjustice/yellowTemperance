@@ -21,6 +21,7 @@ class UserController extends Controller
         $user->load([
             'roles',
             'wallet',
+            'products.auctions',
             'bids.auction.product',
             'invoices.items.bid.auction.product',
             ]);
@@ -40,6 +41,13 @@ class UserController extends Controller
 
                     });
             });
-        return view('admin.users.show', compact('user', 'wins', 'outstandingInvoices'));
+        if ($user->roles->contains('name', 'vendor')) {
+            $auctions = $user->products
+                ->flatMap->auctions;
+        } else {
+            $auctions = collect();
+        }
+
+        return view('admin.users.show', compact('user', 'wins', 'outstandingInvoices', 'auctions'));
     }
 }

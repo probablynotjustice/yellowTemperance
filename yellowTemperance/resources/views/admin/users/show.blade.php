@@ -421,6 +421,62 @@
 
     </div>
 
+  @if($user->roles->contains('name', 'vendor'))
+
+    <h2>Vendor Auctions</h2>
+
+    @forelse($auctions as $auction)
+        <div>
+            <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
+                    <thead class="bg-zinc-50 dark:bg-zinc-800">
+                        <tr>
+
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                                Auction Numbr
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                                Vendor
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                                Current Bid
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <tr>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('admin.auctions.show', $auction) }}">
+                                    Auction #{{ $auction->id }}
+                                </a>
+                            </td>
+                            <td class="px-6 py-4">
+                                 <p>Vendor {{ $auction->product->vendor->name }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                 <p>Product: {{ $auction->product->name }}</p>
+                            </td>
+                            <td  class="px-6 py-4">
+                                 <p>Status: {{ $auction->status }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p>Current Bid: ${{ number_format($auction->current_bid, 2) }}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+
+            </table>
+
+
+        </div>
+    @empty
+        <p>This vendor has no auctions.</p>
+    @endforelse
+
+@endif
 
     <div class="mt-6">
 
