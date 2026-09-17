@@ -466,9 +466,9 @@
                                  <p class="text-green-400"> {{ $auction->status }}</p>
                                 @elseif( $auction->status == 'completed')
                                 <p class="text-cyan-400"> {{ $auction->status }}</p>
-                                @else
-                                <p> {{ $auction->status }}</p>
-                                 @endif
+                            @elseif($auction->status === 'closed')
+                                <p class="text-red-400">{{ $auction->status }}</p>
+                            @endif
                             </td>
                             <td class="px-6 py-4">
                                 <p>Current Bid: ${{ number_format($auction->current_bid, 2) }}</p>

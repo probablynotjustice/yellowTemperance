@@ -49,6 +49,7 @@
         </div>
     </div>
     {{-- Customer Information --}}
+    <a href="{{ route('admin.users.show', $invoice->user) }}">
     <div class="mb-8 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             Customer
@@ -72,6 +73,7 @@
             </div>
         </div>
     </div>
+    </a>
     {{-- Bidding Activity --}}
 
 <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
@@ -137,14 +139,18 @@
 
                         {{-- Product --}}
                         <td class="whitespace-nowrap px-6 py-4">
+                            <a href="{{ route('admin.products.show', $item->bid->auction->product) }}">
                             <span class="font-medium text-gray-900 dark:text-white">
                                 {{ $item->bid->auction->product->name ?? 'Product unavailable' }}
                             </span>
+                            </a>
                         </td>
 
                         {{-- Auction --}}
                         <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
+                            <a href="{{ route('admin.auctions.show', $item->bid->auction) }}">
                             Auction #{{ $item->bid->auction->id }}
+                            </a>
                         </td>
 
                         {{-- Bid Amount --}}
