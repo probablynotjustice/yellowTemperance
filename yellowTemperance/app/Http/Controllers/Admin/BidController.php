@@ -26,6 +26,7 @@ class BidController extends Controller
             'auction.product.vendor',
             'auction.product.category',
             'auction.winner',
+            'bids.invoiceItems.invoice',
         ]);
 
         return view('admin.bids.show', compact('bid'));
