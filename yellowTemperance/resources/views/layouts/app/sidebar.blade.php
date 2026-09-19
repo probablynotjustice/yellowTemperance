@@ -143,6 +143,14 @@
             >
                 Invoices
             </flux:sidebar.item>
+                                    <flux:sidebar.item
+                icon="home"
+                :href="route('admin.activityLogs.index')"
+                :current="request()->routeIs('admin.activityLog.*')"
+                wire:navigate
+            >
+                Activity Log
+            </flux:sidebar.item>
 
         {{-- ========================================= --}}
         {{-- BASE / CUSTOMER SIDEBAR                   --}}
