@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\Auction;
+use App\Models\ActivityLog;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 class CategoryController extends Controller
 {
@@ -52,11 +54,20 @@ class CategoryController extends Controller
             ]
         ]);
 
-        Category::create([
+        $category = Category::create([
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
             'description' => $validated['description'],
             ]);
+
+
+        ActivityLog::record(
+            auth()->user(),
+            $category,
+            'category.created',
+            "Created category '{$category->name}'.",
+            null,
+            $category->toArray() );
 
         return redirect()
             ->route('admin.categories.index')
@@ -105,7 +116,18 @@ class CategoryController extends Controller
 
     $validated['slug'] = Str::slug($validated['name']);
 
+    $oldValues = $category->toArray();
+
     $category->update($validated);
+
+    ActivityLog::record(
+        auth()->user(),
+        $category,
+        'category.update',
+        "Updated category '{$category->name}'.",
+        $oldValues,
+        $category->fresh()->toArray()
+    );
 
     return redirect()
         ->route('admin.categories.index')
@@ -130,8 +152,19 @@ class CategoryController extends Controller
                 'category' => 'This category cannot be deleted because it is assigned to one or more products.',
             ]);
         }
+
+        $oldValues = $category->toArray();
+
         $category->delete();
 
+        ActivityLog::record(
+            auth()->user(),
+            $category,
+            'Category.deleted',
+            "Deleted category '{$category->name}'.",
+            $oldValues,
+            null
+        );
 
         return redirect()
             ->route('admin.categories.index')
