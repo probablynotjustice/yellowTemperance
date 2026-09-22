@@ -25,8 +25,11 @@
                 <strong>User:</strong>
 
                 @if ($log->user)
+                    <a href="{{ route('admin.users.show', $log->user) }}"
+                        class="hover:underline">
                     {{ $log->user->name }}
                     ({{ $log->user->email }})
+                    </a>
                 @else
                     System / Unknown
                 @endif
