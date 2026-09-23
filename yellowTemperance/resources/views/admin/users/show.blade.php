@@ -271,7 +271,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 font-semibold">
-                                    <a href="{{ route('admin.show.invoices', $bid) }}">
+                                    <a href="{{ route('admin.invoices.show', $bid) }}">
                                     ${{ number_format($bid->promise_amount, 2) }}
                                     </a>
                                 </td>
@@ -394,7 +394,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 font-semibold">
-                                            <a href="{{ route('admin.show.invoices', $bid) }}"
+                                            <a href="{{ route('admin.invoices.show', $bid) }}"
                                                 class="hover:text-underline">
                                             ${{ number_format($item->bid->promise_amount, 2) }}
                                             </a>
