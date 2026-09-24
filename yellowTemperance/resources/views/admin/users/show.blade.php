@@ -59,6 +59,19 @@
             </div>
 
         </div>
+        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+            <div class="flex items-center justify-between">
+                <div>
+                    <flux:text class="text-sm text-zinc-500">
+                        Outstanding Balance
+                    </flux:text>
+                    <div class="mt-1 text-3xl font-bold">
+                        ${{ number_format($invoiceTotal ?? 0) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 

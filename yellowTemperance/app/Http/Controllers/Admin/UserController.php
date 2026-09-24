@@ -41,6 +41,12 @@ class UserController extends Controller
 
                     });
             });
+        $invoiceTotal = $outstandingInvoices->sum('total');
+        dd(
+    $outstandingInvoices->toArray(),
+    $invoiceTotal
+);
+
         if ($user->roles->contains('name', 'vendor')) {
             $auctions = $user->products
                 ->flatMap->auctions;
@@ -48,6 +54,11 @@ class UserController extends Controller
             $auctions = collect();
         }
 
-        return view('admin.users.show', compact('user', 'wins', 'outstandingInvoices', 'auctions'));
+        return view('admin.users.show', compact('user',
+            'wins',
+            'outstandingInvoices',
+            'auctions',
+            'invoiceTotal'
+        ));
     }
 }
