@@ -41,11 +41,12 @@ class UserController extends Controller
 
                     });
             });
-        $invoiceTotal = $outstandingInvoices->sum('total');
-        dd(
-    $outstandingInvoices->toArray(),
-    $invoiceTotal
-);
+        $invoiceTotal = $user->invoices
+            ->where('status', 'outstanding')
+            ->sum(function ($invoice) {
+                return $invoice->items->sum('total');
+            });
+
 
         if ($user->roles->contains('name', 'vendor')) {
             $auctions = $user->products
