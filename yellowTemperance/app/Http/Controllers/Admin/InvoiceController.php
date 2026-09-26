@@ -35,3 +35,22 @@ class InvoiceController extends Controller
     return view('admin.invoices.show', compact('invoice'));
     }
 }
+
+//BrainStorm on the Invoice and Bid Concerns
+/*
+
+1. Auction has a starting bid.
+2. Auction has a minimum increment.
+3. Minimum increment belongs to the Auction.
+4. User pays ticket_cost when placing a bid.
+5. Every bid must exceed the current bid by at least minimum_increment.
+6. promise_amount is the amount the bidder promises if they win.
+7. Bids remain bids while the auction is open.
+8. When the auction closes, the highest valid promise_amount is the winning bid.
+9. The winning bid's user becomes the winner.
+10. The winning bid's promise_amount becomes the amount owed.
+11. The winning bid becomes an InvoiceItem.
+12. One outstanding Invoice can contain multiple winning bids.
+13. Invoice total = sum of its InvoiceItems.
+
+*/
