@@ -15,6 +15,7 @@ class Auction extends Model
         'product_id',
         'ticket_cost',
         'starting_bid',
+        'minimum_increment',
         'current_bid',
         'reserve_price',
         'starts_at',
@@ -27,6 +28,7 @@ class Auction extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'starting_bid' => 'decimal:2',
+        'minimum_increment => decimal:2',
         'current_bid' => 'decimal:2',
         'reserve_price' => 'decimal:2',
     ];
