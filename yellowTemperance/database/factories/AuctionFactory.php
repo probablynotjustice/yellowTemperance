@@ -17,6 +17,7 @@ class AuctionFactory extends Factory
     public function definition(): array
     {
         $startingBid = fake()->numberBetween(5, 100);
+        $minimumIncrement = fake()->numberBetween(1, 20);
         $reservePrice = fake()->numberBetween(
             $startingBid,
             $startingBid * 10
@@ -30,6 +31,7 @@ class AuctionFactory extends Factory
             'ticket_cost' => fake()->numberBetween(1, 10),
             'starting_bid' => $startingBid,
             'current_bid' => $startingBid,
+            'minimum_increment' => $minimumIncrement,
             'reserve_price' => $reservePrice,
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,

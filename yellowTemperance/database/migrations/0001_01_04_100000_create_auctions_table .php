@@ -17,6 +17,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->bigInteger('ticket_cost');
             $table->decimal('starting_bid', 10, 2);
+            $table->decimal('minimum_increment', 10, 2);
 
             $table->decimal('current_bid', 10, 2)
                 ->default(0);

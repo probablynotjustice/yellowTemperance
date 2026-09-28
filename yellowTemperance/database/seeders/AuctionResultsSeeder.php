@@ -47,12 +47,14 @@ class AuctionResultsSeeder extends Seeder
 
             /* Starting bid. */
             $startingBid = rand(50, 150);
+            $minimumIncrement = fake()->numberBetween(1, 20);
 
             /* Create a completed auction. */
             $auction = Auction::create([
                 'product_id' => $product->id,
                 'ticket_cost' => rand(1, 5),
                 'starting_bid' => $startingBid,
+                'minimum_increment' => $minimumIncrement,
                 'current_bid' => $startingBid,
                 'reserve_price' => $startingBid + rand(25, 75),
                 'starts_at' => now()->subDays(rand(10, 30)),
@@ -63,6 +65,7 @@ class AuctionResultsSeeder extends Seeder
 
             /* Create bids for each participating customer. */
             $currentBid = $startingBid;
+            $minimumIncrement = fake()->numberBetween(1, 20);
 
             foreach ($bidders as $index => $user) {
 
