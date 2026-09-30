@@ -33,6 +33,8 @@ class BidController extends Controller
                 'promise_amount' => 'Your bid must be higher than the current bid.',
             ]);
         }
+
+
             DB::transaction(function () use ($user, $auction, $validated) {
 
                 $wallet = $user->wallet;

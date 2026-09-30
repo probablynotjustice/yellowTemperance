@@ -35,21 +35,17 @@ class AuctionResultsSeeder extends Seeder
             return;
         }
 
-        /* Create several completed auctions. */
         for ($i = 0; $i < 5; $i++) {
 
             $product = $products->random();
 
-            /* Pick 3-5 customers to participate. */
             $bidders = $users->random(
                 min(rand(3, 5), $users->count())
             );
 
-            /* Starting bid and minimum increment. */
             $startingBid = rand(50, 150);
             $minimumIncrement = fake()->numberBetween(1, 20);
 
-            /* Create a completed auction. */
             $auction = Auction::create([
                 'product_id' => $product->id,
                 'ticket_cost' => rand(1, 5),
@@ -63,15 +59,11 @@ class AuctionResultsSeeder extends Seeder
                 'winner_id' => null,
             ]);
 
-            /* Create bids for each participating customer. */
+
             $currentBid = 0;
 
             foreach ($bidders as $index => $user) {
 
-                /*
-                 * First bid must meet the starting/reserve floor.
-                 * Later bids must meet the minimum increment.
-                 */
                 if ($currentBid === 0) {
                     $currentBid = max(
                         $auction->starting_bid,
@@ -81,10 +73,6 @@ class AuctionResultsSeeder extends Seeder
                     $currentBid += $auction->minimum_increment;
                 }
 
-                /*
-                 * Add some randomness so the bids aren't all
-                 * exactly the minimum increment apart.
-                 */
                 $currentBid += rand(0, 50);
 
                 $bid = Bid::create([
@@ -98,13 +86,11 @@ class AuctionResultsSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
 
-                /* Keep the auction's current bid synced with the latest bid. */
                 $auction->update([
                     'current_bid' => $bid->promise_amount,
                 ]);
             }
 
-            /* Highest bid wins. */
             $winningBid = $auction->bids()
                 ->orderByDesc('promise_amount')
                 ->first();

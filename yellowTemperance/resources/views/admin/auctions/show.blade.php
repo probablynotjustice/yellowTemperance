@@ -61,7 +61,8 @@
 
         @if($auction->bids->count())
 
-            ${{ number_format($auction->bids->max('amount'), 2) }}
+            ${{ number_format($auction->current_bid) }}
+
 
         @else
 
