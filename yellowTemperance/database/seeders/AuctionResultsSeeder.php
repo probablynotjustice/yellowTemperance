@@ -45,7 +45,7 @@ class AuctionResultsSeeder extends Seeder
                 min(rand(3, 5), $users->count())
             );
 
-            /* Starting bid. */
+            /* Starting bid and minimum increment. */
             $startingBid = rand(50, 150);
             $minimumIncrement = fake()->numberBetween(1, 20);
 
@@ -55,7 +55,7 @@ class AuctionResultsSeeder extends Seeder
                 'ticket_cost' => rand(1, 5),
                 'starting_bid' => $startingBid,
                 'minimum_increment' => $minimumIncrement,
-                'current_bid' => $startingBid,
+                'current_bid' => 0,
                 'reserve_price' => $startingBid + rand(25, 75),
                 'starts_at' => now()->subDays(rand(10, 30)),
                 'ends_at' => now()->subDays(rand(1, 9)),
@@ -64,13 +64,28 @@ class AuctionResultsSeeder extends Seeder
             ]);
 
             /* Create bids for each participating customer. */
-            $currentBid = $startingBid;
-            $minimumIncrement = fake()->numberBetween(1, 20);
+            $currentBid = 0;
 
             foreach ($bidders as $index => $user) {
 
-                /* Make each successive bid higher than the previous bid */
-                $currentBid += rand(10, 50);
+                /*
+                 * First bid must meet the starting/reserve floor.
+                 * Later bids must meet the minimum increment.
+                 */
+                if ($currentBid === 0) {
+                    $currentBid = max(
+                        $auction->starting_bid,
+                        $auction->reserve_price ?? 0
+                    );
+                } else {
+                    $currentBid += $auction->minimum_increment;
+                }
+
+                /*
+                 * Add some randomness so the bids aren't all
+                 * exactly the minimum increment apart.
+                 */
+                $currentBid += rand(0, 50);
 
                 $bid = Bid::create([
                     'auction_id' => $auction->id,
@@ -83,7 +98,7 @@ class AuctionResultsSeeder extends Seeder
                     'updated_at' => now(),
                 ]);
 
-                /*Keep the auction's current bid synched with the latest bid. */
+                /* Keep the auction's current bid synced with the latest bid. */
                 $auction->update([
                     'current_bid' => $bid->promise_amount,
                 ]);
