@@ -135,7 +135,7 @@
             >
                 Wallets
             </flux:sidebar.item>
-                        <flux:sidebar.item
+            <flux:sidebar.item
                 icon="home"
                 :href="route('admin.invoices.index')"
                 :current="request()->routeIs('base.comments.*')"
@@ -143,7 +143,7 @@
             >
                 Invoices
             </flux:sidebar.item>
-                                    <flux:sidebar.item
+            <flux:sidebar.item
                 icon="home"
                 :href="route('admin.activityLogs.index')"
                 :current="request()->routeIs('admin.activityLog.*')"
