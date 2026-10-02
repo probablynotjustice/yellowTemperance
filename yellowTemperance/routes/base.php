@@ -39,6 +39,8 @@ Route::middleware(['auth', 'verified'])
 
                 Route::post('/{auction}/bid', [BidController::class, 'store'])
                 ->name('bid');
+
+
         });
 
         Route::prefix('wallet')

@@ -67,4 +67,60 @@ class AuctionController extends Controller
 
             return view('vendor.auctions.show', compact('auction'));
         }
+
+    public function close(Auction $auction)
+        {
+            if ($auction->product->vendor_id !== auth()->id()) {
+                abort(403, 'You are not authorized to close this auction.');
+            }
+
+            if ($auction->status !== 'active') {
+                return back()->withErrors([
+                    'auction' => 'This auction is not active.',
+                ]);
+            }
+
+            $winningBid = $auction->bids()
+                ->orderByDesc('promise_amount')
+                ->first();
+            if (! $winningBid) {
+                $oldValues = $auction->toArray();
+                $auction->update([
+                    'status' => 'completed',
+                    'winner_id' => null,
+                ]);
+                ActivityLog::record(
+                    auth()->user(),
+                    $auction,
+                    'auction.closed',
+                    "Closed Auction #{$auction->id} with no winning bid.",
+                    $oldValues,
+                    $auction->fresh()->toArray()
+                );
+                return back()->with(
+                    'success',
+                    'Auction closed with no winner.'
+                );
+            }
+
+            $oldValues = $auction->toArray();
+            $auction->update([
+                'status' => 'completed',
+                'winner_id' => $winningBid->user_id,
+                'current_bid' => $winningBid->promise_amount,
+            ]);
+            ActivityLog::record(
+                auth()->user(),
+                $auction,
+                'auction.closed',
+                "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
+                $oldValues,
+                $auction->fresh()->toArray()
+            );
+
+            return back()->with(
+                'success',
+                "Auction closed. {$winningBid->user->name} won."
+            );
+    }
 }

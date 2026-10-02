@@ -104,8 +104,5 @@ public function store(Request $request, Auction $auction)
     return redirect()->back();
 }
 
-    public function product()
-{
-    return $this->belongsTo(Product::class);
-}
+
 }

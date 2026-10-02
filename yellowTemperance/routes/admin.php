@@ -86,6 +86,9 @@ Route::middleware(['auth','verified', 'role:admin'])
                     ->name('edit');
                 Route::put('/{auction}', [AuctionController::class, 'update'])
                     ->name('update');
+
+                Route::post('/{auction}/close', [AuctionController::class, 'close'])
+                    ->name('close');
                 Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
             });

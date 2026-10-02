@@ -44,6 +44,16 @@
 
     @endforeach
 
+    @if ($auction->status === 'active')
+    <form method="POST" action="{{ route('admin.auctions.close', $auction) }}">
+        @csrf
+
+        <button type="submit">
+            Close Auction
+        </button>
+    </form>
+    @endif
+
 @else
 
     <p>This auction has ended.</p>

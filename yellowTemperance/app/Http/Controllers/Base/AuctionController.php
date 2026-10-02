@@ -49,4 +49,34 @@ class AuctionController extends Controller
 
             return view('base.auctions.participating', compact('auctions'));
         }
+
+        public function close(Auction $auction)
+        {
+            if ($auction->status !== "active") {
+                return back()->withErrors([
+                'Auction' =>"This Auction is not Active.",
+                ]);
+            }
+            $winningBid = $auction->bids()
+                ->orderByDesc('promise_amount')
+                ->first();
+            if (!$winningBid) {
+                $auction->update([
+                    'status' => 'completed',
+                    'winner_id' => null,
+                ]);
+            }
+
+            $auction->update([
+                'status' => 'completed',
+                'winner_id' => $winningBid->user_id,
+                'current_bid' => $winningBid->promise_amount,
+            ]);
+
+            return back()->with(
+                'success',
+                'Auction Closed. {$winningBid->user->name} won with a bid of {$winningBid->promise_amount}'
+            );
+
+        }
 }
