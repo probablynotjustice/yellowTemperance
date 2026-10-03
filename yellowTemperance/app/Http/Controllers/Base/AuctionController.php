@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Auction;
 use App\Events\AuctionViewed;
 
+
+
 class AuctionController extends Controller
 {
 

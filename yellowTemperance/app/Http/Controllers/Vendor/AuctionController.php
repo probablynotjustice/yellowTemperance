@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Auction;
 use App\Models\Product;
+use App\Models\ActivityLog;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 
 class AuctionController extends Controller
 {
@@ -39,6 +45,7 @@ class AuctionController extends Controller
             $validated = $request->validate([
                 'starting_bid' => ['required', 'numeric', 'min:0.01'],
                 'ticket_cost' => ['required', 'numeric', 'min:1'],
+                'minimum_increment' => ['required', 'numeric', 'min:1'],
                 'reserve_price' => ['nullable', 'numeric'],
                 'starts_at' => ['nullable', 'date'],
                 'ends_at' => ['required', 'date', 'after:now'],
@@ -47,8 +54,9 @@ class AuctionController extends Controller
             Auction::create([
                 'product_id'    => $product->id,
                 'ticket_cost'   => $validated['ticket_cost'],
+                'minimum_increment' => $validated['minimum_increment'],
                 'starting_bid'  => $validated['starting_bid'],
-                'current_bid'   => $validated['starting_bid'],
+                'current_bid'   => 0,
                 'reserve_price' => $validated['reserve_price'],
                 'starts_at'     => $validated['starts_at'] ?? now(),
                 'ends_at'       => $validated['ends_at'],
@@ -102,21 +110,57 @@ class AuctionController extends Controller
                     'Auction closed with no winner.'
                 );
             }
+         DB::transaction(function () use ($auction, $winningBid) {
 
-            $oldValues = $auction->toArray();
-            $auction->update([
-                'status' => 'completed',
-                'winner_id' => $winningBid->user_id,
-                'current_bid' => $winningBid->promise_amount,
-            ]);
-            ActivityLog::record(
-                auth()->user(),
-                $auction,
-                'auction.closed',
-                "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
-                $oldValues,
-                $auction->fresh()->toArray()
-            );
+                $oldValues = $auction->toArray();
+
+                $auction->update([
+                    'status' => 'completed',
+                    'winner_id' => $winningBid->user_id,
+                    'current_bid' => $winningBid->promise_amount,
+                ]);
+
+        $invoice = Invoice::firstOrCreate(
+            [
+                'user_id' => $winningBid->user_id,
+                'status' => 'outstanding',
+            ],
+            [
+                'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
+                'issued_at' => now(),
+                'period_start' => now(),
+                'period_end' => now(),
+            ]
+        );
+
+        InvoiceItem::create([
+            'invoice_id' => $invoice->id,
+            'bid_id' => $winningBid->id,
+            'product_id' => $auction->product_id,
+            'description' => 'Winning bid for ' .
+                ($auction->product->name ?? 'Unknown Product') .
+                ' - Auction #' . $auction->id,
+            'quantity' => 1,
+            'unit_price' => $winningBid->promise_amount,
+            'total' => $winningBid->promise_amount,
+        ]);
+
+        $invoice->update([
+            'period_end' => now(),
+        ]);
+
+                /*
+                * Record the auction closing.
+                */
+                ActivityLog::record(
+                    auth()->user(),
+                    $auction,
+                    'auction.closed',
+                    "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
+                    $oldValues,
+                    $auction->fresh()->toArray()
+                );
+            });
 
             return back()->with(
                 'success',
