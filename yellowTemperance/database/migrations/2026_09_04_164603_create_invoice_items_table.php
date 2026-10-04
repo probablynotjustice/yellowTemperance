@@ -17,6 +17,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->foreignId('bid_id')
+                ->unique()
                 ->constrained()
                 ->cascadeOnDelete();
             $table->foreignId('product_id')

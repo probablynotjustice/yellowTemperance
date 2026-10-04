@@ -119,36 +119,36 @@ class AuctionController extends Controller
                     'winner_id' => $winningBid->user_id,
                     'current_bid' => $winningBid->promise_amount,
                 ]);
+            if (! $winningBid->invoiceItems()->exist()) {
+                $invoice = Invoice::firstOrCreate(
+                    [
+                        'user_id' => $winningBid->user_id,
+                        'status' => 'outstanding',
+                    ],
+                    [
+                        'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
+                        'issued_at' => now(),
+                        'period_start' => now(),
+                        'period_end' => now(),
+                    ]
+                );
 
-        $invoice = Invoice::firstOrCreate(
-            [
-                'user_id' => $winningBid->user_id,
-                'status' => 'outstanding',
-            ],
-            [
-                'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
-                'issued_at' => now(),
-                'period_start' => now(),
-                'period_end' => now(),
-            ]
-        );
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'bid_id' => $winningBid->id,
+                    'product_id' => $auction->product_id,
+                    'description' => 'Winning bid for ' .
+                        ($auction->product->name ?? 'Unknown Product') .
+                        ' - Auction #' . $auction->id,
+                    'quantity' => 1,
+                    'unit_price' => $winningBid->promise_amount,
+                    'total' => $winningBid->promise_amount,
+                ]);
 
-        InvoiceItem::create([
-            'invoice_id' => $invoice->id,
-            'bid_id' => $winningBid->id,
-            'product_id' => $auction->product_id,
-            'description' => 'Winning bid for ' .
-                ($auction->product->name ?? 'Unknown Product') .
-                ' - Auction #' . $auction->id,
-            'quantity' => 1,
-            'unit_price' => $winningBid->promise_amount,
-            'total' => $winningBid->promise_amount,
-        ]);
-
-        $invoice->update([
-            'period_end' => now(),
-        ]);
-
+                $invoice->update([
+                    'period_end' => now(),
+                ]);
+            }
                 /*
                 * Record the auction closing.
                 */

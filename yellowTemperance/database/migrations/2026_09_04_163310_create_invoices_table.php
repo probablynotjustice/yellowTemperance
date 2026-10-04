@@ -26,12 +26,6 @@ return new class extends Migration
                 ->nullable();
             $table->timestamp('period_end')
                 ->nullable();
-            $table->unsignedInteger('total_bids')
-                ->default(0);
-            $table->unsignedInteger('total_tickets_used')
-                ->default(0);
-            $table->decimal('winning_bid', 10, 2)
-                ->nullable();
             $table->timestamps();
         });
     }
