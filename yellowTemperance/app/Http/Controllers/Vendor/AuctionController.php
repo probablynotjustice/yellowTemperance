@@ -119,7 +119,11 @@ class AuctionController extends Controller
                     'winner_id' => $winningBid->user_id,
                     'current_bid' => $winningBid->promise_amount,
                 ]);
-            if (! $winningBid->invoiceItems()->exist()) {
+if ($winningBid->invoiceItems()->exists()) {
+    throw new \Exception(
+        "Bid #{$winningBid->id} already has an invoice."
+    );}
+
                 $invoice = Invoice::firstOrCreate(
                     [
                         'user_id' => $winningBid->user_id,
@@ -148,7 +152,7 @@ class AuctionController extends Controller
                 $invoice->update([
                     'period_end' => now(),
                 ]);
-            }
+
                 /*
                 * Record the auction closing.
                 */

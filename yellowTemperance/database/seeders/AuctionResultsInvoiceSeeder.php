@@ -53,8 +53,6 @@ class AuctionResultsInvoiceSeeder extends Seeder
                 'issued_at' => now(),
                 'period_start' => $bids->min('created_at'),
                 'period_end' => $bids->max('created_at'),
-                'total_bids' => $bids->count(),
-                'total_tickets_used' => $bids->sum('ticket_cost'),
             ]);
 
             /*Create an invoice item for every bid.*/

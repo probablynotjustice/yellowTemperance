@@ -39,8 +39,7 @@ class InvoiceSeeder extends Seeder
                 'period_end' => $userBids->max(
                     fn ($bid) => $bid->created_at
                 ),
-                'total_bids' => $userBids->count(),
-                'total_tickets_used' => $userBids->sum('ticket_cost'),
+
             ]);
 
 

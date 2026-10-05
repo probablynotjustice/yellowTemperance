@@ -18,16 +18,12 @@ class Invoice extends Model
         'issued_at',
         'period_start',
         'period_end',
-        'total_bids',
-        'total_tickets_used',
     ];
 
     protected $casts = [
         'issued_at' => 'datetime',
         'period_start' => 'datetime',
         'period_end' => 'datetime',
-        'total_bids' => 'integer',
-        'total_tickets_used' => 'integer',
     ];
 
 
