@@ -52,33 +52,59 @@ class AuctionController extends Controller
 
         return view('admin.auctions.show', compact('auction'));
     }
-public function store(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'starting_bid' => ['required', 'numeric', 'min:1'],
-            'ticket_cost' => ['required', 'numeric', 'min:0'],
-            'starts_at' => ['required', 'date'],
-            'ends_at' => ['required', 'date', 'after:starts_at'],
-        ]);
 
-        $validated['product_id'] = $product->id;
+        public function create(Product $product)
+        {
+            $product->load('vendor');
 
-        $auction = Auction::create($validated);
+            return view('admin.auctions.create', compact('product'));
+        }
+    public function store(Request $request)
+        {
+            $validated = $request->validate([
+                'product_id' => ['required', 'exists:products,id'],
+                'starting_bid' => ['required', 'numeric', 'min:0.01'],
+                'ticket_cost' => ['required', 'numeric', 'min:1'],
+                'minimum_increment' => ['required', 'numeric', 'min:1'],
+                'reserve_price' => ['nullable', 'numeric', 'min:0'],
+                'starts_at' => ['nullable', 'date'],
+                'ends_at' => ['required', 'date', 'after:now'],
+            ]);
 
-          //  dd('REACHED ACTIVITY LOG', $oldValues, $auction->fresh()->toArray());
-        ActivityLog::record(
-            auth()->user(),
-            $auction,
-            'auction.created',
-            "Created auction for '{$product->name}'.",
-            null,
-            $auction->toArray()
-        );
+            $product = Product::with('vendor')
+                ->findOrFail($validated['product_id']);
 
-        return redirect()
-            ->route('vendor.auctions.show', $auction)
-            ->with('success', 'Auction created successfully.');
-    }
+            if (! $product->vendor) {
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'product_id' => 'This product has no assigned vendor.',
+                    ]);
+            }
+            $auction = Auction::create([
+                'product_id'        => $product->id,
+                'vendor_id'         => $product->vendor_id,
+                'ticket_cost'       => $validated['ticket_cost'],
+                'minimum_increment' => $validated['minimum_increment'],
+                'starting_bid'      => $validated['starting_bid'],
+                'current_bid'       => 0,
+                'reserve_price'     => $validated['reserve_price'] ?? null,
+                'starts_at'          => $validated['starts_at'] ?? now(),
+                'ends_at'            => $validated['ends_at'],
+                'status'             => 'active',
+            ]);
+            ActivityLog::record(
+                auth()->user(),
+                $auction,
+                'auction.created',
+                "Created Auction #{$auction->id} for Product #{$product->id} ({$product->name}).",
+                null,
+                $auction->toArray()
+            );
+
+            return redirect()->route('admin.products.show', $product)
+                ->with('success, Auction Made Correctly.');
+        }
 public function update(Request $request, Auction $auction)
 {
     $validated = $request->validate([
@@ -113,6 +139,7 @@ public function update(Request $request, Auction $auction)
         ->route('admin.auctions.show', $auction)
         ->with('success', 'Auction updated successfully.');
 }
+
 
     public function edit(Auction $auction)
     {

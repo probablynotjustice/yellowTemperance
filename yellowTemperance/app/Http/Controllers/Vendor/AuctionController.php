@@ -51,7 +51,7 @@ class AuctionController extends Controller
                 'ends_at' => ['required', 'date', 'after:now'],
             ]);
 
-            Auction::create([
+            $auction = Auction::create([
                 'product_id'    => $product->id,
                 'ticket_cost'   => $validated['ticket_cost'],
                 'minimum_increment' => $validated['minimum_increment'],
@@ -62,7 +62,14 @@ class AuctionController extends Controller
                 'ends_at'       => $validated['ends_at'],
                 'status'        => 'active',
             ]);
-
+            ActivityLog::record(
+                auth()->user(),
+                $auction,
+                'auction.created',
+                "Created Auction #{$auction->id} for Product #{$product->id} ({$product->name}).",
+                null,
+                $auction->toArray()
+            );
             return redirect()->route('vendor.products.show', $product);
         }
         public function show(Auction $auction)
@@ -75,7 +82,7 @@ class AuctionController extends Controller
 
             return view('vendor.auctions.show', compact('auction'));
         }
-
+            //Missing the Edit Function
     public function close(Auction $auction)
         {
             if ($auction->product->vendor_id !== auth()->id()) {
@@ -119,10 +126,11 @@ class AuctionController extends Controller
                     'winner_id' => $winningBid->user_id,
                     'current_bid' => $winningBid->promise_amount,
                 ]);
-if ($winningBid->invoiceItems()->exists()) {
-    throw new \Exception(
-        "Bid #{$winningBid->id} already has an invoice."
-    );}
+
+                if ($winningBid->invoiceItems()->exists()) {
+                    throw new \Exception(
+                        "Bid #{$winningBid->id} already has an invoice."
+                    );}
 
                 $invoice = Invoice::firstOrCreate(
                     [

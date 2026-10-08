@@ -36,17 +36,17 @@
     <label for="vendor_id">Vendor </label>
         <select name="vendor_id" id="vendor_id" required>
 
-        <option value="">Select a Category</option>
+            <option value="">Select a Category</option>
 
-        @foreach ($vendors as $vendor)
-            <option
-                value="{{ $vendor->id }}"
-                {{ old('vendor_id') == $vendor->id ? 'selected' : '' }}>
-                {{ $vendor->name }}
-            </option>
-        @endforeach
+            @foreach ($vendors as $vendor)
+                <option
+                    value="{{ $vendor->id }}"
+                    {{ old('vendor_id') == $vendor->id ? 'selected' : '' }}>
+                    {{ $vendor->name }}
+                </option>
+            @endforeach
 
-    </select>
+        </select>
 </div>
     <div>
         <label for="retail_price">Retail Price</label>

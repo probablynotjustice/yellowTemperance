@@ -38,7 +38,7 @@
             Edit Product
         </button>
     </a>
-    <a href="{{ route('vendor.auctions.create', $product) }}">
+    <a href="{{ route('admin.auctions.create', $product) }}">
         <button type="button"
             class="text-gray-400 bg-green-700 px-3 rounded hover:bg-green-300">
             Create Auction

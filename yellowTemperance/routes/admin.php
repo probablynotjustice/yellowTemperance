@@ -78,6 +78,7 @@ Route::middleware(['auth','verified', 'role:admin'])
                     ->name('closedAuctions')*/
                 Route::get('create', [AuctionController::class, 'create'])
                     ->name('create');
+
                 Route::post('/', [AuctionController::class, 'store'])
                     ->name('store');
                 Route::get('/{auction}', [AuctionController::class, 'show'])
