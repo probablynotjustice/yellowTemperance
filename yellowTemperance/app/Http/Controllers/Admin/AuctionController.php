@@ -81,6 +81,8 @@ class AuctionController extends Controller
                         'product_id' => 'This product has no assigned vendor.',
                     ]);
             }
+
+
             $auction = Auction::create([
                 'product_id'        => $product->id,
                 'vendor_id'         => $product->vendor_id,
@@ -93,6 +95,8 @@ class AuctionController extends Controller
                 'ends_at'            => $validated['ends_at'],
                 'status'             => 'active',
             ]);
+
+
             ActivityLog::record(
                 auth()->user(),
                 $auction,

@@ -1,4 +1,4 @@
-```blade
+
 <x-layouts::app :title="__('Admin Auction Create')" class="">
 
     <div>
@@ -103,4 +103,3 @@
     </form>
 
 </x-layouts::app>
-```
