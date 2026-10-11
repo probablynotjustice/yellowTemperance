@@ -163,6 +163,7 @@ public function update(Request $request, Auction $auction)
 
         $winningBid = $auction->bids()
             ->orderByDesc('promise_amount')
+            ->orderBy('id')
             ->first();
         if (! $winningBid) {
             $oldValues = $auction->toArray();
