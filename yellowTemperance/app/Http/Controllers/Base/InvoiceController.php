@@ -3,38 +3,34 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Auth;
-use App\Models\Bids;
-
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
-public function index()
+    public function index()
     {
         $invoices = Invoice::with([
-        'items.bid.auction.product',
+            'items.product',
+            'items.bid.auction.product',
         ])
-        ->where('user_id', Auth::id())
-        ->latest('issued_at')
-        ->get();
-
+            ->where('user_id', Auth::id())
+            ->latest('issued_at')
+            ->get();
 
         return view('base.invoices.index', compact('invoices'));
     }
 
-    public function show($invoice)
+    public function show(Invoice $invoice)
     {
-        abort_unless($invoice->user_id === auth()->id(), 403);
+        abort_unless($invoice->user_id === Auth::id(), 403);
+
         $invoice->load([
             'user',
             'items.product',
             'items.bid.auction.product',
         ]);
 
-        return view('admin.invoices.show', compact('invoice'));
+        return view('base.invoices.show', compact('invoice'));
     }
-
 }

@@ -36,7 +36,7 @@ class InvoiceItem extends Model
         return $this->belongsTo(Product::class);
     }
     public function bid(): BelongsTo
-        {
-            return $this->belongsTo(Bid::class);
-        }
+    {
+        return $this->belongsTo(Bid::class);
+    }
 }

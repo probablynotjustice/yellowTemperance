@@ -36,4 +36,13 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceItem::class);
     }
+    public function total(): string
+    {
+        return number_format(
+            (float) $this->items()->sum('total'),
+            2,
+            '.',
+            ''
+        );
+    }
 }

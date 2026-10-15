@@ -7,6 +7,7 @@ use App\Models\User;
 
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\AuctionController;
+use App\Http\Controllers\Vendor\InvoiceController;
 use App\Http\Controllers\Base\AuctionController as Participant;
 
 
@@ -67,5 +68,15 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
                     ->name('update');
                 Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
+            });
+
+        Route::prefix('invoices')
+            ->name('invoices.')
+            ->group(function () {
+                Route::get('/', [InvoiceController::class, 'index'])
+                    ->name('index');
+
+                Route::get('/{invoice}', [InvoiceController::class, 'show'])
+                    ->name('show');
             });
 });
