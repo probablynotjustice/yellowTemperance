@@ -193,6 +193,20 @@
                             {{ $item->bid->created_at->format('M d, Y h:i A') }}
 
                         </td>
+                        @if ($invoice->status === 'outstanding')
+                            <td>
+                            <form
+                                method="POST"
+                                action="{{ route('base.invoices.pay', $invoice) }}"
+                            >
+                                @csrf
+
+                                <button type="submit">
+                                    Pay Invoice from Wallet
+                                </button>
+                            </form>
+                            </td>
+                        @endif
 
                     </tr>
 

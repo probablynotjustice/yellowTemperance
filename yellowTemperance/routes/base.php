@@ -72,6 +72,9 @@ Route::middleware(['auth', 'verified'])
 
                 Route::get('/{invoice}', [InvoiceController::class, 'show'])
                     ->name('show');
+                Route::post('/{invoice}/pay', [InvoiceController::class, 'pay'])
+                    ->name('pay');
+
 
         });
 });
