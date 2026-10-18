@@ -176,6 +176,16 @@
     </form>
     @endif
 
+        @if ($auction->status === 'active')
+    <form method="POST" action="{{ route('admin.auctions.close', $auction) }}">
+        @csrf
+
+        <button type="submit">
+            Close Auction
+        </button>
+    </form>
+    @endif
+
     <form action="{{ route('admin.auctions.destroy', $auction) }}"
           method="POST"
           style="display:inline;">

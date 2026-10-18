@@ -61,6 +61,7 @@ class AuctionController extends Controller
         }
     public function store(Request $request)
         {
+
             $validated = $request->validate([
                 'product_id' => ['required', 'exists:products,id'],
                 'starting_bid' => ['required', 'numeric', 'min:0.01'],
