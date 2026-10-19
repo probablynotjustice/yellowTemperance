@@ -11,7 +11,12 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\ActivityLog;
 use App\Models\Product;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use Illuminate\Support\Facades\DB;
 
+
+use Illuminate\Support\Facades\Log;  //I have to figure this out
 
 class AuctionController extends Controller
 {
@@ -27,20 +32,6 @@ class AuctionController extends Controller
         return view('admin.auctions.index', compact('auctions'));
     }
 
-    /*
-        public function ClosedAuctions()
-    {
-        $auctions = Auction::with([
-            'product.vendor',
-            'product',
-            'product.category',
-            'bids',
-        ])->latest()->get()
-            ->where('status', 'closed');
-
-        return view('admin.auctions.index', compact('auctions'));
-    }
-    */
     public function show(Auction $auction)
     {
         $auction->load([
@@ -61,7 +52,30 @@ class AuctionController extends Controller
         }
     public function store(Request $request)
         {
+                Log::info('Auction store: request received', [
+        'data' => $request->except('_token'),
+    ]);
 
+    $validated = $request->validate([
+        'product_id' => ['required', 'exists:products,id'],
+        'starting_bid' => ['required', 'numeric', 'min:0.01'],
+        'ticket_cost' => ['required', 'numeric', 'min:1'],
+        'minimum_increment' => ['required', 'numeric', 'min:1'],
+        'reserve_price' => ['nullable', 'numeric', 'min:0'],
+        'starts_at' => ['nullable', 'date'],
+        'ends_at' => ['required', 'date', 'after:now'],
+    ]);
+
+    Log::info('Auction store: validation passed');
+
+    $product = Product::with('vendor')
+        ->findOrFail($validated['product_id']);
+
+    Log::info('Auction store: product loaded', [
+        'product_id' => $product->id,
+        'vendor_id' => $product->vendor_id,
+        'vendor_found' => $product->vendor !== null,
+    ]);
             $validated = $request->validate([
                 'product_id' => ['required', 'exists:products,id'],
                 'starting_bid' => ['required', 'numeric', 'min:0.01'],
@@ -71,7 +85,6 @@ class AuctionController extends Controller
                 'starts_at' => ['nullable', 'date'],
                 'ends_at' => ['required', 'date', 'after:now'],
             ]);
-
             $product = Product::with('vendor')
                 ->findOrFail($validated['product_id']);
 
@@ -108,7 +121,7 @@ class AuctionController extends Controller
             );
 
             return redirect()->route('admin.products.show', $product)
-                ->with('success, Auction Made Correctly.');
+                ->with('success', 'Auction Made Correctly.');
         }
 public function update(Request $request, Auction $auction)
 {
@@ -154,6 +167,7 @@ public function update(Request $request, Auction $auction)
         );
     }
 
+
     public function close(Auction $auction)
     {
         if ($auction->status !== 'active') {
@@ -166,12 +180,16 @@ public function update(Request $request, Auction $auction)
             ->orderByDesc('promise_amount')
             ->orderBy('id')
             ->first();
+
+        // Close auctions with no bids without creating an invoice.
         if (! $winningBid) {
             $oldValues = $auction->toArray();
+
             $auction->update([
                 'status' => 'completed',
                 'winner_id' => null,
             ]);
+
             ActivityLog::record(
                 auth()->user(),
                 $auction,
@@ -180,32 +198,65 @@ public function update(Request $request, Auction $auction)
                 $oldValues,
                 $auction->fresh()->toArray()
             );
+
             return back()->with(
                 'success',
                 'Auction closed with no winner.'
             );
         }
 
-        $oldValues = $auction->toArray();
-        $auction->update([
-            'status' => 'completed',
-            'winner_id' => $winningBid->user_id,
-            'current_bid' => $winningBid->promise_amount,
-        ]);
-        ActivityLog::record(
-            auth()->user(),
-            $auction,
-            'auction.closed',
-            "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
-            $oldValues,
-            $auction->fresh()->toArray()
-        );
+        DB::transaction(function () use ($auction, $winningBid) {
+            $oldValues = $auction->toArray();
+
+            $auction->update([
+                'status' => 'completed',
+                'winner_id' => $winningBid->user_id,
+                'current_bid' => $winningBid->promise_amount,
+            ]);
+
+            // Find an existing invoice item for this winning bid.
+            $existingItem = InvoiceItem::where('bid_id', $winningBid->id)
+                ->first();
+
+            if (! $existingItem) {
+                $invoice = Invoice::create([
+                    'user_id' => $winningBid->user_id,
+                    'invoice_number' => 'INV-' . Str::upper(Str::random(12)),
+                    'status' => 'outstanding',
+                    'issued_at' => now(),
+                    'period_start' => $auction->starts_at,
+                    'period_end' => $auction->ends_at,
+                ]);
+
+                $price = $winningBid->promise_amount;
+
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'product_id' => $auction->product_id,
+                    'bid_id' => $winningBid->id,
+                    'description' => "Winning bid for Auction #{$auction->id}",
+                    'quantity' => 1,
+                    'unit_price' => $price,
+                    'total' => $price,
+                ]);
+            }
+
+            ActivityLog::record(
+                auth()->user(),
+                $auction,
+                'auction.closed',
+                "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
+                $oldValues,
+                $auction->fresh()->toArray()
+            );
+        });
 
         return back()->with(
             'success',
-            "Auction closed. {$winningBid->user->name} won."
+            "Auction closed. {$winningBid->user->name} won. Invoice processed."
         );
-}
+    }
+
 
 public function destroy(Auction $auction)
     {

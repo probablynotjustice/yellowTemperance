@@ -42,6 +42,7 @@ class AuctionController extends Controller
 ///WORTKIGN ON VENDOR AUCTIONS, NEED TO PASS PRODUCT DATA??
     public function store(Request $request, Product $product)
         {
+
             $validated = $request->validate([
                 'starting_bid' => ['required', 'numeric', 'min:0.01'],
                 'ticket_cost' => ['required', 'numeric', 'min:1'],
@@ -50,7 +51,7 @@ class AuctionController extends Controller
                 'starts_at' => ['nullable', 'date'],
                 'ends_at' => ['required', 'date', 'after:now'],
             ]);
-
+dd('Auction store reached', $request->all());
             $auction = Auction::create([
                 'product_id'    => $product->id,
                 'ticket_cost'   => $validated['ticket_cost'],
