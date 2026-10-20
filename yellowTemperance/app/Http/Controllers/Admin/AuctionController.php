@@ -56,15 +56,26 @@ class AuctionController extends Controller
         'data' => $request->except('_token'),
     ]);
 
-    $validated = $request->validate([
-        'product_id' => ['required', 'exists:products,id'],
-        'starting_bid' => ['required', 'numeric', 'min:0.01'],
-        'ticket_cost' => ['required', 'numeric', 'min:1'],
-        'minimum_increment' => ['required', 'numeric', 'min:1'],
-        'reserve_price' => ['nullable', 'numeric', 'min:0'],
-        'starts_at' => ['nullable', 'date'],
-        'ends_at' => ['required', 'date', 'after:now'],
+    $validator = validator($request->all(), [
+    'product_id' => ['required', 'exists:products,id'],
+    'starting_bid' => ['required', 'numeric', 'min:0.01'],
+    'ticket_cost' => ['required', 'numeric', 'min:1'],
+    'minimum_increment' => ['required', 'numeric', 'min:1'],
+    'reserve_price' => ['nullable', 'numeric', 'min:0'],
+    'starts_at' => ['nullable', 'date'],
+    'ends_at' => ['required', 'date', 'after:now'],
+]);
+
+if ($validator->fails()) {
+    Log::warning('Auction store: validation failed', [
+        'errors' => $validator->errors()->toArray(),
+        'input' => $request->except('_token'),
     ]);
+} else {
+    Log::info('Auction store: validation passed');
+}
+
+$validated = $validator->validate();
 
     Log::info('Auction store: validation passed');
 
