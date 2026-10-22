@@ -1,3 +1,5 @@
+<x-layouts::app :title="__('Auction Create')" class="">
+
 <div>
     build auction
 </div>
@@ -46,30 +48,29 @@
         >
     </div>
 
-    <div>
-        <label for="starts_at">Starts</label>
+        <div>
+            <label for="starts_at">Starts</label>
+            <input
+                type="datetime-local"
+                id="starts_at"
+                name="starts_at"
+                value="{{ old('starts_at', now()->format('Y-m-d\TH:i')) }}"
+            >
+        </div>
 
-        <input
-            type="datetime-local"
-            id="starts_at"
-            name="starts_at"
-            value="{{ old('starts_at') }}"
-        >
-    </div>
-
-    <div>
-        <label for="ends_at">Ends</label>
-
-        <input
-            type="datetime-local"
-            id="ends_at"
-            name="ends_at"
-            value="{{ old('ends_at') }}"
-            required
-        >
-    </div>
+        <div>
+            <label for="ends_at">Ends</label>
+            <input
+                type="datetime-local"
+                id="ends_at"
+                name="ends_at"
+                value="{{ old('ends_at', now()->addDay()->format('Y-m-d\TH:i')) }}"
+                required
+            >
+        </div>
 
     <button type="submit">
         Start Auction
     </button>
 </form>
+</x-layouts::app>

@@ -92,7 +92,7 @@
                 type="datetime-local"
                 id="starts_at"
                 name="starts_at"
-                value="{{ old('starts_at') }}"
+                value="{{ old('starts_at', now()->format('Y-m-d\TH:i')) }}"
             >
         </div>
 
@@ -102,7 +102,7 @@
                 type="datetime-local"
                 id="ends_at"
                 name="ends_at"
-                value="{{ old('ends_at') }}"
+                value="{{ old('ends_at', now()->addDay()->format('Y-m-d\TH:i')) }}"
                 required
             >
         </div>
