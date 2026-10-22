@@ -8,6 +8,8 @@ use App\Models\Auction;
 use App\Models\Product;
 use App\Models\ActivityLog;
 
+use App\Services\AuctionCloser;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Invoice;
@@ -84,130 +86,42 @@ dd('Auction store reached', $request->all());
             return view('vendor.auctions.show', compact('auction'));
         }
             //Missing the Edit Function
-    public function close(Auction $auction)
-    {
-        $auction->loadMissing('product');
 
-        if ($auction->product->vendor_id !== auth()->id()) {
-            abort(403, 'You are not authorized to close this auction.');
-        }
+public function close(Auction $auction, AuctionCloser $closer)
+{
+    $auction->loadMissing('product');
 
-        if ($auction->status !== 'active') {
-            return back()->withErrors([
-                'auction' => 'This auction is not active.',
-            ]);
-        }
+    if ($auction->product->vendor_id !== auth()->id()) {
+        abort(403, 'You are not authorized to close this auction.');
+    }
 
-        $winningBid = $auction->bids()
-            ->orderByDesc('promise_amount')
-            ->orderBy('id')
-            ->first();
+    $result = $closer->close($auction, auth()->user());
 
-        // Determine whether the highest bid qualifies.
-        $reservePrice = $auction->reserve_price;
+    if ($result['outcome'] === 'already_closed') {
+        return back()->withErrors([
+            'auction' => 'This auction is not active.',
+        ]);
+    }
 
-        $hasQualifyingBid = $winningBid !== null
-            && (
-                $reservePrice === null
-                || $winningBid->promise_amount >= $reservePrice
-            );
-
-        DB::transaction(function () use (
-            $auction,
-            $winningBid,
-            $hasQualifyingBid
-        ) {
-            $oldValues = $auction->toArray();
-
-            // No bids, or the highest bid failed to meet the reserve.
-            if (! $hasQualifyingBid) {
-                $auction->update([
-                    'status' => 'completed',
-                    'winner_id' => null,
-                ]);
-
-                $message = $winningBid
-                    ? "Closed Auction #{$auction->id} without a winner because the highest bid of {$winningBid->promise_amount} did not meet the reserve price of {$auction->reserve_price}."
-                    : "Closed Auction #{$auction->id} with no bids.";
-
-                ActivityLog::record(
-                    auth()->user(),
-                    $auction,
-                    'auction.closed',
-                    $message,
-                    $oldValues,
-                    $auction->fresh()->toArray()
-                );
-
-                return;
-            }
-
-            // A qualifying bid exists.
-            $auction->update([
-                'status' => 'completed',
-                'winner_id' => $winningBid->user_id,
-                'current_bid' => $winningBid->promise_amount,
-            ]);
-
-            // Protect against creating a second invoice item for this bid.
-            if ($winningBid->invoiceItems()->exists()) {
-                throw new \RuntimeException(
-                    "Bid #{$winningBid->id} already has an invoice item."
-                );
-            }
-
-            // Reuse the winner's outstanding invoice when possible.
-            $invoice = Invoice::firstOrCreate(
-                [
-                    'user_id' => $winningBid->user_id,
-                    'status' => 'outstanding',
-                ],
-                [
-                    'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
-                    'issued_at' => now(),
-                    'period_start' => now(),
-                    'period_end' => now(),
-                ]
-            );
-
-            InvoiceItem::create([
-                'invoice_id' => $invoice->id,
-                'bid_id' => $winningBid->id,
-                'product_id' => $auction->product_id,
-                'description' => 'Winning bid for '
-                    . ($auction->product->name ?? 'Unknown Product')
-                    . ' - Auction #' . $auction->id,
-                'quantity' => 1,
-                'unit_price' => $winningBid->promise_amount,
-                'total' => $winningBid->promise_amount,
-            ]);
-
-            $invoice->update([
-                'period_end' => now(),
-            ]);
-
-            ActivityLog::record(
-                auth()->user(),
-                $auction,
-                'auction.closed',
-                "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
-                $oldValues,
-                $auction->fresh()->toArray()
-            );
-        });
-
-        if (! $hasQualifyingBid) {
-            return back()->with(
-                'success',
-                $winningBid
-                    ? 'Auction closed without a winner because the reserve price was not met.'
-                    : 'Auction closed with no winner because no bids were placed.'
-            );
-        }
-
+    if ($result['outcome'] === 'winner') {
         return back()->with(
             'success',
-            "Auction closed. {$winningBid->user->name} won."
+            "Auction closed. {$result['winner_name']} won."
         );
     }
+
+    if ($result['outcome'] === 'not_expired') {
+        return back()->withErrors([
+            'auction' => 'This auction has not reached its end time.',
+        ]);
+    }
+
+    return back()->with(
+        'success',
+        $result['outcome'] === 'no_bids'
+            ? 'Auction closed with no winner because no bids were placed.'
+            : 'Auction closed without a winner because the reserve price was not met.'
+    );
+}
+
 }

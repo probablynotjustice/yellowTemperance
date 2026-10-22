@@ -54,8 +54,6 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
             ->group( function () {
                 Route::get('/', [AuctionController::class, 'index'])
                     ->name('index');
-                Route::get('participate',[Participant::class, 'index'])
-                    ->name('participate');
                 Route::get('create', [AuctionController::class, 'create'])
                     ->name('create');
                 Route::post('/', [AuctionController::class, 'store'])
@@ -68,6 +66,9 @@ Route::middleware(['auth', 'verified', 'role:vendor'])
                     ->name('update');
                 Route::delete('/{auction}', [AuctionController::class, 'destroy'])
                     ->name('destroy');
+
+                Route::get('participate',[Participant::class, 'index'])
+                    ->name('participate');
             });
 
         Route::prefix('invoices')
