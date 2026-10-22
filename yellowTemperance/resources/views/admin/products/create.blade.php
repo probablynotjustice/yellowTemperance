@@ -33,10 +33,10 @@
 
     </select>
 
-    <label for="vendor_id">Vendor </label>
+    <label for="vendor_id">Vendor: </label>
         <select name="vendor_id" id="vendor_id" required>
 
-            <option value="">Select a Category</option>
+            <option value="">Select</option>
 
             @foreach ($vendors as $vendor)
                 <option

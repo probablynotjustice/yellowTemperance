@@ -143,6 +143,7 @@
             >
                 Invoices
             </flux:sidebar.item>
+
             <flux:sidebar.item
                 icon="home"
                 :href="route('admin.activityLogs.index')"
@@ -151,6 +152,7 @@
             >
                 Activity Log
             </flux:sidebar.item>
+
 
         {{-- ========================================= --}}
         {{-- BASE / CUSTOMER SIDEBAR                   --}}
@@ -201,6 +203,32 @@
                 wire:navigate
             >
                 Recipts
+            </flux:sidebar.item>
+
+        @endif
+
+        {{-- VENDOR + CUSTOMER SIDEBAR ITEMS --}}
+        @if(
+            auth()->user()->hasRole('vendor')
+            && auth()->user()->hasRole('customer')
+        )
+
+            <flux:sidebar.item
+                icon="chat-bubble-left-right"
+                :href="route('base.comments.index')"
+                :current="request()->routeIs('base.comments.*')"
+                wire:navigate
+            >
+                Comments
+            </flux:sidebar.item>
+
+            <flux:sidebar.item
+                icon="home"
+                :href="route('base.invoices.index')"
+                :current="request()->routeIs('base.invoices.*')"
+                wire:navigate
+            >
+                Receipts
             </flux:sidebar.item>
 
         @endif
