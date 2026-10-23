@@ -41,7 +41,6 @@ class AuctionController extends Controller
         {
             return view('vendor.auctions.create', compact('product'));
         }
-///WORTKIGN ON VENDOR AUCTIONS, NEED TO PASS PRODUCT DATA??
     public function store(Request $request, Product $product)
         {
 
@@ -87,41 +86,41 @@ dd('Auction store reached', $request->all());
         }
             //Missing the Edit Function
 
-public function close(Auction $auction, AuctionCloser $closer)
-{
-    $auction->loadMissing('product');
+    public function close(Auction $auction, AuctionCloser $closer)
+    {
+        $auction->loadMissing('product');
 
-    if ($auction->product->vendor_id !== auth()->id()) {
-        abort(403, 'You are not authorized to close this auction.');
-    }
+        if ($auction->product->vendor_id !== auth()->id()) {
+            abort(403, 'You are not authorized to close this auction.');
+        }
 
-    $result = $closer->close($auction, auth()->user());
+        $result = $closer->close($auction, auth()->user());
 
-    if ($result['outcome'] === 'already_closed') {
-        return back()->withErrors([
-            'auction' => 'This auction is not active.',
-        ]);
-    }
+        if ($result['outcome'] === 'already_closed') {
+            return back()->withErrors([
+                'auction' => 'This auction is not active.',
+            ]);
+        }
 
-    if ($result['outcome'] === 'winner') {
+        if ($result['outcome'] === 'winner') {
+            return back()->with(
+                'success',
+                "Auction closed. {$result['winner_name']} won."
+            );
+        }
+
+        if ($result['outcome'] === 'not_expired') {
+            return back()->withErrors([
+                'auction' => 'This auction has not reached its end time.',
+            ]);
+        }
+
         return back()->with(
             'success',
-            "Auction closed. {$result['winner_name']} won."
+            $result['outcome'] === 'no_bids'
+                ? 'Auction closed with no winner because no bids were placed.'
+                : 'Auction closed without a winner because the reserve price was not met.'
         );
     }
-
-    if ($result['outcome'] === 'not_expired') {
-        return back()->withErrors([
-            'auction' => 'This auction has not reached its end time.',
-        ]);
-    }
-
-    return back()->with(
-        'success',
-        $result['outcome'] === 'no_bids'
-            ? 'Auction closed with no winner because no bids were placed.'
-            : 'Auction closed without a winner because the reserve price was not met.'
-    );
-}
 
 }

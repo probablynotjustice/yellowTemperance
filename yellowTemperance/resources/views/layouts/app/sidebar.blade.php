@@ -136,9 +136,17 @@
                 Wallets
             </flux:sidebar.item>
             <flux:sidebar.item
+                icon="wallet"
+                :href="route('admin.wallets.admin')"
+                :current="request()->routeIs('admin.wallets.admin')"
+                wire:navigate
+            >
+                Admin Wallet
+            </flux:sidebar.item>
+            <flux:sidebar.item
                 icon="home"
                 :href="route('admin.invoices.index')"
-                :current="request()->routeIs('base.comments.*')"
+                :current="request()->routeIs('admin.comments.*')"
                 wire:navigate
             >
                 Invoices

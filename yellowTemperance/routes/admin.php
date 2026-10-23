@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CommentController;
 
+use App\Http\Controllers\Base\WalletController as Participant;
 
 
 
@@ -40,14 +41,27 @@ Route::middleware(['auth','verified', 'role:admin'])
                 })->name('index');
             });
 
-        Route::prefix('wallets')
-            ->name('wallets.')
-            ->group(function () {
-                Route::get('/', [WalletController::class, 'index'])
-                    ->name('index');
-                Route::get('/{user}', [WalletController::class, 'show'])
-                    ->name('show');
-            });
+Route::prefix('wallets')
+    ->name('wallets.')
+    ->group(function () {
+        Route::get('/', [WalletController::class, 'index'])
+            ->name('index');
+
+        // Specific route first
+        Route::get('/adminWallet', [WalletController::class, 'adminWallet'])
+            ->name('admin');
+
+        // Dynamic route after
+        Route::get('/{wallet}', [WalletController::class, 'show'])
+            ->whereNumber('wallet')
+            ->name('show');
+
+        Route::post('/wallet/add/custom', [Participant::class, 'addCustom'])
+            ->name('add.custom');
+
+        Route::post('/wallet/add/{amount}', [Participant::class, 'addPreset'])
+            ->name('add');
+    });
 
 
         Route::prefix('products')
@@ -176,5 +190,4 @@ Route::middleware(['auth','verified', 'role:admin'])
     Route::get('activityLogs', [ActivityLogController::class, 'index'])
         ->name('activityLogs.index');
 });
-//Need a Wallet Controller
-//Need a
+

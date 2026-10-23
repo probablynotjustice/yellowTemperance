@@ -27,6 +27,21 @@ class WalletController extends Controller
 
         return view('admin.wallets.edit', compact('user'));
     }
+    public function adminWallet()
+    {
+        $wallet = auth()->user()->wallet;
+
+        abort_unless($wallet, 404, 'Admin wallet has not been created.');
+
+        return view('admin.wallets.admin', compact('wallet'));
+    }
+public function show(Wallet $wallet)
+    {
+        $wallet->load(['user', 'transactions']);
+        $user = $wallet->user;
+
+        return view('admin.wallets.show', compact('wallet'));
+    }
 
     public function update(Request $request, User $user)
     {

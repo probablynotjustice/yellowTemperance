@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+use App\Services\AuctionCloser;
+
 use App\Models\User;
 use App\Models\Auction;
 use App\Models\Category;
@@ -179,94 +181,45 @@ public function update(Request $request, Auction $auction)
     }
 
 
-    public function close(Auction $auction)
+
+    public function close(Auction $auction, AuctionCloser $closer)
     {
-        if ($auction->status !== 'active') {
+        $auction->loadMissing('product');
+
+        if ($auction->product->vendor_id !== auth()->id()) {
+            abort(403, 'You are not authorized to close this auction.');
+        }
+
+        $result = $closer->close($auction, auth()->user());
+
+        if ($result['outcome'] === 'already_closed') {
             return back()->withErrors([
                 'auction' => 'This auction is not active.',
             ]);
         }
 
-        $winningBid = $auction->bids()
-            ->orderByDesc('promise_amount')
-            ->orderBy('id')
-            ->first();
-
-        // Close auctions with no bids without creating an invoice.
-        if (! $winningBid) {
-            $oldValues = $auction->toArray();
-
-            $auction->update([
-                'status' => 'completed',
-                'winner_id' => null,
-            ]);
-
-            ActivityLog::record(
-                auth()->user(),
-                $auction,
-                'auction.closed',
-                "Closed Auction #{$auction->id} with no winning bid.",
-                $oldValues,
-                $auction->fresh()->toArray()
-            );
-
+        if ($result['outcome'] === 'winner') {
             return back()->with(
                 'success',
-                'Auction closed with no winner.'
+                "Auction closed. {$result['winner_name']} won."
             );
         }
 
-        DB::transaction(function () use ($auction, $winningBid) {
-            $oldValues = $auction->toArray();
-
-            $auction->update([
-                'status' => 'completed',
-                'winner_id' => $winningBid->user_id,
-                'current_bid' => $winningBid->promise_amount,
+        if ($result['outcome'] === 'not_expired') {
+            return back()->withErrors([
+                'auction' => 'This auction has not reached its end time.',
             ]);
-
-            // Find an existing invoice item for this winning bid.
-            $existingItem = InvoiceItem::where('bid_id', $winningBid->id)
-                ->first();
-
-            if (! $existingItem) {
-                $invoice = Invoice::create([
-                    'user_id' => $winningBid->user_id,
-                    'invoice_number' => 'INV-' . Str::upper(Str::random(12)),
-                    'status' => 'outstanding',
-                    'issued_at' => now(),
-                    'period_start' => $auction->starts_at,
-                    'period_end' => $auction->ends_at,
-                ]);
-
-                $price = $winningBid->promise_amount;
-
-                InvoiceItem::create([
-                    'invoice_id' => $invoice->id,
-                    'product_id' => $auction->product_id,
-                    'bid_id' => $winningBid->id,
-                    'description' => "Winning bid for Auction #{$auction->id}",
-                    'quantity' => 1,
-                    'unit_price' => $price,
-                    'total' => $price,
-                ]);
-            }
-
-            ActivityLog::record(
-                auth()->user(),
-                $auction,
-                'auction.closed',
-                "Closed Auction #{$auction->id}. Winning bid: {$winningBid->promise_amount} by User #{$winningBid->user_id}.",
-                $oldValues,
-                $auction->fresh()->toArray()
-            );
-        });
+        }
 
         return back()->with(
             'success',
-            "Auction closed. {$winningBid->user->name} won. Invoice processed."
+            $result['outcome'] === 'no_bids'
+                ? 'Auction closed with no winner because no bids were placed.'
+                : 'Auction closed without a winner because the reserve price was not met.'
         );
     }
+
+
 
 
 public function destroy(Auction $auction)
