@@ -29,7 +29,10 @@ class WalletController extends Controller
     }
     public function adminWallet()
     {
-        $wallet = auth()->user()->wallet;
+        $wallet = auth()->user()
+        ->wallet()
+        ->with(['transactions' => fn ($query) => $query->latest()])
+        ->first();
 
         abort_unless($wallet, 404, 'Admin wallet has not been created.');
 

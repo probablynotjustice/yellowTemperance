@@ -220,4 +220,116 @@
 
     </div>
 
+{{-- Wallet Transaction History --}}
+<div class="overflow-hidden rounded-xl border border-gray-200
+            bg-white dark:border-gray-700 dark:bg-gray-900">
+
+    <div class="border-b border-gray-200 p-6 dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Transaction History
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Review your recent wallet activity.
+        </p>
+    </div>
+
+    @if (!$wallet || $wallet->transactions->isEmpty())
+        <div class="p-8 text-center">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center
+                        rounded-full bg-gray-100 dark:bg-gray-800">
+                <icon name="receipt-text" size="xl" />
+            </div>
+
+            <p class="mt-3 font-medium text-gray-900 dark:text-white">
+                No transactions yet
+            </p>
+
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Your wallet activity will appear here once you add funds.
+            </p>
+        </div>
+    @else
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+
+                <thead class="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-semibold
+                                   uppercase tracking-wider text-gray-500
+                                   dark:text-gray-400">
+                            Transaction
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-semibold
+                                   uppercase tracking-wider text-gray-500
+                                   dark:text-gray-400">
+                            Type
+                        </th>
+
+                        <th class="px-6 py-3 text-right text-xs font-semibold
+                                   uppercase tracking-wider text-gray-500
+                                   dark:text-gray-400">
+                            Amount
+                        </th>
+
+                        <th class="px-6 py-3 text-right text-xs font-semibold
+                                   uppercase tracking-wider text-gray-500
+                                   dark:text-gray-400">
+                            Date
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach ($wallet->transactions as $transaction)
+                        <tr class="transition hover:bg-gray-50 dark:hover:bg-gray-800/60">
+
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-medium text-gray-900
+                                          dark:text-white">
+                                    {{ $transaction->description ?? 'Wallet transaction' }}
+                                </p>
+
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Transaction #{{ $transaction->id }}
+                                </p>
+                            </td>
+
+                            <td class="whitespace-nowrap px-6 py-4">
+                                <span class="inline-flex rounded-full px-2.5 py-1
+                                    text-xs font-medium
+                                    {{ $transaction->type === 'funding'
+                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
+                                        : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' }}">
+                                    {{ str($transaction->type)->replace('_', ' ')->title() }}
+                                </span>
+                            </td>
+
+                            <td class="whitespace-nowrap px-6 py-4 text-right">
+                                <span class="text-sm font-semibold
+                                    {{ $transaction->type === 'funding'
+                                        ? 'text-green-600 dark:text-green-400'
+                                        : 'text-gray-900 dark:text-white' }}">
+                                    {{ $transaction->type === 'funding' ? '+' : '' }}${{ number_format((float) $transaction->amount, 2) }}
+                                </span>
+                            </td>
+
+                            <td class="whitespace-nowrap px-6 py-4 text-right
+                                       text-sm text-gray-500 dark:text-gray-400">
+                                {{ $transaction->created_at?->format('M d, Y') ?? 'N/A' }}
+                                <span class="mt-1 block text-xs">
+                                    {{ $transaction->created_at?->format('g:i A') }}
+                                </span>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
+
+
 </x-layouts::app>
