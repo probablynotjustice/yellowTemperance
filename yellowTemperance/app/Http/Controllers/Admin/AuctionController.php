@@ -219,10 +219,7 @@ public function update(Request $request, Auction $auction)
         );
     }
 
-
-
-
-public function destroy(Auction $auction)
+    public function destroy(Auction $auction)
     {
         $old = $auction->toArray();
 

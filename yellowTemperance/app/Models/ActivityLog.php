@@ -61,4 +61,6 @@ class ActivityLog extends Model
 
             return $log;
     }
+
+
 }
