@@ -153,7 +153,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item
-                icon="home"
+                icon="clipboard-document-list"
                 :href="route('admin.activityLogs.index')"
                 :current="request()->routeIs('admin.activityLog.*')"
                 wire:navigate
