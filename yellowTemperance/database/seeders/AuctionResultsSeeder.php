@@ -12,7 +12,6 @@ class AuctionResultsSeeder extends Seeder
 {
     public function run(): void
     {
-        /* Get existing customers and products. */
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', 'customer');
         })->get();
@@ -36,7 +35,6 @@ class AuctionResultsSeeder extends Seeder
         }
 
         for ($i = 0; $i < 5; $i++) {
-
             $product = $products->random();
 
             $bidders = $users->random(
@@ -45,6 +43,7 @@ class AuctionResultsSeeder extends Seeder
 
             $startingBid = rand(50, 150);
             $minimumIncrement = fake()->numberBetween(1, 20);
+            $reservePrice = $startingBid + rand(25, 75);
 
             $auction = Auction::create([
                 'product_id' => $product->id,
@@ -52,30 +51,23 @@ class AuctionResultsSeeder extends Seeder
                 'starting_bid' => $startingBid,
                 'minimum_increment' => $minimumIncrement,
                 'current_bid' => 0,
-                'reserve_price' => $startingBid + rand(25, 75),
+                'reserve_price' => $reservePrice,
                 'starts_at' => now()->subDays(rand(10, 30)),
                 'ends_at' => now()->subDays(rand(1, 9)),
-                'status' => 'completed',
+                'status' => 'active',
                 'winner_id' => null,
             ]);
 
-
             $currentBid = 0;
 
-            foreach ($bidders as $index => $user) {
-
-                if ($currentBid === 0) {
-                    $currentBid = max(
-                        $auction->starting_bid,
-                        $auction->reserve_price ?? 0
-                    );
-                } else {
-                    $currentBid += $auction->minimum_increment;
-                }
+            foreach ($bidders as $user) {
+                $currentBid = $currentBid === 0
+                    ? $startingBid
+                    : $currentBid + $minimumIncrement;
 
                 $currentBid += rand(0, 50);
 
-                $bid = Bid::create([
+                Bid::create([
                     'auction_id' => $auction->id,
                     'user_id' => $user->id,
                     'ticket_cost' => $auction->ticket_cost,
@@ -87,24 +79,34 @@ class AuctionResultsSeeder extends Seeder
                 ]);
 
                 $auction->update([
-                    'current_bid' => $bid->promise_amount,
+                    'current_bid' => $currentBid,
                 ]);
             }
 
-            $winningBid = $auction->bids()
+            $highestBid = $auction->bids()
                 ->orderByDesc('promise_amount')
+                ->orderBy('id')
                 ->first();
 
-            if ($winningBid) {
+            if (
+                $highestBid
+                && $highestBid->promise_amount >= $reservePrice
+            ) {
                 $auction->update([
-                    'winner_id' => $winningBid->user_id,
-                    'current_bid' => $winningBid->promise_amount,
+                    'status' => 'completed',
+                    'winner_id' => $highestBid->user_id,
+                    'current_bid' => $highestBid->promise_amount,
+                ]);
+            } else {
+                $auction->update([
+                    'status' => 'completed',
+                    'winner_id' => null,
                 ]);
             }
         }
 
         $this->command->info(
-            '     Auction results seeded successfully.'
+            'Auction results seeded successfully.'
         );
     }
 }

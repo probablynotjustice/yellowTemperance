@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Auction;
-use App\Models\Bid;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use Illuminate\Database\Seeder;
@@ -13,8 +12,6 @@ class AuctionResultsInvoiceSeeder extends Seeder
 {
     public function run(): void
     {
-        /* Get all completed auctions that have bids. */
-
         $auctions = Auction::with([
             'product',
             'bids.user',
@@ -31,61 +28,74 @@ class AuctionResultsInvoiceSeeder extends Seeder
             return;
         }
 
-        /*Grouping all bids by customer  */
+        foreach ($auctions as $auction) {
+            // Find the actual highest bid.
+            $winningBid = $auction->bids
+                ->sortBy([
+                    ['promise_amount', 'desc'],
+                    ['id', 'asc'],
+                ])
+                ->first();
 
-        $bidsByUser = Bid::with([
-            'user',
-            'auction.product',
-        ])
-            ->whereHas('auction', function ($query) {
-                $query->where('status', 'completed');
-            })
-            ->get()
-            ->groupBy('user_id');
-
-        foreach ($bidsByUser as $userId => $bids) {
-
-            /*Create one invoice for this customer. */
-            $invoice = Invoice::create([
-                'user_id' => $userId,
-                'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
-                'status' => 'outstanding',
-                'issued_at' => now(),
-                'period_start' => $bids->min('created_at'),
-                'period_end' => $bids->max('created_at'),
-            ]);
-
-            /*Create an invoice item for every bid.*/
-            foreach ($bids as $bid) {
-
-                $auction = $bid->auction;
-
-                /*Determine whether this particular bid won.*/
-                $won = $auction->winner_id === $bid->user_id;
-
-                InvoiceItem::create([
-                    'invoice_id' => $invoice->id,
-                    'bid_id' => $bid->id,
-                    'product_id' => $auction->product_id,
-
-                    'description' => sprintf(
-                        '%s auction on %s - Auction #%s',
-                        $won ? 'Winning bid' : 'Losing bid',
-                        $auction->product->name ?? 'Unknown Product',
-                        $auction->id
-                    ),
-
-                    'quantity' => $bid->ticket_cost,
-
-                    'unit_price' => $bid->promise_amount,
-
-                    'total' => $bid->promise_amount,
-                ]);
+            if (!$winningBid) {
+                continue;
             }
+
+            // Confirm that the highest bid meets the reserve.
+            $reservePrice = $auction->reserve_price;
+
+            if (
+                $reservePrice !== null
+                && $winningBid->promise_amount < $reservePrice
+            ) {
+                continue;
+            }
+
+            // Ensure the auction's recorded winner matches the
+            // actual highest bidder.
+            if ($auction->winner_id !== $winningBid->user_id) {
+                continue;
+            }
+
+            // Do not invoice the same winning bid twice.
+            if ($winningBid->invoiceItems()->exists()) {
+                continue;
+            }
+
+            $invoice = Invoice::firstOrCreate(
+                [
+                    'user_id' => $winningBid->user_id,
+                    'status' => 'outstanding',
+                ],
+                [
+                    'invoice_number' => 'INV-' . strtoupper(
+                        Str::random(10)
+                    ),
+                    'issued_at' => now(),
+                    'period_start' => $winningBid->created_at,
+                    'period_end' => $winningBid->created_at,
+                ]
+            );
+
+            InvoiceItem::create([
+                'invoice_id' => $invoice->id,
+                'bid_id' => $winningBid->id,
+                'product_id' => $auction->product_id,
+
+                'description' => sprintf(
+                    'Winning bid on %s - Auction #%s',
+                    $auction->product?->name ?? 'Unknown Product',
+                    $auction->id
+                ),
+
+                'quantity' => 1,
+                'unit_price' => $winningBid->promise_amount,
+                'total' => $winningBid->promise_amount,
+            ]);
         }
 
         $this->command->info(
-            '     Auction result invoices seeded successfully.'
+            'Auction result invoices seeded successfully.'
         );
     }
 }

@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         WalletSeeder::class,
         CommentSeeder::class,
         BidSeeder::class,
-        InvoiceSeeder::class,
         AuctionResultsSeeder::class,
         AuctionResultsInvoiceSeeder::class,
     ]);
