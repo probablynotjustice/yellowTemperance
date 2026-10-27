@@ -119,26 +119,34 @@ Route::prefix('wallets')
                     ->name('show');
             });
 
+
         Route::prefix('categories')
             ->name('categories.')
-            ->group(function() {
+            ->group(function () {
+                // Custom routes first
+                Route::get('/trashed', [CategoryController::class, 'trashed'])
+                    ->name('trashed');
+                Route::patch('/{id}/restore', [CategoryController::class, 'restore'])
+                    ->name('restore');
+
                 Route::get('/', [CategoryController::class, 'index'])
                     ->name('index');
                 Route::get('/create', [CategoryController::class, 'create'])
                     ->name('create');
                 Route::post('/', [CategoryController::class, 'store'])
                     ->name('store');
-                Route::get('/{category}', [CategoryController::class, 'show'])
-                    ->name('show');
                 Route::get('/{category}/edit', [CategoryController::class, 'edit'])
                     ->name('edit');
-                Route::put('/{category}', [CategoryController::class, 'update'])
-                    ->name('update');
                 Route::get('/{category}/auctions', [CategoryController::class, 'auctions'])
                     ->name('auctions');
+                Route::get('/{category}', [CategoryController::class, 'show'])
+                    ->name('show');
+                Route::put('/{category}', [CategoryController::class, 'update'])
+                    ->name('update');
                 Route::delete('/{category}', [CategoryController::class, 'destroy'])
                     ->name('destroy');
-        });
+            });
+
 
 
         Route::prefix('comments')

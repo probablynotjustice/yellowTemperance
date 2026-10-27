@@ -77,5 +77,8 @@
 </table>
 
 @endif
+                <a href="{{ route('admin.categories.trashed', $category) }}">
+                    Trashed Categories
+                </a>
 
 </x-layouts::app>

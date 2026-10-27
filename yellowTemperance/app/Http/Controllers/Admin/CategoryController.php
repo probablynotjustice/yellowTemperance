@@ -160,7 +160,7 @@ class CategoryController extends Controller
         ActivityLog::record(
             auth()->user(),
             $category,
-            'Category.deleted',
+            'category.deleted',
             "Deleted category '{$category->name}'.",
             $oldValues,
             null
@@ -169,5 +169,43 @@ class CategoryController extends Controller
         return redirect()
             ->route('admin.categories.index')
             ->with('success', 'Category deleted successfully.');
+    }
+
+    public function trashed()
+    {
+        $categories = Category::onlyTrashed()
+            ->withCount('products')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.categories.trashed', compact('categories'));
+    }
+
+    public function restore($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        if (! $category->trashed()) {
+            return redirect()
+                ->route('admin.categories.index')
+                ->with('success', 'This category is not deleted.');
+        }
+
+        $oldValues = $category->toArray();
+
+        $category->restore();
+
+        ActivityLog::record(
+            auth()->user(),
+            $category,
+            'category.restored',
+            "Restored category '{$category->name}'.",
+            $oldValues,
+            $category->fresh()->toArray()
+        );
+
+        return redirect()
+            ->route('admin.categories.trashed')
+            ->with('success', 'Category restored successfully.');
     }
 }
