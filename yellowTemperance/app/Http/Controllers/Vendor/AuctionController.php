@@ -27,6 +27,14 @@ class AuctionController extends Controller
     }
     public function create(Product $product)
     {
+        $product->load('vendor');
+
+        abort_unless(
+            $product->vendor_id == auth()->id(),
+            403,
+            'You do not own this product.'
+        );
+
         return view('vendor.auctions.create', compact('product'));
     }
     public function store(Request $request)

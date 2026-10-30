@@ -11,6 +11,7 @@
 <form method="POST" action="{{ route('vendor.auctions.store', $product) }}">
     @csrf
 
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
     <div>
         <label for="starting_bid">Starting Bid</label>
 

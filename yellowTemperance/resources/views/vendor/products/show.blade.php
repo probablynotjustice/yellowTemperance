@@ -9,8 +9,8 @@
     <p>Inventory: {{ $product->inventory }}</p>
     <p>Vendor: {{ $product->vendor->name }}</p>
     <a href="{{ route('vendor.auctions.create', $product) }}">
-    Create Auction
-</a>
+        Create Auction
+    </a>
 </div>
 
 </x-layouts::app>
