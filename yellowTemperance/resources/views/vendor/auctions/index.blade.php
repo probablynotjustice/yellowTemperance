@@ -4,16 +4,7 @@
 <h1> Will show all Auctions</h1>
 <h1>Vendor Auctions</h1>
 
-<div class="mb-4">
-    <a href="{{ route('vendor.auctions.create') }}">
-        <button
-            type="button"
-            class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-        >
-            Create Auction
-        </button>
-    </a>
-</div>
+
 
 @if(session('success'))
     <div class="mb-4 rounded bg-green-100 p-3 text-green-800">
@@ -125,5 +116,7 @@
     @endforeach
 
 @endif
+
+@include('admin.products.index')
 
 </x-layouts::app>

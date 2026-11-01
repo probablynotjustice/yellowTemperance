@@ -22,8 +22,11 @@ class AuctionController extends Controller
             })
             ->latest()
             ->get();
+        $products = Product::where('vendor_id', auth()->id())
+            ->latest()
+            ->get();
 
-        return view('vendor.auctions.index', compact('auctions'));
+        return view('vendor.auctions.index', compact('auctions', 'products'));
     }
     public function create(Product $product)
     {
