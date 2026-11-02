@@ -117,6 +117,24 @@
 
 @endif
 
-@include('admin.products.index')
+
+<h2 class="text-xl font-bold">Your Products</h2>
+
+@if ($products->isEmpty())
+    <p>You have no products available to auction.</p>
+@else
+    @foreach ($products as $product)
+        <div class="mb-3 rounded border p-3">
+            <h3>{{ $product->name }}</h3>
+
+            <a
+                href="{{ route('vendor.auctions.create', $product) }}"
+                class="rounded bg-blue-500 px-3 py-2 text-white"
+            >
+                Create Auction
+            </a>
+        </div>
+    @endforeach
+@endif
 
 </x-layouts::app>
