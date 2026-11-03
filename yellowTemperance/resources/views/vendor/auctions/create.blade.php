@@ -25,6 +25,19 @@
             required
         >
     </div>
+    <div>
+        <label for="minimum_increment">Minimum Increment</label>
+
+        <input
+            type="number"
+            id="minimum_increment"
+            name="minimum_increment"
+            min="1"
+            step="1"
+            value="{{ old('minimum_increment', 1) }}"
+            required
+        >
+    </div>
 
     <div>
         <label for="ticket_cost">Ticket Cost</label>

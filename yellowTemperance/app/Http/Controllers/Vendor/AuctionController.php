@@ -68,17 +68,15 @@ class AuctionController extends Controller
                 ]);
         }
 
-        $auction = Auction::create([
-            'product_id'        => $product->id,
-            'vendor_id'         => $product->vendor_id,
+        $auction = $product->auctions()->create([
             'ticket_cost'       => $validated['ticket_cost'],
             'minimum_increment' => $validated['minimum_increment'],
             'starting_bid'      => $validated['starting_bid'],
             'current_bid'       => 0,
             'reserve_price'     => $validated['reserve_price'] ?? null,
             'starts_at'         => $validated['starts_at'] ?? now(),
-            'ends_at'            => $validated['ends_at'],
-            'status'             => 'active',
+            'ends_at'           => $validated['ends_at'],
+            'status'            => 'active',
         ]);
 
         ActivityLog::record(
