@@ -87,4 +87,12 @@
         Start Auction
     </button>
 </form>
+
+@if ($errors->any())
+    <div class="rounded bg-red-100 p-3 text-red-800">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
 </x-layouts::app>

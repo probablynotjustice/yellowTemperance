@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 use App\Models\User;
@@ -50,15 +51,27 @@ class ProductController extends Controller
         ]);
         // $validated['slug'] = Str::slug($validated['name']);
 
-        $product = Product::create($validated);
-        ActivityLog::record(
-            auth()->user(),
-            $product,
-            'created',
-            "Created product '{$product->name}'.",
-            null,
-            $product->toArray()
-        );
+        $product = DB::transaction(function () use ($validated) {
+
+            $product = Product::create([
+                'vendor_id' => auth()->id(),
+                'category_id' => $validated['category_id'],
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'retail_price' => $validated['retail_price'],
+                'price' => $validated['price'],
+                'inventory' => $validated['inventory'],
+            ]);
+
+            for ($i = 0; $i < $validated['inventory']; $i++) {
+                $product->units()->create([
+                    'unique_id' => (string) Str::uuid(),
+                    'status' => 'available',
+                ]);
+            }
+
+            return $product;
+        });
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Product created successfully.');

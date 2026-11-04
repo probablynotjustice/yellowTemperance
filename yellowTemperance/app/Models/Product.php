@@ -2,10 +2,15 @@
 
 namespace App\Models;
 use App\Models\User;
-USE App\Models\Auction;
+use App\Models\Auction;
+use App\Models\ProductUnit;
+use App\Models\Category;
+use App\Models\ActivityLog;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -25,7 +30,7 @@ class Product extends Model
 
     public function vendor()
     {
-        return $this->belongsto(User::class, 'vendor_id');
+        return $this->belongsTo(User::class, 'vendor_id');
     }
     public function auctions()
     {
@@ -43,5 +48,9 @@ class Product extends Model
     public function logs(): MorphMany
     {
         return $this->morphMany(ActivityLog::class, 'loggable');
+    }
+    public function units()
+    {
+        return $this->hasMany(ProductUnit::class);
     }
 }
