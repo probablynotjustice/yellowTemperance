@@ -112,9 +112,48 @@ class ProductController extends Controller
 
         $old = $product->toArray();
 
-        $product->update($validated);
+        DB::transaction(function () use ($product, $validated) {
+
+            $currentInventory = $product->units()
+                ->where('status', 'available')
+                ->count();
+
+            $newInventory = $validated['inventory'];
+
+            if ($newInventory > $currentInventory) {
+
+                $difference = $newInventory - $currentInventory;
+
+                for ($i = 0; $i < $difference; $i++) {
+                    $product->units()->create([
+                        'unique_id' => (string) Str::uuid(),
+                        'status' => 'available',
+                    ]);
+                }
+
+            } elseif ($newInventory < $currentInventory) {
+
+                $difference = $currentInventory - $newInventory;
+
+                $product->units()
+                    ->where('status', 'available')
+                    ->latest()
+                    ->limit($difference)
+                    ->delete();
+            }
+
+            $product->update([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'category_id' => $validated['category_id'],
+                'retail_price' => $validated['retail_price'],
+                'price' => $validated['price'],
+                'inventory' => $newInventory,
+            ]);
+        });
 
         $new = $product->fresh()->toArray();
+
         ActivityLog::record(
             auth()->user(),
             $product,
@@ -127,7 +166,6 @@ class ProductController extends Controller
         return redirect()
             ->route('vendor.products.index')
             ->with('success', 'Product updated successfully.');
-
     }
     public function destroy(Product $product)
     {
