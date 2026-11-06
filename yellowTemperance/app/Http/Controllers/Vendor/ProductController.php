@@ -134,12 +134,15 @@ class ProductController extends Controller
             } elseif ($newInventory < $currentInventory) {
 
                 $difference = $currentInventory - $newInventory;
-
-                $product->units()
+                $unitsToDelete = $product->units()
                     ->where('status', 'available')
                     ->latest()
                     ->limit($difference)
-                    ->delete();
+                    ->get();
+
+                foreach ($unitsToDelete as $unit) {
+                    $unit->delete();
+                }
             }
 
             $product->update([
