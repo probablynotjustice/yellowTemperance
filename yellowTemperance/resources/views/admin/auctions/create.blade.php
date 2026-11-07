@@ -20,21 +20,33 @@
     <form method="POST" action="{{ route('admin.auctions.store') }}">
         @csrf
 
-<div>
-    <label>Product</label>
+        <div>
+            <label>Product</label>
 
-    <p>{{ $product->name }}</p>
+            <p>{{ $product->name }}</p>
 
-    <p>
-        Vendor: {{ $product->vendor?->name ?? 'Unassigned' }}
-    </p>
 
-    <input
-        type="hidden"
-        name="product_id"
-        value="{{ $product->id }}"
-    >
-</div>
+            <p>
+                Vendor: {{ $product->vendor?->name ?? 'Unassigned' }}
+            </p>
+
+            <input
+                type="hidden"
+                name="product_id"
+                value="{{ $product->id }}"
+            >
+        </div>
+        <div>
+            <label for="quantity">Auction Quantity</label>
+            <input
+                type="number"
+                name="quantity"
+                id="quantity"
+                min="1"
+                value="{{ old('quantity', 1) }}"
+                required
+            >
+        </div>
 
         <div>
             <label for="starting_bid">Starting Bid</label>

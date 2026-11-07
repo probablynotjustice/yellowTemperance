@@ -13,6 +13,17 @@
 
     <input type="hidden" name="product_id" value="{{ $product->id }}">
     <div>
+        <label for="quantity">Auction Quantity</label>
+        <input
+            type="number"
+            name="quantity"
+            id="quantity"
+            min="1"
+            value="{{ old('quantity', 1) }}"
+            required
+        >
+    </div>
+    <div>
         <label for="starting_bid">Starting Bid</label>
 
         <input

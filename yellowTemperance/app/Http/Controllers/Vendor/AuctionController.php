@@ -48,6 +48,7 @@ class AuctionController extends Controller
 
         $validated = $request->validate([
             'product_id' => ['required', 'exists:products,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
             'starting_bid' => ['required', 'numeric', 'min:0.01'],
             'ticket_cost' => ['required', 'numeric', 'min:1'],
             'minimum_increment' => ['required', 'numeric', 'min:1'],
@@ -70,6 +71,7 @@ class AuctionController extends Controller
 
         $auction = $product->auctions()->create([
             'ticket_cost'       => $validated['ticket_cost'],
+            'quantity'          => $validated['quantity'],
             'minimum_increment' => $validated['minimum_increment'],
             'starting_bid'      => $validated['starting_bid'],
             'current_bid'       => 0,

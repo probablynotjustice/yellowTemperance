@@ -59,13 +59,13 @@ class AuctionController extends Controller
             ]);
 
             $validator = validator($request->all(), [
-            'product_id' => ['required', 'exists:products,id'],
-            'starting_bid' => ['required', 'numeric', 'min:0.01'],
-            'ticket_cost' => ['required', 'numeric', 'min:1'],
-            'minimum_increment' => ['required', 'numeric', 'min:1'],
-            'reserve_price' => ['nullable', 'numeric', 'min:0'],
-            'starts_at' => ['nullable', 'date'],
-            'ends_at' => ['required', 'date', 'after:now'],
+            'product_id'            => ['required', 'exists:products,id'],
+            'starting_bid'          => ['required', 'numeric', 'min:0.01'],
+            'ticket_cost'           => ['required', 'numeric', 'min:1'],
+            'minimum_increment'     => ['required', 'numeric', 'min:1'],
+            'reserve_price'         => ['nullable', 'numeric', 'min:0'],
+            'starts_at'             => ['nullable', 'date'],
+            'ends_at'               => ['required', 'date', 'after:now'],
         ]);
 
         if ($validator->fails()) {
@@ -90,13 +90,14 @@ class AuctionController extends Controller
                 'vendor_found' => $product->vendor !== null,
         ]);
         $validated = $request->validate([
-            'product_id' => ['required', 'exists:products,id'],
-            'starting_bid' => ['required', 'numeric', 'min:0.01'],
-            'ticket_cost' => ['required', 'numeric', 'min:1'],
+            'product_id'        => ['required', 'exists:products,id'],
+            'quantity'          => ['required', 'integer', 'min:1'],
+            'starting_bid'      => ['required', 'numeric', 'min:0.01'],
+            'ticket_cost'       => ['required', 'numeric', 'min:1'],
             'minimum_increment' => ['required', 'numeric', 'min:1'],
-            'reserve_price' => ['nullable', 'numeric', 'min:0'],
-            'starts_at' => ['nullable', 'date'],
-            'ends_at' => ['required', 'date', 'after:now'],
+            'reserve_price'     => ['nullable', 'numeric', 'min:0'],
+            'starts_at'         => ['nullable', 'date'],
+            'ends_at'           => ['required', 'date', 'after:now'],
         ]);
         $product = Product::with('vendor')
             ->findOrFail($validated['product_id']);
@@ -111,15 +112,16 @@ class AuctionController extends Controller
 
         $auction = Auction::create([
             'product_id'        => $product->id,
+            'quantity'          => $validated['quantity'],
             'vendor_id'         => $product->vendor_id,
             'ticket_cost'       => $validated['ticket_cost'],
             'minimum_increment' => $validated['minimum_increment'],
             'starting_bid'      => $validated['starting_bid'],
             'current_bid'       => 0,
             'reserve_price'     => $validated['reserve_price'] ?? null,
-            'starts_at'          => $validated['starts_at'] ?? now(),
-            'ends_at'            => $validated['ends_at'],
-            'status'             => 'active',
+            'starts_at'         => $validated['starts_at'] ?? now(),
+            'ends_at'           => $validated['ends_at'],
+            'status'            => 'active',
         ]);
 
         ActivityLog::record(
@@ -137,15 +139,16 @@ class AuctionController extends Controller
 public function update(Request $request, Auction $auction)
 {
     $validated = $request->validate([
-        'product_id' => ['required', 'exists:products,id'],
-        'ticket_cost' => ['nullable', 'numeric', 'min:0'],
-        'starting_bid' => ['required', 'numeric', 'min:0'],
-        'current_bid' => ['required', 'numeric', 'min:0'],
-        'reserve_price' => ['nullable', 'numeric', 'min:0'],
-        'starts_at' => ['required', 'date'],
-        'ends_at' => ['required', 'date', 'after:starts_at'],
-        'status' => ['required', 'string'],
-        'winner_id' => ['nullable', 'exists:users,id'],
+        'product_id'        => ['required', 'exists:products,id'],
+        'quantity'          => ['required', 'integer', 'min:1'],
+        'ticket_cost'       => ['nullable', 'numeric', 'min:0'],
+        'starting_bid'      => ['required', 'numeric', 'min:0'],
+        'current_bid'       => ['required', 'numeric', 'min:0'],
+        'reserve_price'     => ['nullable', 'numeric', 'min:0'],
+        'starts_at'         => ['required', 'date'],
+        'ends_at'           => ['required', 'date', 'after:starts_at'],
+        'status'            => ['required', 'string'],
+        'winner_id'         => ['nullable', 'exists:users,id'],
     ]);
 
     // Capture the auction BEFORE changing it

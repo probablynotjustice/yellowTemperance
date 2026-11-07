@@ -13,6 +13,7 @@ class Auction extends Model
 
     protected $fillable = [
         'product_id',
+        'quantity',
         'ticket_cost',
         'starting_bid',
         'minimum_increment',
