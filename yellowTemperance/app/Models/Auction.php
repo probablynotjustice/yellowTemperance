@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+
+use App\Models\ProductUnit;
 
 class Auction extends Model
 {
@@ -51,5 +54,12 @@ class Auction extends Model
     public function logs(): MorphMany
     {
         return $this->morphMany(ActivityLog::class, 'loggable');
+    }
+    public function units(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductUnit::class,
+            'auction_product_units'
+        )->withTimestamps();
     }
 }
