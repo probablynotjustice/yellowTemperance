@@ -8,6 +8,8 @@ use App\Models\Auction;
 use App\Models\Product;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 use App\Services\AuctionCloser;
 
@@ -40,47 +42,88 @@ class AuctionController extends Controller
 
         return view('vendor.auctions.create', compact('product'));
     }
-    public function store(Request $request)
-    {
-        Log::info('Vendor Auction store: request received', [
-            'data' => $request->except('_token'),
-        ]);
 
-        $validated = $request->validate([
-            'product_id' => ['required', 'exists:products,id'],
-            'quantity' => ['required', 'integer', 'min:1'],
-            'starting_bid' => ['required', 'numeric', 'min:0.01'],
-            'ticket_cost' => ['required', 'numeric', 'min:1'],
-            'minimum_increment' => ['required', 'numeric', 'min:1'],
-            'reserve_price' => ['nullable', 'numeric', 'min:0'],
-            'starts_at' => ['nullable', 'date'],
-            'ends_at' => ['required', 'date', 'after:now'],
-        ]);
+public function store(Request $request)
+{
+    Log::info('Vendor Auction store: request received', [
+        'data' => $request->except('_token'),
+    ]);
 
-        $product = Product::with('vendor')
-            ->where('vendor_id', auth()->id())
-            ->findOrFail($validated['product_id']);
+    $validated = $request->validate([
+        'product_id' => ['required', 'exists:products,id'],
+        'quantity' => ['required', 'integer', 'min:1'],
+        'starting_bid' => ['required', 'numeric', 'min:0.01'],
+        'ticket_cost' => ['required', 'numeric', 'min:1'],
+        'minimum_increment' => ['required', 'numeric', 'min:1'],
+        'reserve_price' => ['nullable', 'numeric', 'min:0'],
+        'starts_at' => ['nullable', 'date'],
+        'ends_at' => ['required', 'date', 'after:now'],
+    ]);
+
+    [$product, $auction] = DB::transaction(function () use ($validated) {
+
+        // Lock the product to prevent simultaneous reservations
+        // from competing for the same inventory.
+        $product = Product::where('vendor_id', auth()->id())
+            ->whereKey($validated['product_id'])
+            ->lockForUpdate()
+            ->firstOrFail();
+
+        $product->load('vendor');
 
         if (! $product->vendor) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'product_id' => 'This product has no assigned vendor.',
-                ]);
+            throw ValidationException::withMessages([
+                'product_id' => 'This product has no assigned vendor.',
+            ]);
+        }
+
+        // Find and lock the requested available units.
+        $units = $product->units()
+            ->where('status', 'available')
+            ->orderBy('id')
+            ->lockForUpdate()
+            ->limit($validated['quantity'])
+            ->get();
+
+
+        if ($units->count() < $validated['quantity']) {
+            throw ValidationException::withMessages([
+                'quantity' => 'Not enough available inventory for this auction.',
+            ]);
         }
 
         $auction = $product->auctions()->create([
-            'ticket_cost'       => $validated['ticket_cost'],
-            'quantity'          => $validated['quantity'],
+            'quantity' => $validated['quantity'],
+            'ticket_cost' => $validated['ticket_cost'],
             'minimum_increment' => $validated['minimum_increment'],
-            'starting_bid'      => $validated['starting_bid'],
-            'current_bid'       => 0,
-            'reserve_price'     => $validated['reserve_price'] ?? null,
-            'starts_at'         => $validated['starts_at'] ?? now(),
-            'ends_at'           => $validated['ends_at'],
-            'status'            => 'active',
+            'starting_bid' => $validated['starting_bid'],
+            'current_bid' => 0,
+            'reserve_price' => $validated['reserve_price'] ?? null,
+            'starts_at' => $validated['starts_at'] ?? now(),
+            'ends_at' => $validated['ends_at'],
+            'status' => 'active',
         ]);
 
+        // Attach the selected physical units to the auction.
+        $auction->units()->attach($units->modelKeys());
+
+        // Mark those units as reserved.
+        foreach ($units as $unit) {
+            $unit->update([
+                'status' => 'reserved',
+            ]);
+        }
+
+        // Recalculate remaining available inventory.
+        $remainingInventory = $product->units()
+            ->where('status', 'available')
+            ->count();
+
+        $product->update([
+            'inventory' => $remainingInventory,
+        ]);
+
+        // Record the activity.
         ActivityLog::record(
             auth()->user(),
             $auction,
@@ -90,9 +133,13 @@ class AuctionController extends Controller
             $auction->toArray()
         );
 
-        return redirect()->route('vendor.products.show', $product)
-            ->with('success', 'Auction Made Correctly.');
-    }
+        return [$product, $auction];
+    });
+
+    return redirect()->route('vendor.products.show', $product)
+        ->with('success', 'Auction Made Correctly.');
+}
+
 
 
     public function show(Auction $auction)
