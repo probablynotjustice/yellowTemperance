@@ -7,6 +7,7 @@ use App\Models\Auction;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -19,12 +20,20 @@ class AuctionCloser
         bool $automatic = false
     ): array {
         return DB::transaction(function () use ($auction, $actor, $automatic) {
+
+            // Locks product first.
+            $product = Product::query()
+                ->whereKey($auction->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            // Then locks the auction.
             $auction = Auction::query()
                 ->whereKey($auction->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $auction->load('product');
+            $auction->setRelation('product', $product);
 
             if ($auction->status !== 'active') {
                 return ['outcome' => 'already_closed'];
@@ -66,6 +75,7 @@ class AuctionCloser
                     'status' => 'completed',
                     'winner_id' => null,
                 ]);
+                $this->updateReservedUnits($auction, $product, 'available');
 
                 if ($winningBid) {
                     $message = "Auction #{$auction->id} closed without a winner because the highest bid of {$winningBid->promise_amount} did not meet the reserve price of {$reservePrice}.";
@@ -99,6 +109,7 @@ class AuctionCloser
                 'winner_id' => $winningBid->user_id,
                 'current_bid' => $winningBid->promise_amount,
             ]);
+            $this->updateReservedUnits($auction, $product, 'sold');
 
             if ($winningBid->invoiceItems()->exists()) {
                 throw new RuntimeException(
@@ -154,5 +165,37 @@ class AuctionCloser
                 'winner_name' => $winningBid->user?->name,
             ];
         });
+    }
+
+    private function updateReservedUnits(
+        Auction $auction,
+        Product $product,
+        string $status
+    ): void {
+        $units = $auction->units()
+            ->where('product_units.status', 'reserved')
+            ->lockForUpdate()
+            ->get();
+
+        // Make sure every unit reserved for this auction still exists.
+        if ($units->count() !== $auction->quantity) {
+            throw new RuntimeException(
+                "Auction #{$auction->id} expected {$auction->quantity} reserved units, found {$units->count()}."
+            );
+        }
+
+        // Update each individual inventory unit.
+        foreach ($units as $unit) {
+            $unit->update([
+                'status' => $status,
+            ]);
+        }
+
+        // Recalculate available inventory.
+        $product->update([
+            'inventory' => $product->units()
+                ->where('status', 'available')
+                ->count(),
+        ]);
     }
 }

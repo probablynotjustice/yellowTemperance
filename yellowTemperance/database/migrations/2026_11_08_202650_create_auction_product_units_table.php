@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique('product_unit_id');
+            $table->unique(['auction_id', 'product_unit_id']);
         });
     }
 
