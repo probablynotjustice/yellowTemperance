@@ -36,6 +36,7 @@ class AuctionFactory extends Factory
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
             'status' => 'active',
+            'quantity' => 1,
         ];
     }
 }
